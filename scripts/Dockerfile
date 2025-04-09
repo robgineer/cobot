@@ -5,16 +5,17 @@ FROM ubuntu:22.04
 RUN apt-get update
 
 # get zsh and zimfw
+# TODO @rharbach: fix "compinit being called at /etc/zsh/zshrc:112"
 RUN apt-get install -y zsh && apt install -y curl && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+
 # install required utilities
 RUN apt-get install -y vim
 
 # ssh server is necessary for xpra
 RUN apt-get install -y openssh-server
 
-# TODO @rhabach: fix this. xpra requires post install config for the keyboard
-# ==> need auto config for US keyboard (options 32 followed by 1)
-# could be: DEBIAN_FRONTEND=noninteractive  
+# install xpra if required
+#ENV DEBIAN_FRONTEND=noninteractive
 #RUN apt-get install -y xpra
 
 ####################################### 
@@ -30,4 +31,8 @@ RUN groupadd --gid $GROUP_ID $USERNAME \
 RUN apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers \
     && chmod 0440 /etc/sudoers
+# create dicrectories required for xpra logging
+RUN mkdir /run/user/1010 && chown $USERNAME /run/user/$USER_ID \
+    && mkdir /run/xpra && chmod 777 /run/xpra
 
+#USER $USERNAME

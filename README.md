@@ -1,2 +1,3 @@
 # cobot
-Collaborative Robotics
+
+Development of imitation learning for robots

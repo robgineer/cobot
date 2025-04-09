@@ -26,14 +26,16 @@ echo "============== Start cobot container =============="
 # Create instance of built image 
 # bind local home directory to docker container (careful: you have write access to your host home directory),
 # run as current user (with correspinding user id and group id) 
-# and takeover X11 and password configs => this way we take over the username /passwords from the host machine
+# takeover X11 and password configs => this way we take over the username / passwords from the host machine
 # also do some port forwarding
 docker run -itd \
             --mount type=bind,src=/home/${USER},dst=/home/${USER} \
             --user=${UID}:${GID} -w /home/${USER} \
             --volume /tmp/.X11-unix:/tmp/.X11-unix \
             --volume /etc/shadow:/etc/shadow \
-            -p 22:22 \
+            --volume="$HOME/.Xauthority:/home/root/.Xauthority:rw" \
+            -p 2222:22 \
+            --rm \
             --name cobot_noble_container cobot_noble_image
 echo ""
 
@@ -50,7 +52,3 @@ echo ""
 
 echo "============== Connect to container =============="
 docker exec -it cobot_noble_container /bin/bash
-
-
-# TODO @rharbach: fix issue with XPRA on startup
-# Warning: failed to create script directory '/run/user/1000/xpra': 
