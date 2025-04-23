@@ -32,7 +32,7 @@ RUN apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers \
     && chmod 0440 /etc/sudoers
 # create dicrectories required for xpra logging
-RUN mkdir /run/user/1010 && chown $USERNAME /run/user/$USER_ID \
+RUN mkdir /run/user/$USER_ID && chown $USERNAME /run/user/$USER_ID \
     && mkdir /run/xpra && chmod 777 /run/xpra
 
 #USER $USERNAME
