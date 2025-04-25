@@ -29,12 +29,14 @@ echo "============== Start cobot container =============="
 # takeover X11 and password configs => this way we take over the username / passwords from the host machine
 # also do some port forwarding
 docker run -itd \
+            --privileged \
             --mount type=bind,src=/home/${USER},dst=/home/${USER} \
             --user=${UID}:${GID} -w /home/${USER} \
             --volume /tmp/.X11-unix:/tmp/.X11-unix \
             --volume /etc/shadow:/etc/shadow \
             --volume="$HOME/.Xauthority:/home/root/.Xauthority:rw" \
-            -p 2222:22 \
+            --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket \
+            --network host \
             --rm \
             --name cobot_noble_container cobot_noble_image
 echo ""
