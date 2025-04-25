@@ -27,9 +27,10 @@ echo "============== Start cobot container =============="
 # bind local home directory to docker container (careful: you have write access to your host home directory),
 # run as current user (with correspinding user id and group id) 
 # takeover X11 and password configs => this way we take over the username / passwords from the host machine
-# also do some port forwarding
+# use GPU drivers of host
 docker run -itd \
             --privileged \
+            --runtime=nvidia --gpus all \
             --mount type=bind,src=/home/${USER},dst=/home/${USER} \
             --user=${UID}:${GID} -w /home/${USER} \
             --volume /tmp/.X11-unix:/tmp/.X11-unix \
@@ -38,6 +39,7 @@ docker run -itd \
             --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket \
             --network host \
             --rm \
+            --entrypoint /bin/bash \
             --name cobot_noble_container cobot_noble_image
 echo ""
 
