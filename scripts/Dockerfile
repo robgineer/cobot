@@ -10,7 +10,6 @@ RUN apt-get update
 RUN apt-get install -y apt-utils vim wget
 
 # get zsh and zimfw
-# TODO @rharbach: fix "compinit being called at /etc/zsh/zshrc:112"
 RUN apt-get install -y zsh && apt-get install -y curl && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
 # ssh server is necessary for xpra
