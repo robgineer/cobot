@@ -30,7 +30,7 @@ docker run -itd \
             --user=${UID}:${GID} -w /home/${USER} \
             --volume /tmp/.X11-unix:/tmp/.X11-unix \
             --volume /etc/shadow:/etc/shadow \
-            --volume="$HOME/.Xauthority:/home/root/.Xauthority:rw" \
+            --volume="$HOME/.Xauthority:/home/${USER}/.Xauthority:rw" \
             --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket \
             --network host \
             --rm \

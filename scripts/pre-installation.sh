@@ -33,7 +33,7 @@ sudo -u $username echo "set number" >> /home/$username/.vimrc
 
 echo -e  "\n*********** Installing ZSH and ZimFW ***********"
 sudo apt-get update
-sudo apt-get install zsh
+sudo apt-get install -y zsh
 sudo -u $username wget -nv -O - https://raw.githubusercontent.com/zimfw/install/master/install.zsh | sudo -u $username zsh
 # activate preferred theme
 sudo -u $username sed -i -e 's/zmodule asciiship/zmodule prompt-pwd \n zmodule eriner/g' /home/$username/.zimrc
@@ -43,6 +43,12 @@ sudo -u $username echo "autoload -Uz +X compinit
 functions[compinit]=\$'print -u2 \'compinit being called at \'\${funcfiletrace[1]}
 '\${functions[compinit]}
 skip_global_compinit=1" >> /home/$username/.zshenv
+
+echo -e  "\n*********** Installing xpra on host system ***********"
+sudo wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc
+sudo wget -P /etc/apt/sources.list.d/ https://raw.githubusercontent.com/Xpra-org/xpra/master/packaging/repos/jammy/xpra.sources
+sudo apt-get update
+sudo apt-get install -y xpra
 
 echo -e  "\n*********** GitHub configuration ***********"
 read -p "Do you want to configure your GitHub account? [Y/n] " reply_git
