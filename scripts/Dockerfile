@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ubuntu:22.04
+FROM nvcr.io/nvidia/isaac-sim:4.5.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 

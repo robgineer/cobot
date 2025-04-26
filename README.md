@@ -1,3 +1,3 @@
-# cobot
+# Artbot
 
-Development of imitation learning for robots
+Development of imitation learning for articulated robots
