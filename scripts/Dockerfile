@@ -7,15 +7,32 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 
 # install required utilities
-RUN apt-get install -y apt-utils vim wget
+RUN apt-get install -y apt-utils vim wget software-properties-common
 
 # get zsh and zimfw
 RUN apt-get install -y zsh && apt-get install -y curl && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
+## install ROS2 Humble ##
+# set locales
+RUN apt-get install locales
+RUN locale-gen en_US en_US.UTF-8
+RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+# set universe repo
+RUN add-apt-repository universe
+# get ROS2 package sources
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+RUN apt-get update && apt-get upgrade -y
+# fix broken packages
+RUN apt-get install libbrotli1=1.0.9-2build6 -y --allow-downgrades && apt-get install libfreetype6-dev -y
+# install
+RUN apt-get install ros-humble-desktop -y
+
+## install xpra (with latest version) ##
 # ssh server is necessary for xpra
 RUN apt-get install -y openssh-server
-
-# install xpra (with latest version)
+# get latest version of xpra
 RUN wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc \
     && wget -P /etc/apt/sources.list.d/ https://raw.githubusercontent.com/Xpra-org/xpra/master/packaging/repos/jammy/xpra.sources \
     && apt-get update \
