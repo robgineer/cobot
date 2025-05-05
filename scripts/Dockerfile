@@ -7,10 +7,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 
 # install required utilities
-RUN apt-get install -y apt-utils vim wget software-properties-common
-
+RUN apt-get install -y apt-utils software-properties-common x11-apps wget vim curl
+# install dev. packages
+RUN apt-get install -y git build-essential python3.10 python-is-python3 python3-pip
+# install firefox (without snap)
+RUN add-apt-repository ppa:mozillateam/ppa
+RUN apt-get install -y firefox-esr
 # get zsh and zimfw
-RUN apt-get install -y zsh && apt-get install -y curl && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
+RUN apt-get install -y zsh && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
 ## install ROS2 Humble ##
 # set locales
@@ -27,7 +31,7 @@ RUN apt-get update && apt-get upgrade -y
 # fix broken packages
 RUN apt-get install libbrotli1=1.0.9-2build6 -y --allow-downgrades && apt-get install libfreetype6-dev -y
 # install
-RUN apt-get install ros-humble-desktop -y
+RUN apt-get install -y ros-humble-desktop python3-colcon-common-extensions python3-rosdep
 
 ## install xpra (with latest version) ##
 # ssh server is necessary for xpra
@@ -54,5 +58,4 @@ RUN apt-get install -y sudo \
 # create dicrectories required for xpra logging
 RUN mkdir /run/user/$USER_ID && chown $USERNAME /run/user/$USER_ID \
     && mkdir /run/xpra && chmod 777 /run/xpra
-
 #USER $USERNAME

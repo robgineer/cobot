@@ -31,18 +31,20 @@ docker run -itd \
             --volume /tmp/.X11-unix:/tmp/.X11-unix \
             --volume /etc/shadow:/etc/shadow \
             --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket \
+            --volume /usr/local/cuda-12.8:/usr/local/cuda-12.8 \
             --network host \
             --rm \
             --entrypoint /bin/bash \
             --name artbot_container artbot_image
 echo ""
 
-echo "============== Start local docker repo =============="
-docker run -d -p 5000:5000 --name local_docker_repo registry:2.7
-echo ""
+# rharbach: deactivated (not required for now)
+#echo "============== Start local docker repo =============="
+#docker run -d -p 5000:5000 --name local_docker_repo registry:2.7
+#echo ""
 
 echo "============== List current containers =============="
-docker ps -a # we should see only 2 now (docker repo and ubuntu container)
+docker ps -a # we should see only 1 now (ubuntu container)
 echo ""
 
 # TODO @rharbach: tag image to local registry
