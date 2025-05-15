@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM nvcr.io/nvidia/isaac-sim:4.5.0
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -29,16 +29,16 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 RUN apt-get update && apt-get upgrade -y
 # fix broken packages
-RUN apt-get install libbrotli1=1.0.9-2build6 -y --allow-downgrades && apt-get install libfreetype6-dev -y
+#RUN apt-get install libbrotli1=1.0.9-2build6 -y --allow-downgrades && apt-get install libfreetype6-dev -y
 # install
-RUN apt-get install -y ros-humble-desktop python3-colcon-common-extensions python3-rosdep
+RUN apt-get install -y ros-jazzy-desktop python3-colcon-common-extensions python3-rosdep
 
 ## install xpra (with latest version) ##
 # ssh server is necessary for xpra
 RUN apt-get install -y openssh-server
 # get latest version of xpra
 RUN wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc \
-    && wget -P /etc/apt/sources.list.d/ https://raw.githubusercontent.com/Xpra-org/xpra/master/packaging/repos/jammy/xpra.sources \
+    && wget -P /etc/apt/sources.list.d/ https://raw.githubusercontent.com/Xpra-org/xpra/master/packaging/repos/noble/xpra.sources \
     && apt-get update \
     && apt-get install -y xpra
 
@@ -56,6 +56,6 @@ RUN apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers \
     && chmod 0440 /etc/sudoers
 # create dicrectories required for xpra logging
-RUN mkdir /run/user/$USER_ID && chown $USERNAME /run/user/$USER_ID \
-    && mkdir /run/xpra && chmod 777 /run/xpra
+RUN mkdir /run/user/$USER_ID && chown $USERNAME /run/user/$USER_ID
+
 #USER $USERNAME
