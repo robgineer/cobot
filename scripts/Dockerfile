@@ -30,8 +30,14 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/r
 RUN apt-get update && apt-get upgrade -y
 # fix broken packages
 #RUN apt-get install libbrotli1=1.0.9-2build6 -y --allow-downgrades && apt-get install libfreetype6-dev -y
-# install
+# install ROS2
 RUN apt-get install -y ros-jazzy-desktop python3-colcon-common-extensions python3-rosdep
+# install ROS2 controll
+RUN apt-get install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers
+# install Gazebo Hamonic
+RUN apt-get install -y ros-jazzy-ros-gz
+# install Moveit2
+RUN apt-get install -y ros-jazzy-moveit
 
 ## install xpra (with latest version) ##
 # ssh server is necessary for xpra
