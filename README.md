@@ -32,3 +32,10 @@ xpra attach ssh://<user>@<server>:22/100
 Where \<server\> represents the address of your remote host that runs the docker container. X11 will be forwarded from the remote host to the docker container.
 
 All graphical user interfaces started from the terminal of the docker container will be forwarded to the client machine.
+
+## License
+
+SPDX-License-Identifier: MIT AND Apache-2.0
+<br/>
+<br/>
+While this project is licensed under MIT, the robot model provided is licensed under Apache-2.0 (refer *src/cobot_model* for more details).
