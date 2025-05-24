@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="cobot_clean">
+<robot name="cobot_zebra">
     <link name="world" />
     <joint name="robot_in_world" type="fixed">
         <origin xyz="0.0 0.0 0.3" rpy="0.0 0.0 0.0" />
@@ -59,8 +59,8 @@
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment01_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
-            <material name="Caerul">
-                <color rgba="1.0 1.0 1.0 1.0" />
+            <material name="segment1_material">
+                <color rgba="0.0 0.0 0.0 1.0" />
             </material>
         </visual>
         <collision>
@@ -81,7 +81,7 @@
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment02_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
-            <material name="Caerul">
+            <material name="segment2_material">
                 <color rgba="1.0 1.0 1.0 1.0" />
             </material>
         </visual>
@@ -103,8 +103,8 @@
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment03_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
-            <material name="Caerul">
-                <color rgba="1.0 1.0 1.0 1.0" />
+            <material name="segment3_material">
+                <color rgba="0.0 0.0 0.0 1.0" />
             </material>
         </visual>
         <collision>
@@ -125,7 +125,7 @@
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment04_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
-            <material name="Caerul">
+            <material name="segment4_material">
                 <color rgba="1.0 1.0 1.0 1.0" />
             </material>
         </visual>
@@ -147,8 +147,8 @@
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment05_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
-            <material name="Caerul">
-                <color rgba="1.0 1.0 1.0 1.0" />
+            <material name="segment5_material">
+                <color rgba="0.0 0.0 0.0 1.0" />
             </material>
         </visual>
         <collision>
@@ -169,7 +169,7 @@
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment06_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
-            <material name="Caerul">
+            <material name="segment6_material">
                 <color rgba="1.0 1.0 1.0 1.0" />
             </material>
         </visual>
@@ -185,50 +185,72 @@
             <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
-    <link name="segment7" />
-    <link name="segment7_black">
+    <link name="segment7">
         <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.004 0.002 0.091" />
             <material name="Aterul">
-                <color rgba="1.0 1.0 1.0 1.0" />
+                <color rgba="0.0 0.0 0.0 1.0" />
             </material>
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment07_black.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.004 0.002 0.091" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment07_black.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="0.1" />
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.004 0.002 0.091" />
             <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
-     <link name="segment7_silver">
+    <link name="finger1">
         <visual>
-            <origin rpy="0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 -0.000000 0.000000" xyz="0.0 0.0 0.0" />
             <material name="silver">
-                <color rgba="1.0 1.0 1.0 1.0" />
+                <color rgba="0.629 0.629 0.625 1.0" />
             </material>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/segment07_silver.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/v2_0_hull/finger01.stl" scale="0.000001 0.000001 0.000001" />
             </geometry>
         </visual>
+        <collision>
+            <origin rpy="0.0 -0.000000 0.000000" xyz="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://cobot_model/meshes/v2_0_hull/finger01.stl" scale="0.000001 0.000001 0.000001" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.001" />
+            <inertia ixx="100.0" iyy="100.0" izz="100.0" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        </inertial>
     </link>
-    <joint name="JFix_seg7_black" type="fixed">
-        <origin rpy="0.0 0.0 0.0" xyz="0.004 0.002 0.091" />
-        <parent link="segment7" />
-        <child link="segment7_black" />
-    </joint>
-    <joint name="JFix_seg7_silver" type="fixed">
-        <origin rpy="0.0 0.0 0.0" xyz="0.004 0.002 0.091" />
-        <parent link="segment7" />
-        <child link="segment7_silver" />
-    </joint>
+    <link name="finger2">
+        <visual>
+            <origin rpy="0.0 -0.000000 0.000000" xyz="0.0 0.0 0.0" />
+            <material name="silver">
+                <color rgba="0.629 0.629 0.625 1.0" />
+            </material>
+            <geometry>
+                <mesh filename="package://cobot_model/meshes/v2_0_hull/finger02.stl" scale="0.000001 0.000001 0.000001" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin rpy="0.0 -0.000000 0.000000" xyz="0.0 0.0 0.0" />
+            <geometry>
+                <mesh filename="package://cobot_model/meshes/v2_0_hull/finger02.stl" scale="0.000001 0.000001 0.000001" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.001" />
+            <inertia ixx="100.0" iyy="100.0" izz="100.0" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        </inertial>
+    </link>
     <link name="TCP">
         <visual>
             <origin xyz="-0.005 -0.002 0.01" rpy="0.0 0.0 0.0" />
@@ -317,4 +339,18 @@
         <parent link="base_link" />
         <child link="lin_axis" />
     </joint>
+    <joint name="finger1_joint" type="prismatic">
+        <origin rpy="0.0 0.0 0.0" xyz="0.000000 0.0000 0.000000" />
+        <parent link="TCP" />
+        <child link="finger1" />
+        <axis xyz="0 1 0" />
+        <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
+    </joint>
+    <joint name="finger2_joint" type="prismatic">
+        <origin rpy="0.0 0.0 0.0" xyz="0.000000 0.0000 0.000000" />
+        <parent link="TCP" />
+        <child link="finger2" />
+        <axis xyz="0 1 0" />
+        <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
+    </joint>    
 </robot>
