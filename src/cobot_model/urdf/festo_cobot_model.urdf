@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="cobot_v2_0_Tandem">
+<robot name="cobot_clean">
     <link name="world" />
     <joint name="robot_in_world" type="fixed">
         <origin xyz="0.0 0.0 0.3" rpy="0.0 0.0 0.0" />
