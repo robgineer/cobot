@@ -16,7 +16,7 @@ RUN apt-get install -y firefox-esr
 # get zsh and zimfw
 RUN apt-get install -y zsh && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
-## install ROS2 Humble ##
+## install ROS2 Jazzy ##
 # set locales
 RUN apt-get install locales
 RUN locale-gen en_US en_US.UTF-8
@@ -28,8 +28,6 @@ RUN add-apt-repository universe
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 RUN apt-get update && apt-get upgrade -y
-# fix broken packages
-#RUN apt-get install libbrotli1=1.0.9-2build6 -y --allow-downgrades && apt-get install libfreetype6-dev -y
 # install ROS2
 RUN apt-get install -y ros-jazzy-desktop python3-colcon-common-extensions python3-rosdep
 # install ROS2 control

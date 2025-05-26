@@ -30,7 +30,7 @@ Adjustments made:
 * added dummy values for simulation (inertia and mass)
 * cleaned up numerical values
 * adjusted XML formatting
-* changed colors of all links to white (representing the clean version)
+* changed colors of all links
 
 
 ![Latest Cobot Model](img/festo_cobot_zebra.png)

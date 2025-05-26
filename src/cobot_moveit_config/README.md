@@ -32,7 +32,7 @@ On client run:
 xpra attach ssh://<user>@<server>:22/100
 ```
 
-To control the joints in gazebo and rviz manually run the ```rqt_joint_trajectory_controller``` in a separate terminal (don't forget to start an xpra session with a different display and connect to it from your client machine)
+To control the joints in gazebo and rviz manually, run the ```rqt_joint_trajectory_controller``` in a separate terminal (don't forget to start an xpra session with a different display and connect to it from your client machine)
 
 ```
 ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller

@@ -1,6 +1,6 @@
 # Artbot
 
-Development of imitation learning for articulated robots
+Development of imitation learning for articulated robots using a pneumatic cobot (provided by [**Festo SE & Co. KG**](https://www.festo.com/)).
 
 
 ## Getting Started
