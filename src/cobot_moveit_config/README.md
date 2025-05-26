@@ -2,7 +2,7 @@
 
 This package contains a manipulation example for the Cobot using MoveIt2 and Gazebo.
 
-<video src="vid/zebra_moveit_gz_run.mov" width="320" height="240" controls></video>
+![](vid/zebra_moveit_gz_run.gif)
 
 ## Run example from docker container
 

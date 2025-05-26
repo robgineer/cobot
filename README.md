@@ -37,7 +37,7 @@ xpra attach ssh://<user>@<server>:22/100
 ```
 
 This will open a gazebo / rviz GUI that allows the manipulation of the cobot.
-<video src="src/cobot_moveit_config/vid/zebra_moveit_gz_run.mov" width="320" height="240" controls></video>
+![](vid/zebra_moveit_gz_run.gif)
 
 To control the joints in gazebo and rviz manually run the ```rqt_joint_trajectory_controller``` in a separate terminal (don't forget to start an xpra session with a different display and connect to it from your client machine)
 
