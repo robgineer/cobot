@@ -1,0 +1,169 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+     <!-- Transmissions -->
+    <transmission name="trans_joint_0">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_0">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_0_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_1">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_1_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_2">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_2_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_3">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_3_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_4">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_4">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_4_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_5">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_5">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_5_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_6">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_6">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_6_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_finger1_joint">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="finger1_joint">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="finger1_joint_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_finger2_joint">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="finger2_joint">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="finger2_joint_motor">
+            <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <ros2_control name="arm_system" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    <joint name="joint_0">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint_1">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint_2">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint_3">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint_4">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint_5">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="joint_6">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+  </ros2_control>
+
+   <ros2_control name="gripper_system" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    <joint name="finger1_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="finger2_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+  </ros2_control>
+
+  <xacro:property name="ros2_controllers_config" default="$(find cobot_moveit_config)/config/ros2_controllers.yaml"/>
+
+  <gazebo>
+        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>${ros2_controllers_config}</parameters>
+        </plugin>
+    </gazebo>
+
+</robot>

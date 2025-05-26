@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>cobot_model</name>
+  <version>0.0.3</version>
+  <description>
+    The Cobot Model (original version provided by Festo SE &amp; Co. KG)
+  </description>
+
+  <maintainer email="Robert.Harbach@hs-esslingen.de">Robert Harbach</maintainer>
+  <maintainer email="robgineer@gmail.com">Robert Harbach</maintainer>
+
+  <license>Apache License 2.0</license>
+  <author>Festo SE &amp; Co. KG</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>xacro</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

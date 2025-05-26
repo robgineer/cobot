@@ -1,0 +1,58 @@
+# Gazebo MoveIt2 Robot Manipulation Example
+
+This package contains a manipulation example for the Cobot using MoveIt2 and Gazebo.
+
+<video src="vid/zebra_moveit_gz_run.mov" width="320" height="240" controls></video>
+
+## Run example from docker container
+
+Clone the repo
+```
+git clone https://github.com/robgineer/artbot.git .
+cd artbot
+```
+
+Build the repo
+```
+source /opt/ros/jazzy/setup.zsh 
+colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release"
+source install/setup.{bash/zsh}
+```
+
+Run the manipulation example
+```
+export DISPLAY=:100 # or any display number you prefer that is not used
+xpra start :100
+
+ros2 launch cobot_moveit_config gz_demo_launch.py
+```
+
+On client run:
+```
+xpra attach ssh://<user>@<server>:22/100
+```
+
+To control the joints in gazebo and rviz manually run the ```rqt_joint_trajectory_controller``` in a separate terminal (don't forget to start an xpra session with a different display and connect to it from your client machine)
+
+```
+ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
+```
+
+## Limitations
+
+Since the model was not yet modelled correctly w.r.t. its physical attributes (mass, inertia, joint limits), it is not yet functioning correctly. We can see that some joints are not properly controlled.
+<br/>
+<br/>
+In addition, the gripper does seem to have issues as well. This might result from the usage of the *JointTrajectoryController* instead of the *GripperController*
+<br/>
+<br/>
+Since we are using *position* controllers, we do not have any information on force and hence no option for the interaction with the real world. Changing to *effort* controllers should fix this.
+
+
+
+## References
+
+The example has been created using the[ MoveIt2 setup assistant](https://moveit.picknik.ai/main/doc/examples/setup_assistant/setup_assistant_tutorial.html), the [MoveIt2 tutorials](https://github.com/moveit/moveit2_tutorials) and have been inspired from examples for a [Panda robot](https://github.com/AndrejOrsula/panda_gz_moveit2/tree/jazzy) from [Andrej Orsula](https://github.com/AndrejOrsula) (who seems to be providing one of the first working examples for ros jazzy and gazebo harmonic).
+<br/>
+Since all mentioned sources are BSD-3-Clause licensed, the license is taken over.<br/>
+Note: the model used in this example (package ```cobot_model``` is licensed under Apache-2.0).

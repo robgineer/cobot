@@ -5,6 +5,48 @@ Development of imitation learning for articulated robots
 
 ## Getting Started
 
+### 1. Build and run docker container
+
+```
+git clone https://github.com/robgineer/artbot.git .
+cd artbot
+./scripts/docker_configuration.sh
+```
+
+### 2. Build the project
+
+In the docker container:
+```
+cd ~/artbot
+colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release"
+source install/setup.{bash/zsh}
+```
+
+### 3. Run MoveIt2 Gazebo example
+
+```
+export DISPLAY=:100 # or any display number you prefer that is not used
+xpra start :100
+
+ros2 launch cobot_moveit_config gz_demo_launch.py
+```
+
+On client run:
+```
+xpra attach ssh://<user>@<server>:22/100
+```
+
+This will open a gazebo / rviz GUI that allows the manipulation of the cobot.
+<video src="src/cobot_moveit_config/vid/zebra_moveit_gz_run.mov" width="320" height="240" controls></video>
+
+To control the joints in gazebo and rviz manually run the ```rqt_joint_trajectory_controller``` in a separate terminal (don't forget to start an xpra session with a different display and connect to it from your client machine)
+
+```
+ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
+```
+
+## Dev. Container
+
 The entire development environment is based on an Ubuntu 22.04 docker container.
 This allows to migrate fast between host systems. In order to build the development environment, run the following scripts:
 
@@ -12,7 +54,7 @@ This allows to migrate fast between host systems. In order to build the developm
 2. ```scripts/docker_installation.sh```: to install docker on host system and to add current user to docker group (this script is obsolete on most cloud severs)
 3. ```scripts/docker_configuration.sh```: to build and start the docker image that contains the development environment
 
-## Start X11 Forwarding from Docker container
+### Start X11 Forwarding from Docker container
 
 The docker container built will enable X11 forwarding to client machines. <br/>
 Note: although SSH access to a docker container is (sometimes) referred to as an "anti-pattern" (apparently this implies treating the docker container like a VM), I still believe that this solution is the way-to-go for an environment that contains all required dependencies for the development of this project.

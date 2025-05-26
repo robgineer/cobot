@@ -32,12 +32,15 @@ RUN apt-get update && apt-get upgrade -y
 #RUN apt-get install libbrotli1=1.0.9-2build6 -y --allow-downgrades && apt-get install libfreetype6-dev -y
 # install ROS2
 RUN apt-get install -y ros-jazzy-desktop python3-colcon-common-extensions python3-rosdep
-# install ROS2 controll
+# install ROS2 control
+RUN apt-get update
 RUN apt-get install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers
 # install Gazebo Hamonic
-RUN apt-get install -y ros-jazzy-ros-gz
+RUN apt-get install -y ros-jazzy-ros-gz ros-jazzy-gz-ros2-control
 # install Moveit2
 RUN apt-get install -y ros-jazzy-moveit
+# install joint manipulator
+RUN apt-get install -y ros-jazzy-rqt-joint-trajectory-controller
 
 ## install xpra (with latest version) ##
 # ssh server is necessary for xpra
