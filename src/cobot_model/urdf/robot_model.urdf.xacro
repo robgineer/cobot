@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="cobot_zebra">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <link name="world" />
     <joint name="robot_in_world" type="fixed">
         <origin xyz="0.0 0.0 0.3" rpy="0.0 0.0 0.0" />
@@ -261,12 +261,12 @@
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
         </visual>
-        <collision>
+       <!-- <collision>
             <origin xyz="-0.005 -0.002 0.010" rpy = "0 0 0" />
             <geometry>
                 <cylinder radius="0.00001" length="0.000001" />
             </geometry>
-        </collision>
+        </collision> -->
     </link>
     <!-- Joints -->
     <joint name="joint_0" type="prismatic">

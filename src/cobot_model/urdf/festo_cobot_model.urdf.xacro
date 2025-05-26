@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cobot_zebra">
+
+  <xacro:include filename="$(find cobot_model)/urdf/robot_model.urdf.xacro"/>
+
+</robot>
