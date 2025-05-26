@@ -53,6 +53,4 @@ Since we are using *position* controllers, we do not have any information on for
 ## References
 
 The example has been created using the[ MoveIt2 setup assistant](https://moveit.picknik.ai/main/doc/examples/setup_assistant/setup_assistant_tutorial.html), the [MoveIt2 tutorials](https://github.com/moveit/moveit2_tutorials) and have been inspired from examples for a [Panda robot](https://github.com/AndrejOrsula/panda_gz_moveit2/tree/jazzy) from [Andrej Orsula](https://github.com/AndrejOrsula) (who seems to be providing one of the first working examples for ros jazzy and gazebo harmonic).
-<br/>
-Since all mentioned sources are BSD-3-Clause licensed, the license is taken over.<br/>
-Note: the model used in this example (package ```cobot_model``` is licensed under Apache-2.0).
+
