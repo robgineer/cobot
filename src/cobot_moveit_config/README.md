@@ -14,7 +14,7 @@ cd artbot
 
 Build the repo
 ```
-source /opt/ros/jazzy/setup.zsh 
+source /opt/ros/jazzy/.{bash/zsh} 
 colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release"
 source install/setup.{bash/zsh}
 ```

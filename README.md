@@ -8,6 +8,7 @@ Development of imitation learning for articulated robots using a pneumatic cobot
 ### 1. Build and run docker container
 
 ```
+source /opt/ros/jazzy/setup.{bash/zsh} 
 git clone https://github.com/robgineer/artbot.git .
 cd artbot
 ./scripts/docker_configuration.sh
