@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <link name="world" />
     <joint name="robot_in_world" type="fixed">
-        <origin xyz="0.0 0.0 0.3" rpy="0.0 0.0 0.0" />
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <parent link="world" />
         <child link="base_link" />
         <axis xyz="0 0 1" />
@@ -11,7 +11,7 @@
     <link name="base_link" />
     <link name="lin_axis">
         <visual>
-            <origin rpy="-1.570796327 3.141592654 0.0" xyz="0.0 -0.5 -0.32" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/lin_axis/axis.dae" scale="0.001 0.001 0.001" />
                 <material name="silver">
@@ -20,20 +20,20 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="-1.570796327 3.141592654 0.0" xyz="0.0 -0.5 -0.32" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/lin_axis/axis.dae" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="100.1" />
-            <origin rpy="-1.570796327 3.141592654 0.0" xyz="0.0 -0.5 -0.32" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.3" iyy="0.3" izz="0.3" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="lin_axis_carriage">
         <visual>
-            <origin rpy="-1.570796327 3.141592654 0.0" xyz="0.0 0.0 -0.32" />
+             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/lin_axis/carriage.dae" scale="0.001 0.001 0.001" />
                 <material name="silver">
@@ -42,20 +42,20 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="-1.570796327 3.141592654 0.0" xyz="0.0 0.0 -0.32" />
+             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/lin_axis/carriage.dae" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="1.0" />
-            <origin rpy="-1.570796327 3.141592654 0.0" xyz="0.0 0.0 -0.32" />
+             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.003" iyy="0.003" izz="0.003" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="segment1">
         <visual>
-            <origin rpy="-1.570793 -0.0 3.141593" xyz="0.0 -0.311 0.0" />
+             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment01_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
@@ -64,20 +64,20 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="-1.570793 0.0 3.141593" xyz="0.0 -0.311 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment01_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="2.0" />
-            <origin rpy="-1.570793 0.0 3.141593" xyz="0.0 -0.311 0.0" />
+             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.0075496764161139766" iyy="0.009" izz="0.007" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="segment2">
         <visual>
-            <origin rpy="0.0 0.0 3.1415" xyz="0.0 0.0 0.036" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment02_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
@@ -86,20 +86,20 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 3.1415" xyz="0.0 0.0 0.036" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment02_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="1.0" />
-            <origin rpy="0.0 0.0 3.1415" xyz="0.0 0.0 0.036" />
+             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="segment3">
         <visual>
-            <origin rpy="0.0 0.0 3.1415" xyz="0.001 0.0 0.06" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment03_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
@@ -108,20 +108,20 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 3.1415" xyz="0.001 0.0 0.06" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment03_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="0.1" />
-            <origin rpy="0.0 0.0 3.1415" xyz="0.001 0.0 0.06" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="segment4">
         <visual>
-            <origin rpy="3.1415 0.0 -1.5707 " xyz="0.0 0.0 -0.035" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment04_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
@@ -130,20 +130,20 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="3.1415 0.0 -1.5707 " xyz="0.0 0.0 -0.035" />
+             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment04_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="1.0" />
-            <origin rpy="3.1415 0.0 -1.5707 " xyz="0.0 0.0 -0.035" />
+             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.003" iyy="0.003" izz="0.003" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="segment5">
         <visual>
-            <origin rpy="0.0 0.0 3.1415" xyz="0.0 0.0 0.015" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment05_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
@@ -152,20 +152,20 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 3.1415" xyz="0.0 0.0 0.015" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment05_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="0.5" />
-            <origin rpy="0.0 0.0 3.1415" xyz="0.0 0.0 0.015" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.001" iyy="0.001" izz="0.001" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="segment6">
         <visual>
-            <origin rpy="0.0 0.0 -1.5708" xyz="0.005 0.0 0.038" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment06_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
@@ -174,20 +174,20 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 -1.5708" xyz="0.005 0.0 0.038" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment06_combined.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="0.1" />
-            <origin rpy="0.0 0.0 -1.5708" xyz="0.005 0.0 0.038" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="segment7">
         <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.004 0.002 0.091" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <material name="Aterul">
                 <color rgba="0.0 0.0 0.0 1.0" />
             </material>
@@ -196,20 +196,37 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.004 0.002 0.091" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/segment07_black.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="0.1" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.004 0.002 0.091" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
+    <link name="TCP">
+        <visual>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <geometry>
+                <cylinder radius="0.00001" length="0.000001" />
+            </geometry>
+            <material name="silver">
+                <color rgba="0.629 0.629 0.625 1.0" />
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <geometry>
+                <cylinder radius="0.0001" length="0.0001" />
+            </geometry>
+        </collision>
+    </link> 
     <link name="finger1">
         <visual>
-            <origin rpy="0.0 -0.000000 0.000000" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
@@ -218,7 +235,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 -0.000000 0.000000" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/finger01.stl" scale="0.000001 0.000001 0.000001" />
             </geometry>
@@ -231,7 +248,7 @@
     </link>
     <link name="finger2">
         <visual>
-            <origin rpy="0.0 -0.000000 0.000000" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
@@ -240,7 +257,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 -0.000000 0.000000" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <mesh filename="package://cobot_model/meshes/v2_0_hull/finger02.stl" scale="0.000001 0.000001 0.000001" />
             </geometry>
@@ -251,38 +268,22 @@
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         </inertial>
     </link>
-    <link name="TCP">
-        <visual>
-            <origin xyz="-0.005 -0.002 0.01" rpy="0.0 0.0 0.0" />
-            <geometry>
-                <cylinder radius="0.00001" length="0.000001" />
-            </geometry>
-            <material name="silver">
-                <color rgba="0.629 0.629 0.625 1.0" />
-            </material>
-        </visual>
-       <!-- <collision>
-            <origin xyz="-0.005 -0.002 0.010" rpy = "0 0 0" />
-            <geometry>
-                <cylinder radius="0.00001" length="0.000001" />
-            </geometry>
-        </collision> -->
-    </link>
+
     <!-- Joints -->
     <joint name="joint_0" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.3" />
         <parent link="lin_axis" />
         <child link="lin_axis_carriage" />
-        <axis xyz="0 1 0" />
+        <axis xyz="0 0 1" />
         <limit effort="200.000" velocity="3.141593" lower="-.35" upper=".55" />
     </joint>
     <joint name="mount_fixture" type="fixed">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.3 0.3" />
         <parent link="lin_axis_carriage" />
         <child link="segment1" />
     </joint>
     <joint name="joint_1" type="revolute">
-        <origin rpy="-1.570793 0.0 3.141593" xyz="0.0 -0.274400 0.0" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
         <parent link="segment1" />
         <child link="segment2" />
         <axis xyz="0 0 1" />
@@ -290,7 +291,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_2" type="revolute">
-        <origin rpy="-1.570796 0.0 0.0" xyz="0.00005 0.04955 0.1555" />
+        <origin rpy="1.5708 0.0 0.0" xyz="0.0 -0.111 0.118" />
         <parent link="segment2" />
         <child link="segment3" />
         <axis xyz="0 0 1" />
@@ -298,7 +299,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_3" type="revolute">
-        <origin rpy="3.141593 0.0 1.570796" xyz="-0.254493 0.0 0.0852" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.254 0.0 0.06" />
         <parent link="segment3" />
         <child link="segment4" />
         <axis xyz="0 0 1" />
@@ -306,7 +307,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_4" type="revolute">
-        <origin rpy="-1.570796 0.0 -3.141593" xyz="0.0 -0.0076 0.132393" />
+        <origin rpy="-1.5708 0.0 -1.5708" xyz="0.024 0.0 -0.168" />
         <parent link="segment4" />
         <child link="segment5" />
         <axis xyz="0 0 1" />
@@ -314,7 +315,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_5" type="revolute">
-        <origin rpy="-1.570796 0.0 3.141593" xyz="0.0 -0.0063 0.113264" />
+        <origin rpy="-1.570 -1.570 0.0" xyz="0.0 0.042 0.103" />
         <parent link="segment5" />
         <child link="segment6" />
         <axis xyz="0 0 1" />
@@ -322,7 +323,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_6" type="revolute">
-        <origin rpy="1.570796 0.0 0.0" xyz="0.0 -0.1328 -0.006164" />
+        <origin rpy="0.0 -1.570 0.0" xyz="0.26 0.0 -0.041" />
         <parent link="segment6" />
         <child link="segment7" />
         <axis xyz="0 0 1" />
@@ -330,27 +331,27 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="JFix_TCP" type="fixed">
-        <origin rpy="0.0 0.0 3.141593" xyz="0.0 0.0 0.190143" />
+        <origin rpy="0.0 3.141593 0.0" xyz="0.0 0.0 -0.06" />
         <parent link="segment7" />
         <child link="TCP" />
     </joint>
-    <joint name="JFix_Base" type="fixed">
-        <origin rpy="-1.570796 0.0 0.0" xyz="0.0 0.0 0.5" />
+   <joint name="JFix_Base" type="fixed">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
         <parent link="base_link" />
         <child link="lin_axis" />
     </joint>
     <joint name="finger1_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.000000 0.0000 0.000000" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
         <parent link="TCP" />
         <child link="finger1" />
         <axis xyz="0 1 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
     </joint>
     <joint name="finger2_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.000000 0.0000 0.000000" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
         <parent link="TCP" />
         <child link="finger2" />
         <axis xyz="0 1 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
-    </joint>    
+    </joint>
 </robot>
