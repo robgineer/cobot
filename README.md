@@ -50,7 +50,7 @@ ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
 
 ## Dev. Container
 
-The entire development environment is based on an Ubuntu 22.04 docker container.
+The entire development environment is based on an Ubuntu 24.04 docker container.
 This allows to migrate fast between host systems. In order to build the development environment, run the following scripts:
 
 1. ```scripts/pre-installation.sh```: to run in case you are using a remote cloud server (such as AWS EC2) that requires the creation of a new user

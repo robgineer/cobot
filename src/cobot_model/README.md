@@ -15,7 +15,7 @@ The model used represents a pneumatic arm with seven joints, indexed as: 0 - 6, 
 
 ### Original Cobot Model
 
-In its original form, the model does not contain any physics related information as *mass* or *inertial* values necessary for the simulation. These values, along with a functional gripper, have be added within the scope of this project.
+In its original form, the model does not contain any physics related information as *mass* or *inertia* values necessary for the simulation. These values, along with a functional gripper, have been added within the scope of this project.
 <br/>
 
 ![Original Cobot Model](img/festo_cobot_original.png)

@@ -40,17 +40,14 @@ ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
 
 ## Limitations
 
-Since the model was not yet modelled correctly w.r.t. its physical attributes (mass, inertia, joint limits), it is not yet functioning correctly. We can see that some joints are not properly controlled.
+1. Since the model was not yet modelled correctly w.r.t. its physical attributes (mass, inertia, joint limits), it is not yet functioning correctly. We can see that some joints are not properly controlled.
 <br/>
+2. In addition, the gripper does seem to have issues as well. This might result from the usage of the *JointTrajectoryController* instead of the *GripperController*
 <br/>
-In addition, the gripper does seem to have issues as well. This might result from the usage of the *JointTrajectoryController* instead of the *GripperController*
-<br/>
-<br/>
-Since we are using *position* controllers, we do not have any information on force and hence no option for the interaction with the real world. Changing to *effort* controllers should fix this.
+3. Since we are using *position* controllers, we do not have any information on force and hence no option for the interaction with the real world. Changing to *effort* controllers should fix this.
 
 
 
 ## References
 
 The example has been created using the[ MoveIt2 setup assistant](https://moveit.picknik.ai/main/doc/examples/setup_assistant/setup_assistant_tutorial.html), the [MoveIt2 tutorials](https://github.com/moveit/moveit2_tutorials) and have been inspired from examples for a [Panda robot](https://github.com/AndrejOrsula/panda_gz_moveit2/tree/jazzy) from [Andrej Orsula](https://github.com/AndrejOrsula) (who seems to be providing one of the first working examples for ros jazzy and gazebo harmonic).
-
