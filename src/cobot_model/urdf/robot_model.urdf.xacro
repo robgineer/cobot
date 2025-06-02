@@ -114,9 +114,9 @@
             </geometry>
         </collision>
         <inertial>
-            <mass value="1.0" />
+            <mass value="2.5" />
             <origin rpy="0.0 0.0 0.0" xyz="0.126 0.0 0.06" />
-            <inertia ixx="0.00530033" ixy="0.0" ixz="-0.00756" iyy="0.02606333" iyz="0.0" izz="0.02242967" />
+            <inertia ixx="0.01325083" ixy="0.0" ixz="-0.0189" iyy="0.06515833" iyz="0.0" izz="0.05607417" />
         </inertial>
     </link>
     <link name="segment4">
@@ -181,7 +181,7 @@
         </collision>
         <inertial>
             <mass value="1.5" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.071 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.12 0.0 0.0" />
             <inertia ixx="0.00319363" iyy="0.01012625" izz="0.01115763" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
@@ -275,7 +275,7 @@
         <parent link="lin_axis" />
         <child link="lin_axis_carriage" />
         <axis xyz="0 0 1" />
-        <limit effort="200.0" velocity="3.141593" lower="-.35" upper=".55" />
+        <limit effort="300.0" velocity="3.141593" lower="-.35" upper=".55" />
     </joint>
     <joint name="mount_fixture" type="fixed">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.3 0.3" />
@@ -287,7 +287,7 @@
         <parent link="segment1" />
         <child link="segment2" />
         <axis xyz="0 0 1" />
-        <limit effort="40.0" velocity="3.141593" lower="-0.7853976732051033" upper="3.9269903267948965" />
+        <limit effort="200.0" velocity="3.141593" lower="-0.7853976732051033" upper="3.9269903267948965" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_2" type="revolute">
@@ -295,7 +295,7 @@
         <parent link="segment2" />
         <child link="segment3" />
         <axis xyz="0 0 1" />
-        <limit effort="40.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
+        <limit effort="150.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_3" type="revolute">
@@ -303,7 +303,7 @@
         <parent link="segment3" />
         <child link="segment4" />
         <axis xyz="0 0 1" />
-        <limit effort="40.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
+        <limit effort="100.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_4" type="revolute">
@@ -311,7 +311,7 @@
         <parent link="segment4" />
         <child link="segment5" />
         <axis xyz="0 0 1" />
-        <limit effort="40.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
+        <limit effort="50.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_5" type="revolute">
@@ -319,7 +319,7 @@
         <parent link="segment5" />
         <child link="segment6" />
         <axis xyz="0 0 1" />
-        <limit effort="40.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
+        <limit effort="50.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_6" type="revolute">
@@ -327,7 +327,7 @@
         <parent link="segment6" />
         <child link="segment7" />
         <axis xyz="0 0 1" />
-        <limit effort="40." velocity="3.141593" lower="-2.356194" upper="2.356194" />
+        <limit effort="20." velocity="3.141593" lower="-2.356194" upper="2.356194" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="JFix_TCP" type="fixed">
