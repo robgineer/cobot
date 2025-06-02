@@ -21,17 +21,21 @@ In its original form, the model does not contain any physics related information
 ![Original Cobot Model](img/festo_cobot_original.png)
 
 
-### Current Cobot Model: Zebra
+### Current Cobot Model: Champion
+
+**The color scheme serves as a tribute to VfB Stuttgart’s victory in the DFB-Pokal (German Cup) of 2025**
 
 Adjustments made:
+* added world link
 * added functional gripper
 * combined links (the original version contained several smaller links that made inertia calculations tricky)
-* added world link
-* added dummy values for simulation (inertia and mass)
+* added collision meshes
+* added realistic physical attributes for simulation (inertia and mass)
 * cleaned up numerical values
 * adjusted XML formatting
 * changed colors of all links
 
+The entire re-modelling (incl. all calculations) is documented in ```doc/cobot_modelling.ipynb```.
 
-![Latest Cobot Model](img/festo_cobot_zebra.png)
+![Latest Cobot Model](img/festo_cobot_champion.png)
 
