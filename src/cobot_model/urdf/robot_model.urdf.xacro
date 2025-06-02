@@ -60,7 +60,7 @@
                 <mesh filename="package://cobot_model/meshes/visual/segment01_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment1_material">
-                <color rgba="0.0 0.0 0.0 1.0" />
+                <color rgba="0.89 0.133 0.098 1.0" />
             </material>
         </visual>
         <collision>
@@ -104,7 +104,7 @@
                 <mesh filename="package://cobot_model/meshes/visual/segment03_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment3_material">
-                <color rgba="0.0 0.0 0.0 1.0" />
+                <color rgba="0.89 0.133 0.098 1.0" />
             </material>
         </visual>
         <collision>
@@ -126,7 +126,7 @@
                 <mesh filename="package://cobot_model/meshes/visual/segment04_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment4_material">
-                <color rgba="1.0 1.0 1.0 1.0" />
+                <color rgba="0.89 0.133 0.098 1.0" />
             </material>
         </visual>
         <collision>
@@ -148,7 +148,7 @@
                 <mesh filename="package://cobot_model/meshes/visual/segment05_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment5_material">
-                <color rgba="0.0 0.0 0.0 1.0" />
+                <color rgba="1.0 0.929 0.0 1.0" />
             </material>
         </visual>
         <collision>
