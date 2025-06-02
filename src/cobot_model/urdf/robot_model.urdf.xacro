@@ -22,7 +22,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/lin_axis/axis.dae" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/axis_collision.dae" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -44,7 +44,7 @@
         <collision>
              <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/lin_axis/carriage.dae" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/carriage_collision.dae" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -66,7 +66,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/segment01_combined.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment01_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -88,7 +88,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/segment02_combined.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment02_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -110,7 +110,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/segment03_combined.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment03_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -132,7 +132,7 @@
         <collision>
              <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/segment04_combined.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment04_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -154,7 +154,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/segment05_combined.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment05_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -176,7 +176,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/segment06_combined.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment06_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -198,7 +198,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/segment07_black.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment07_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -237,7 +237,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/finger01.stl" scale="0.000001 0.000001 0.000001" />
+                <mesh filename="package://cobot_model/meshes/collision/finger01_collision.stl" scale="0.000001 0.000001 0.000001" />
             </geometry>
         </collision>
         <inertial>
@@ -259,7 +259,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/v2_0_hull/finger02.stl" scale="0.000001 0.000001 0.000001" />
+                <mesh filename="package://cobot_model/meshes/collision/finger02_collision.stl" scale="0.000001 0.000001 0.000001" />
             </geometry>
         </collision>
         <inertial>
