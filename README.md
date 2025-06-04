@@ -80,7 +80,7 @@ All graphical user interfaces started from the terminal of the docker container 
 
 ## License
 
-SPDX-License-Identifier: MIT AND Apache-2.0
+SPDX-License-Identifier: BSD 3-Clause AND Apache-2.0
 <br/>
 <br/>
-While this project is licensed under MIT, the robot model provided is licensed under Apache-2.0 (refer *src/cobot_model* for more details).
+While this project is licensed under BSD 3-Clause, the robot model provided is licensed under Apache-2.0 (refer *src/cobot_model* for more details).
