@@ -1,8 +1,6 @@
 """
-Configure and launch nodes related to MoveIt2.
+Configure and launch nodes related to MoveIt2 fake controls.
 List of nodes to be launched:
- * ros_gz_sim (with default world)
- * ros_gz_bridge
  * move_group
  * robot_state_publisher
  * ros2_control_node
