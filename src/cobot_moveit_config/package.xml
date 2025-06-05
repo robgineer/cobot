@@ -45,6 +45,8 @@
 
   <exec_depend>xacro</exec_depend>
 
+  <exec_depend>py_utils</exec_depend>
+
   <export>
       <build_type>ament_cmake</build_type>
       <!-- set gazebo model path -->

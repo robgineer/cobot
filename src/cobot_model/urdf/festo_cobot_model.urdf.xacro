@@ -2,6 +2,6 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cobot_champion">
 
   <xacro:include filename="$(find cobot_model)/urdf/robot_model.urdf.xacro"/>
-  <xacro:include filename="$(find cobot_model)/urdf/gz_ros_controlls.urdf.xacro"/>
+  <xacro:include filename="$(find cobot_model)/urdf/gz_ros_controls.urdf.xacro"/>
 
 </robot>

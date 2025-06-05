@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:arg name="ros2_controls_plugin" default="gz" />
+
      <!-- Transmissions -->
     <transmission name="trans_joint_0">
         <type>transmission_interface/SimpleTransmission</type>
@@ -94,7 +97,12 @@
 
     <ros2_control name="arm_system" type="system">
     <hardware>
-      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      <xacro:if value="${'gz' in '$(arg ros2_controls_plugin)'}">
+          <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </xacro:if>
+      <xacro:if value="${'fake' in '$(arg ros2_controls_plugin)'}">
+          <plugin>mock_components/GenericSystem</plugin>
+       </xacro:if>
     </hardware>
     <joint name="joint_0">
       <command_interface name="position"/>
@@ -141,9 +149,15 @@
   </ros2_control>
 
    <ros2_control name="gripper_system" type="system">
-    <hardware>
-      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+   <hardware>
+        <xacro:if value="${'gz' in '$(arg ros2_controls_plugin)'}">
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${'fake' in '$(arg ros2_controls_plugin)'}">
+            <plugin>mock_components/GenericSystem</plugin>
+        </xacro:if>
     </hardware>
+  
     <joint name="finger1_joint">
       <command_interface name="position"/>
       <state_interface name="position"/>
@@ -158,12 +172,13 @@
     </joint>
   </ros2_control>
 
-  <xacro:property name="ros2_controllers_config" default="$(find cobot_moveit_config)/config/ros2_controllers.yaml"/>
-
-  <gazebo>
-        <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-        <parameters>${ros2_controllers_config}</parameters>
-        </plugin>
-    </gazebo>
+    <xacro:if value="${'gz' in '$(arg ros2_controls_plugin)'}">
+        <xacro:property name="ros2_controllers_config" default="$(find cobot_moveit_config)/config/ros2_controllers.yaml"/>
+        <gazebo>
+            <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+                <parameters>${ros2_controllers_config}</parameters>
+            </plugin>
+        </gazebo>
+    </xacro:if>
 
 </robot>
