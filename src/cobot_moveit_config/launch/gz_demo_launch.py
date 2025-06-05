@@ -14,10 +14,10 @@ we use XACRO for the creation of the robot description
 (conversion from XACRO to URDF is handled on demand).
 """
 
-import yaml
-import xacro
 from os import path
-from typing import List, IO
+from typing import List
+
+from py_utils.launch_utils import load_file
 
 from launch.actions import (
     DeclareLaunchArgument,
@@ -33,7 +33,6 @@ from launch import LaunchDescription
 from ament_index_python.packages import (
     get_package_share_directory,
 )
-from launch.substitutions import LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
@@ -71,20 +70,20 @@ def generate_launch_description() -> LaunchDescription:
     ]
 
     # get URDF model (from xacro)
-    robot_description_as_string = _load_file(
+    robot_description_as_string = load_file(
         "cobot_model", path.join("urdf", "festo_cobot_model.urdf.xacro")
     )
     robot_description = {"robot_description": robot_description_as_string}
 
     # get SRDF model
-    robot_description_semantic_srdf = _load_file(
+    robot_description_semantic_srdf = load_file(
         moveit_config_package, path.join("config", "festo_cobot_model.srdf")
     )
     robot_description_semantic = {
         "robot_description_semantic": robot_description_semantic_srdf
     }
     # get kinematics
-    robot_description_kinematics_yaml = _load_file(
+    robot_description_kinematics_yaml = load_file(
         moveit_config_package, path.join("config", "kinematics.yaml")
     )
     robot_description_kinematics = {
@@ -92,7 +91,7 @@ def generate_launch_description() -> LaunchDescription:
     }
     # get joint limits
     joint_limits = {
-        "robot_description_planning": _load_file(
+        "robot_description_planning": load_file(
             moveit_config_package, path.join("config", "joint_limits.yaml")
         )
     }
@@ -101,7 +100,7 @@ def generate_launch_description() -> LaunchDescription:
         "planning_pipelines": ["ompl"],
         "default_planning_pipeline": "ompl",
     }
-    planning_pipeline["ompl"] = _load_file(
+    planning_pipeline["ompl"] = load_file(
         moveit_config_package, path.join("config", "ompl_planning_conf.yaml")
     )
     # deine params for planning scene
@@ -110,10 +109,12 @@ def generate_launch_description() -> LaunchDescription:
         "publish_geometry_updates": True,
         "publish_state_updates": True,
         "publish_transforms_updates": True,
+        "publish_robot_description": True,
+        "publish_robot_description_semantic": True,
     }
 
     # load controller definition for the MoveIt controller manager
-    moveit_controller_manager_yaml = _load_file(
+    moveit_controller_manager_yaml = load_file(
         moveit_config_package, path.join("config", "moveit_controller_manager.yaml")
     )
     moveit_controller_manager = {
@@ -231,48 +232,6 @@ def generate_launch_description() -> LaunchDescription:
         )
 
     return LaunchDescription(declared_arguments + launch_descriptions + nodes)
-
-
-def _load_file(package_name: str, file_path: str) -> IO[str]:
-    """
-    Reads a file and returns its contents.
-    Differentiates between xacro, yaml and other files (xml)
-    based on their suffix.
-
-    Args:
-        package_name (str): the name of the package
-        file_path (str): the filepath of the file to be read
-
-    Returns:
-        Contents of file
-    """
-
-    # create absolute file path
-    package_path = get_package_share_directory(package_name)
-    absolute_file_path = path.join(package_path, file_path)
-    # get file suffix
-    file_type = path.splitext(file_path)[1]
-    try:
-        if file_type == ".xacro":
-            # xacro requires processing
-            return xacro.process_file(absolute_file_path).toprettyxml()
-        # open file
-        with open(absolute_file_path, "r") as file:
-            if file_type == ".yaml":
-                # yaml requires safe load
-                return yaml.safe_load(file)
-            else:
-                # everything else will be returned directly
-                return file.read()
-    except OSError as e:
-        print(
-            "\n\nSomething went wrong reading the file "
-            + absolute_file_path
-            + "\n Error message: "
-            + str(e)
-            + "\n\n"
-        )
-        return None
 
 
 def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
