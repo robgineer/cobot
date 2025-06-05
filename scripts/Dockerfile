@@ -37,6 +37,7 @@ RUN apt-get install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers
 RUN apt-get install -y ros-jazzy-ros-gz ros-jazzy-gz-ros2-control
 # install Moveit2
 RUN apt-get install -y ros-jazzy-moveit
+RUN apt-get install -y ros-jazzy-moveit-visual-tools
 # install joint manipulator
 RUN apt-get install -y ros-jazzy-rqt-joint-trajectory-controller
 
