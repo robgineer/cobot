@@ -23,8 +23,9 @@ colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=
 source install/setup.{bash/zsh}
 ```
 
-### 3. Run MoveIt2 Gazebo example
+### 3. Run MoveIt2 Gazebo examples
 
+#### Adapted MoveIt2 Demo for Cobot
 ```
 export DISPLAY=:100 # or any display number you prefer that is not used
 xpra start :100
@@ -43,9 +44,22 @@ This will open a gazebo / rviz GUI that allows the manipulation of the cobot.
 
 
 To control the joints in gazebo and rviz manually run the ```rqt_joint_trajectory_controller``` in a separate terminal (don't forget to start an xpra session with a different display and connect to it from your client machine)
-
 ```
 ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
+```
+
+#### MoveIt2 Inverse Kinematic
+
+Open second terminal on host machine and run
+```
+ros2 run demo simple_ik
+```
+![](src/demo/vid/champion_simple_ik_gz.gif)
+
+Run same example without Gazebo (fake controllers only)
+
+```
+ros2 launch demo simple_ik_launch.py
 ```
 
 ## Dev. Container
