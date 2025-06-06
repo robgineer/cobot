@@ -40,7 +40,7 @@ ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
 
 ## Limitations
 
-1. Since the model was not yet modelled correctly w.r.t. its physical attributes (mass, inertia, joint limits), it is not yet functioning correctly. We can see that some joints are not properly controlled.
+1. We did not yet define the joint limits properly. This could result in potential collisions with link elements.
 <br/>
 2. In addition, the gripper does seem to have issues as well. This might result from the usage of the *JointTrajectoryController* instead of the *GripperController*
 <br/>
