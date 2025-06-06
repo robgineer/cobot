@@ -45,6 +45,7 @@ ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
 2. In addition, the gripper does seem to have issues as well. This might result from the usage of the *JointTrajectoryController* instead of the *GripperController*
 <br/>
 3. Since we are using *position* controllers, we do not have any information on force and hence no option for the interaction with the real world. Changing to *effort* controllers should fix this.
+   => Using effort controllers implies the presence of proper effort values in the robot model (URDF). These are yet to be identified.
 
 
 
