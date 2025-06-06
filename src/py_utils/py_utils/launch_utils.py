@@ -21,6 +21,8 @@ def load_file(
     Args:
         package_name (str): the name of the package
         file_path (str): the filepath of the file to be read
+        mappings (dict): parameter values to be passed to a xacro file
+                         in form {"param" : "value"}
 
     Returns:
         Contents of file
