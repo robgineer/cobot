@@ -344,7 +344,7 @@
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
         <parent link="TCP" />
         <child link="finger1" />
-        <axis xyz="0 1 0" />
+        <axis xyz="0 -1 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
     </joint>
     <joint name="finger2_joint" type="prismatic">
@@ -353,5 +353,6 @@
         <child link="finger2" />
         <axis xyz="0 1 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
+        <mimic joint="finger1_joint" />
     </joint>
 </robot>
