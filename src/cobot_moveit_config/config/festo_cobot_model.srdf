@@ -22,71 +22,84 @@
     <joint name="joint_6" value="0.0"/>
   </group_state>
 
-    <group name="gripper_group">
-        <link name="TCP"/>
-        <link name="finger1"/>
-        <link name="finger2"/>
-        <joint name="finger1_joint"/>
-        <passive_joint name="finger2_joint"/>
-    </group>
-      <group_state name="open" group="gripper_group">
+  <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
+  <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="base_link"/>
+  <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+  <disable_collisions link1="lin_axis" link2="lin_axis_carriage" reason="Adjacent"/>
+  <disable_collisions link1="lin_axis" link2="segment1" reason="Never"/>
+  <disable_collisions link1="lin_axis" link2="segment2" reason="Never"/>
+  <disable_collisions link1="lin_axis" link2="segment5" reason="Never"/>
+  <disable_collisions link1="lin_axis_carriage" link2="segment1" reason="Adjacent"/>
+  <disable_collisions link1="lin_axis_carriage" link2="segment2" reason="Never"/>
+  <disable_collisions link1="lin_axis_carriage" link2="segment3" reason="Never"/>
+  <disable_collisions link1="lin_axis_carriage" link2="segment4" reason="Never"/>
+  <disable_collisions link1="lin_axis_carriage" link2="segment5" reason="Never"/>
+  <disable_collisions link1="segment1" link2="segment2" reason="Adjacent"/>
+  <disable_collisions link1="segment1" link2="segment3" reason="Never"/>
+  <disable_collisions link1="segment2" link2="segment3" reason="Adjacent"/>
+  <disable_collisions link1="segment2" link2="segment4" reason="Never"/>
+  <disable_collisions link1="segment2" link2="segment5" reason="Never"/>
+  <disable_collisions link1="segment3" link2="segment4" reason="Adjacent"/>
+  <disable_collisions link1="segment3" link2="segment5" reason="Never"/>
+  <disable_collisions link1="segment3" link2="segment6" reason="Never"/>
+  <disable_collisions link1="segment3" link2="segment7" reason="Never"/>
+  <disable_collisions link1="segment4" link2="segment5" reason="Adjacent"/>
+  <disable_collisions link1="segment4" link2="segment6" reason="Never"/>
+  <disable_collisions link1="segment4" link2="segment7" reason="Never"/>
+  <disable_collisions link1="segment5" link2="segment6" reason="Adjacent"/>
+  <disable_collisions link1="segment5" link2="segment7" reason="Never"/>
+  <disable_collisions link1="segment6" link2="segment7" reason="Adjacent"/>
+  <disable_collisions link1="TCP" link2="segment7" reason="Adjacent"/>
+  <disable_collisions link1="TCP" link2="segment6" reason="Never"/>
+  <disable_collisions link1="TCP" link2="segment5" reason="Never"/>
+  <disable_collisions link1="TCP" link2="segment4" reason="Never"/>
+  <disable_collisions link1="TCP" link2="segment3" reason="Never"/>
+  <disable_collisions link1="TCP" link2="segment2" reason="Never"/>
+  <disable_collisions link1="TCP" link2="segment1" reason="Never"/>
+  <disable_collisions link1="TCP" link2="lin_axis" reason="Never"/>
+  <disable_collisions link1="TCP" link2="lin_axis_carriage" reason="Never"/>
+
+  <group name="gripper_group">
+      <!-- <link name="TCP"/> -->
+      <link name="finger1"/>
+      <link name="finger2"/>
+      <joint name="finger1_joint"/>
+      <passive_joint name="finger2_joint"/>
+  </group>
+  <group_state name="open" group="gripper_group">
     <joint name="finger1_joint" value="0.015" />
     <joint name="finger2_joint" value="0.015" />
   </group_state>
   <group_state name="close" group="gripper_group">
-    <joint name="finger1_joint" value="0.0" />
-    <joint name="finger2_joint" value="0.0" />
+    <joint name="finger1_joint" value="-0.015" />
+    <joint name="finger2_joint" value="-0.015" />
   </group_state>
+  <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+  <end_effector name="end_effector_cobot" group="gripper_group" parent_group="arm_group" parent_link="TCP" />
+
+  <disable_collisions link1="finger1" link2="finger2" reason="Adjacent"/>
+  <disable_collisions link1="finger1" link2="lin_axis" reason="Never"/>
+  <disable_collisions link1="finger1" link2="lin_axis_carriage" reason="Never"/>
+  <disable_collisions link1="finger1" link2="segment2" reason="Never"/>
+  <disable_collisions link1="finger1" link2="segment3" reason="Never"/>
+  <disable_collisions link1="finger1" link2="segment4" reason="Never"/>
+  <disable_collisions link1="finger1" link2="segment5" reason="Never"/>
+  <disable_collisions link1="finger1" link2="segment6" reason="Never"/>
+  <disable_collisions link1="finger1" link2="segment7" reason="Adjacent"/>
+  <disable_collisions link1="finger2" link2="lin_axis" reason="Never"/>
+  <disable_collisions link1="finger2" link2="lin_axis_carriage" reason="Never"/>
+  <disable_collisions link1="finger2" link2="segment2" reason="Never"/>
+  <disable_collisions link1="finger2" link2="segment3" reason="Never"/>
+  <disable_collisions link1="finger2" link2="segment4" reason="Never"/>
+  <disable_collisions link1="finger2" link2="segment5" reason="Never"/>
+  <disable_collisions link1="finger2" link2="segment6" reason="Never"/>
+  <disable_collisions link1="finger2" link2="segment7" reason="Adjacent"/>
+  <disable_collisions link1="TCP" link2="finger1" reason="Adjacent"/>
+  <disable_collisions link1="TCP" link2="finger2" reason="Adjacent"/>
 
   <group name="cobot_full">
     <group name="arm_group"/>
     <group name="gripper_group"/>
   </group>
 
-    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-     <end_effector name="end_effector_cobot" group="gripper_group" parent_group="arm_group" parent_link="TCP" />
-    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
-    <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="base_link"/>
-    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
-    <disable_collisions link1="finger1" link2="finger2" reason="Adjacent"/>
-    <disable_collisions link1="finger1" link2="lin_axis" reason="Never"/>
-    <disable_collisions link1="finger1" link2="lin_axis_carriage" reason="Never"/>
-    <disable_collisions link1="finger1" link2="segment2" reason="Never"/>
-    <disable_collisions link1="finger1" link2="segment3" reason="Never"/>
-    <disable_collisions link1="finger1" link2="segment4" reason="Never"/>
-    <disable_collisions link1="finger1" link2="segment5" reason="Never"/>
-    <disable_collisions link1="finger1" link2="segment6" reason="Adjacent"/>
-    <disable_collisions link1="finger1" link2="segment7" reason="Adjacent"/>
-    <disable_collisions link1="finger2" link2="lin_axis" reason="Never"/>
-    <disable_collisions link1="finger2" link2="lin_axis_carriage" reason="Never"/>
-    <disable_collisions link1="finger2" link2="segment2" reason="Never"/>
-    <disable_collisions link1="finger2" link2="segment3" reason="Never"/>
-    <disable_collisions link1="finger2" link2="segment4" reason="Never"/>
-    <disable_collisions link1="finger2" link2="segment5" reason="Never"/>
-    <disable_collisions link1="finger2" link2="segment6" reason="Adjacent"/>
-    <disable_collisions link1="finger2" link2="segment7" reason="Adjacent"/>
-    <disable_collisions link1="lin_axis" link2="lin_axis_carriage" reason="Adjacent"/>
-    <disable_collisions link1="lin_axis" link2="segment1" reason="Never"/>
-    <disable_collisions link1="lin_axis" link2="segment2" reason="Never"/>
-    <disable_collisions link1="lin_axis" link2="segment5" reason="Never"/>
-    <disable_collisions link1="lin_axis_carriage" link2="segment1" reason="Adjacent"/>
-    <disable_collisions link1="lin_axis_carriage" link2="segment2" reason="Never"/>
-    <disable_collisions link1="lin_axis_carriage" link2="segment3" reason="Never"/>
-    <disable_collisions link1="lin_axis_carriage" link2="segment4" reason="Never"/>
-    <disable_collisions link1="lin_axis_carriage" link2="segment5" reason="Never"/>
-    <disable_collisions link1="segment1" link2="segment2" reason="Adjacent"/>
-    <disable_collisions link1="segment1" link2="segment3" reason="Never"/>
-    <disable_collisions link1="segment2" link2="segment3" reason="Adjacent"/>
-    <disable_collisions link1="segment2" link2="segment4" reason="Never"/>
-    <disable_collisions link1="segment2" link2="segment5" reason="Never"/>
-    <disable_collisions link1="segment3" link2="segment4" reason="Adjacent"/>
-    <disable_collisions link1="segment3" link2="segment5" reason="Never"/>
-    <disable_collisions link1="segment3" link2="segment6" reason="Never"/>
-    <disable_collisions link1="segment3" link2="segment7" reason="Never"/>
-    <disable_collisions link1="segment4" link2="segment5" reason="Adjacent"/>
-    <disable_collisions link1="segment4" link2="segment6" reason="Never"/>
-    <disable_collisions link1="segment4" link2="segment7" reason="Never"/>
-    <disable_collisions link1="segment5" link2="segment6" reason="Adjacent"/>
-    <disable_collisions link1="segment5" link2="segment7" reason="Never"/>
-    <disable_collisions link1="segment6" link2="segment7" reason="Adjacent"/>
 </robot>

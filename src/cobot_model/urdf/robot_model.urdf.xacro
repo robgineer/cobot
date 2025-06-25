@@ -203,7 +203,7 @@
         </collision>
         <inertial>
             <mass value="0.2" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.02" />
             <inertia ixx="0.00040667" iyy="0.00030104" izz="0.00059971" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
@@ -220,7 +220,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <cylinder radius="0.0001" length="0.0001" />
+                <cylinder radius="0.00001" length="0.00001" />
             </geometry>
         </collision>
     </link> 
@@ -242,7 +242,7 @@
         </collision>
         <inertial>
             <mass value="0.05" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.03 -0.03" />
             <inertia ixx="3.46666667e-05" iyy="2.64166667e-05" izz="1.78833333e-05" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
@@ -264,7 +264,7 @@
         </collision>
         <inertial>
             <mass value="0.05" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.03 -0.03" />
             <inertia ixx="3.46666667e-05" iyy="2.64166667e-05" izz="1.78833333e-05" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
@@ -323,15 +323,15 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_6" type="revolute">
-        <origin rpy="0.0 -1.570 0.0" xyz="0.26 0.0 -0.041" />
+        <origin rpy="0.0 1.570 0.0" xyz="0.22 0.0 -0.041" />
         <parent link="segment6" />
         <child link="segment7" />
         <axis xyz="0 0 1" />
-        <limit effort="20." velocity="3.141593" lower="-2.356194" upper="2.356194" />
+        <limit effort="20." velocity="3.141593" lower="-3.14" upper="3.14" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="JFix_TCP" type="fixed">
-        <origin rpy="0.0 3.141593 0.0" xyz="0.0 0.0 -0.06" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.01"/>
         <parent link="segment7" />
         <child link="TCP" />
     </joint>
@@ -341,14 +341,14 @@
         <child link="lin_axis" />
     </joint>
     <joint name="finger1_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.1" />
         <parent link="TCP" />
         <child link="finger1" />
         <axis xyz="0 -1 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
     </joint>
     <joint name="finger2_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.1" />
         <parent link="TCP" />
         <child link="finger2" />
         <axis xyz="0 1 0" />
