@@ -113,6 +113,12 @@ def generate_launch_description() -> LaunchDescription:
         "trajectory_execution.allowed_start_tolerance": 0.01,
     }
 
+    # Load  ExecuteTaskSolutionCapability so we can execute found solutions in simulation
+    # required for the MoveIt Task Contructor demo
+    move_group_capabilities = {
+        "capabilities": "move_group/ExecuteTaskSolutionCapability"
+    }
+
     # define list of nodes to be launched
     nodes = [
         # robot_state_publisher
@@ -151,6 +157,7 @@ def generate_launch_description() -> LaunchDescription:
                 planning_scene_monitor_parameters,
                 moveit_controller_manager,
                 {"use_sim_time": use_sim_time},
+                move_group_capabilities,
             ],
         ),
         # rviz2
@@ -207,7 +214,7 @@ def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
             default_value=path.join(
                 get_package_share_directory("demo"),
                 "rviz",
-                "simple_ik.rviz",
+                "demo.rviz",
             ),
             description="Path to configuration for RViz2.",
         ),
