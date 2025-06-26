@@ -29,7 +29,7 @@ install(TARGETS simple_ik
   DESTINATION lib/${PROJECT_NAME})
 
 install(
-  DIRECTORY meshes launch rviz
+  DIRECTORY meshes launch rviz config
   DESTINATION share/${PROJECT_NAME}
 )
 

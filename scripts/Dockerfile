@@ -38,8 +38,15 @@ RUN apt-get install -y ros-jazzy-ros-gz ros-jazzy-gz-ros2-control
 # install Moveit2
 RUN apt-get install -y ros-jazzy-moveit
 RUN apt-get install -y ros-jazzy-moveit-visual-tools
+# install panda config (for reference purposes)
+RUN apt-get install -y ros-jazzy-moveit-resources-panda-moveit-config
 # install joint manipulator
 RUN apt-get install -y ros-jazzy-rqt-joint-trajectory-controller
+#ros-jazzy-moveit-ros-move-group-dbgsym (a nice to have for debugging)
+# required for MoveIt2 Task Constructor
+RUN apt-get install -y ros-jazzy-py-binding-tools
+# colcon utils
+RUN apt-get install -y python3-colcon-clean python3-colcon-mixin
 
 ## install xpra (with latest version) ##
 # ssh server is necessary for xpra
