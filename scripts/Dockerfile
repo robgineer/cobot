@@ -29,7 +29,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 RUN apt-get update && apt-get upgrade -y
 # install ROS2
-RUN apt-get install -y ros-jazzy-desktop python3-colcon-common-extensions python3-rosdep
+RUN apt-get install -y ros-jazzy-desktop python3-colcon-common-extensions python3-colcon-clean python3-colcon-mixin python3-rosdep
 # install ROS2 control
 RUN apt-get update
 RUN apt-get install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers
@@ -40,6 +40,9 @@ RUN apt-get install -y ros-jazzy-moveit
 RUN apt-get install -y ros-jazzy-moveit-visual-tools
 # install joint manipulator
 RUN apt-get install -y ros-jazzy-rqt-joint-trajectory-controller
+#ros-jazzy-moveit-ros-move-group-dbgsym (a nice to have for debugging)
+# required for MoveIt2 Task Constructor
+RUN apt-get install -y ros-jazzy-py-binding-tools
 
 ## install xpra (with latest version) ##
 # ssh server is necessary for xpra
