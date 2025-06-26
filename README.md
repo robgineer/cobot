@@ -9,7 +9,7 @@ Development of imitation learning for articulated robots using a pneumatic cobot
 
 ```
 source /opt/ros/jazzy/setup.{bash/zsh} 
-git clone https://github.com/robgineer/artbot.git .
+git clone --recurse-submodules https://github.com/robgineer/artbot.git .
 cd artbot
 ./scripts/docker_configuration.sh
 ```
@@ -59,8 +59,21 @@ ros2 run demo simple_ik
 Run same example without Gazebo (fake controllers only)
 
 ```
-ros2 launch demo simple_ik_launch.py
+ros2 launch demo rviz_demo_launch.py
 ```
+
+#### Pick and Place with MoveIt Task Constructor
+
+```
+ros2 launch demo rviz_demo_launch.py
+```
+```
+ros2 launch demo pick_place_launch.py
+```
+
+![](src/demo/vid/champion_pick_place.gif)
+
+
 
 ## Dev. Container
 
