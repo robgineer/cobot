@@ -14,7 +14,7 @@ fi
 # create the Ubuntu 22.04 image with required configuration (refer Dockerfile for more information)
 # and add current user to docker container
 echo "============== Build container =============="
-docker build --build-arg USERNAME=${USER} --build-arg USER_ID=${UID} --build-arg GROUP_ID=$(id -r -g $UID) -t artbot_noble_image .
+docker build --build-arg USERNAME=${USER} --build-arg USER_ID=${UID} --build-arg GROUP_ID=$(id -r -g $UID) -t cobot_noble_image .
 echo ""
 
 echo "============== Start container =============="
@@ -35,7 +35,7 @@ docker run -itd \
             --network host \
             --rm \
             --entrypoint /bin/bash \
-            --name artbot_container artbot_noble_image
+            --name cobot_container cobot_noble_image
 echo ""
 
 # rharbach: deactivated (not required for now)
@@ -51,4 +51,4 @@ echo ""
 # TODO @rharbach: commit image in local registry
 
 echo "============== Connect to container =============="
-docker exec -it artbot_container /bin/bash
+docker exec -it cobot_container /bin/bash

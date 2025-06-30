@@ -8,8 +8,8 @@ This package contains a manipulation example for the Cobot using MoveIt2 and Gaz
 
 Clone the repo
 ```
-git clone https://github.com/robgineer/artbot.git .
-cd artbot
+git clone https://github.com/robgineer/cobot.git .
+cd cobot
 ```
 
 Build the repo

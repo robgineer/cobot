@@ -1,4 +1,4 @@
-# Artbot
+# Cobot
 
 Development of imitation learning for articulated robots using a pneumatic cobot (provided by [**Festo SE & Co. KG**](https://www.festo.com/)).
 
@@ -9,8 +9,8 @@ Development of imitation learning for articulated robots using a pneumatic cobot
 
 ```
 source /opt/ros/jazzy/setup.{bash/zsh} 
-git clone --recurse-submodules https://github.com/robgineer/artbot.git .
-cd artbot
+git clone --recurse-submodules https://github.com/robgineer/cobot.git .
+cd cobot
 ./scripts/docker_configuration.sh
 ```
 
@@ -18,7 +18,7 @@ cd artbot
 
 In the docker container:
 ```
-cd ~/artbot
+cd ~/cobot
 colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release"
 source install/setup.{bash/zsh}
 ```
