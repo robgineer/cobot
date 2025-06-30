@@ -47,6 +47,8 @@ RUN apt-get install -y ros-jazzy-rqt-joint-trajectory-controller
 RUN apt-get install -y ros-jazzy-py-binding-tools
 # colcon utils
 RUN apt-get install -y python3-colcon-clean python3-colcon-mixin
+# realsense drivers
+RUN apt-get install -y ros-jazzy-librealsense2*
 
 ## install xpra (with latest version) ##
 # ssh server is necessary for xpra
