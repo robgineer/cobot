@@ -33,6 +33,7 @@ docker run -itd \
             --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket \
             --volume /usr/local/cuda-12.8:/usr/local/cuda-12.8 \
             --network host \
+            --device=/dev/bus/usb:/dev/bus/usb \
             --rm \
             --entrypoint /bin/bash \
             --name cobot_container cobot_noble_image
