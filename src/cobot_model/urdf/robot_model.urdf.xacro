@@ -145,7 +145,7 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment05_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment05_visual_big.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment5_material">
                 <color rgba="1.0 0.929 0.0 1.0" />
@@ -154,20 +154,20 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment05_collision.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment05_collision_big.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="1.1" />
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.071" />
-            <inertia ixx="0.00326077" iyy="0.00326077" izz="0.00277255" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <inertia ixx="0.00623544" iyy="0.00623544" izz="0.00277255" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="segment6">
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment06_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment06_visual_small.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment6_material">
                 <color rgba="1.0 1.0 1.0 1.0" />
@@ -176,37 +176,37 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment06_collision.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment06_collision_small.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="1.5" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.12 0.0 0.0" />
-            <inertia ixx="0.00319363" iyy="0.01012625" izz="0.01115763" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.10 0.0 0.0" />
+            <inertia ixx="0.00319363" iyy="0.00513113" izz="0.0061625" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
-    <link name="segment7">
+      <link name="segment7">
         <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.01 -0.03"/>
             <material name="Aterul">
-                <color rgba="0.0 0.0 0.0 1.0" />
+                <color rgba="0.0 0.0 0.0 1.0"/>
             </material>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment07_visual.stl" scale="0.001 0.001 0.001" />
+            <cylinder radius="0.01" length="0.16"/>
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.05 0.0"/>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment07_collision.stl" scale="0.001 0.001 0.001" />
+            <box size="0.10 0.10 0.15" />
             </geometry>
         </collision>
         <inertial>
-            <mass value="0.2" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.02" />
-            <inertia ixx="0.00040667" iyy="0.00030104" izz="0.00059971" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <mass value="1.5"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+            <inertia ixx="0.0025" ixy="0.0" ixz="0.0" iyy="0.0040625" iyz="0.0" izz="0.0040625"/>
         </inertial>
-    </link>
+  </link>
     <link name="TCP">
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
@@ -295,7 +295,7 @@
         <parent link="segment2" />
         <child link="segment3" />
         <axis xyz="0 0 1" />
-        <limit effort="150.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
+        <limit effort="150.0" velocity="3.141593" lower="-0.9" upper="1.570796" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_3" type="revolute">
@@ -315,7 +315,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_5" type="revolute">
-        <origin rpy="-1.570 -1.570 0.0" xyz="0.0 0.042 0.103" />
+        <origin rpy="-1.570 -1.570 0.0" xyz="0.0 0.042 0.193" />
         <parent link="segment5" />
         <child link="segment6" />
         <axis xyz="0 0 1" />
@@ -323,17 +323,17 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_6" type="revolute">
-        <origin rpy="0.0 1.570 0.0" xyz="0.22 0.0 -0.041" />
-        <parent link="segment6" />
-        <child link="segment7" />
-        <axis xyz="0 0 1" />
-        <limit effort="20." velocity="3.141593" lower="-3.14" upper="3.14" />
-        <dynamics damping="0.0" friction="0.0" />
+        <origin rpy="0.0 1.57 -0.785" xyz="0.2 -0.04 -0.041"/>
+        <parent link="segment6"/>
+        <child link="segment7"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="20." lower="-2.356194" upper="2.356194" velocity="3.141593"/>
+        <dynamics damping="0.0" friction="0.0"/>
     </joint>
     <joint name="JFix_TCP" type="fixed">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.01"/>
-        <parent link="segment7" />
-        <child link="TCP" />
+        <origin rpy="-1.57 1.57 0.0" xyz="0.0 -0.04 0.0"/>
+        <parent link="segment7"/>
+        <child link="TCP"/>
     </joint>
    <joint name="JFix_Base" type="fixed">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
