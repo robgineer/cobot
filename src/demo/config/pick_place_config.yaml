@@ -33,10 +33,10 @@
     table_pose: [0.0, 0.8, 0.0, 0.0, 0.0, 0.0]
 
     # Gripper grasp frame transform [x,y,z,r,p,y]
-    grasp_frame_transform: [0.0, 0.0, 0.1, 1.571, 0.8, 1.571]
+    grasp_frame_transform: [0.0, 0.0, 0.1, 1.571, 0.0, 1.571]
 
     # Place pose [x,y,z,r,p,y]
-    place_pose: [0.1, 0.7, 0.0, 0.0, 0.0, 0.0]
+    place_pose: [0.6, 0.6, 0.0, 0.0, 0.0, 0.0]
     place_surface_offset: 0.0001 # place offset from table
 
     # Valid distance range when approaching an object for picking
@@ -44,5 +44,5 @@
     approach_object_max_dist: 0.15
 
     # Valid height range when lifting an object after pick
-    lift_object_min_dist: 0.01
+    lift_object_min_dist: 0.1
     lift_object_max_dist: 0.5

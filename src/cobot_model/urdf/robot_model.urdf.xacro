@@ -181,30 +181,30 @@
         </collision>
         <inertial>
             <mass value="1.5" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.10 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.05 0.0 0.0" />
             <inertia ixx="0.00319363" iyy="0.00513113" izz="0.0061625" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
       <link name="segment7">
         <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.01 -0.03"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <material name="Aterul">
                 <color rgba="0.0 0.0 0.0 1.0"/>
             </material>
             <geometry>
-            <cylinder radius="0.01" length="0.16"/>
+                <mesh filename="package://cobot_model/meshes/visual/gripper_frame_visual.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.05 0.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <geometry>
-            <box size="0.10 0.10 0.15" />
+                <mesh filename="package://cobot_model/meshes/collision/gripper_frame_collision.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
         <inertial>
-            <mass value="1.5"/>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-            <inertia ixx="0.0025" ixy="0.0" ixz="0.0" iyy="0.0040625" iyz="0.0" izz="0.0040625"/>
+            <mass value="3.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.07"/>
+            <inertia ixx="0.00910541" iyy="0.01309269" izz="0.01268213" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
   </link>
     <link name="TCP">
@@ -218,7 +218,7 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="-0.12 -0.03 0.0"/>
             <geometry>
                 <cylinder radius="0.00001" length="0.00001" />
             </geometry>
@@ -226,45 +226,45 @@
     </link> 
     <link name="finger1">
         <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+           <origin rpy="0.0 0.0 0.0" xyz="0.0 0.01 -0.08"/>
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/finger01_visual.stl" scale="0.000001 0.000001 0.000001" />
+                <mesh filename="package://cobot_model/meshes/visual/finger01_real_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.01 -0.08"/>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/finger01_collision.stl" scale="0.000001 0.000001 0.000001" />
+                <mesh filename="package://cobot_model/meshes/collision/finger01_real_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="0.05" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.03 -0.03" />
+            <origin rpy="-0.785 0.0 0.0" xyz="0.02 0.03 0.03" />
             <inertia ixx="3.46666667e-05" iyy="2.64166667e-05" izz="1.78833333e-05" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
     <link name="finger2">
         <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.01 -0.08"/>
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/finger02_visual.stl" scale="0.000001 0.000001 0.000001" />
+                <mesh filename="package://cobot_model/meshes/visual/finger02_real_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.01 -0.08"/>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/finger02_collision.stl" scale="0.000001 0.000001 0.000001" />
+                <mesh filename="package://cobot_model/meshes/collision/finger02_real_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
             <mass value="0.05" />
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.03 -0.03" />
+            <origin rpy="-0.785 0.0 0.0" xyz="-0.02 0.03 0.03" />
             <inertia ixx="3.46666667e-05" iyy="2.64166667e-05" izz="1.78833333e-05" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
@@ -323,7 +323,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_6" type="revolute">
-        <origin rpy="0.0 1.57 -0.785" xyz="0.2 -0.04 -0.041"/>
+        <origin rpy="0.0 1.57 0.0" xyz="0.14 0.0 -0.04"/>
         <parent link="segment6"/>
         <child link="segment7"/>
         <axis xyz="0 0 1"/>
@@ -331,7 +331,7 @@
         <dynamics damping="0.0" friction="0.0"/>
     </joint>
     <joint name="JFix_TCP" type="fixed">
-        <origin rpy="-1.57 1.57 0.0" xyz="0.0 -0.04 0.0"/>
+        <origin rpy="-0.785 0.0 0.0" xyz="0.0 -0.01 0.08"/>
         <parent link="segment7"/>
         <child link="TCP"/>
     </joint>
@@ -341,17 +341,17 @@
         <child link="lin_axis" />
     </joint>
     <joint name="finger1_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.1" />
+        <origin rpy="0.785 0.0 0.0" xyz="0.0 0.0 0.0" />
         <parent link="TCP" />
         <child link="finger1" />
-        <axis xyz="0 -1 0" />
+        <axis xyz="-1 0 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
     </joint>
     <joint name="finger2_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.1" />
+        <origin rpy="0.785 0.0 0.0" xyz="0.0 0.0 0.0" />
         <parent link="TCP" />
         <child link="finger2" />
-        <axis xyz="0 1 0" />
+        <axis xyz="1 0 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
         <mimic joint="finger1_joint" />
     </joint>
