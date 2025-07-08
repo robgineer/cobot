@@ -23,6 +23,8 @@ colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=
 source install/setup.{bash/zsh}
 ```
 
+**Note** if you are not connected to the HS-Esslingen VPN, the ```cobot_hardware``` submodule will not be cloned and you will not be able to control the cobot via ROS2. The the hardware submodule, however, is not relevant for the demos.
+
 ### 3. Run MoveIt2 Gazebo examples
 
 #### Adapted MoveIt2 Demo for Cobot
