@@ -6,3 +6,6 @@
 	path = src/realsense-ros
 	url = https://github.com/IntelRealSense/realsense-ros.git
 	branch = ros2-master
+[submodule "src/cobot_hardware"]
+	path = src/cobot_hardware
+	url = https://gitlab.hs-esslingen.de/rharbach/cobot_hardware.git
