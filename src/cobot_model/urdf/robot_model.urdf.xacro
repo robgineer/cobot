@@ -189,22 +189,22 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <material name="Aterul">
-                <color rgba="0.0 0.0 0.0 1.0"/>
+                <color rgba="1.0 1.0 1.0 1.0"/>
             </material>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/gripper_frame_visual.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="package://cobot_model/meshes/visual/segment07_real_visual.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </visual>
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/gripper_frame_collision.stl" scale="0.001 0.001 0.001"/>
+                <mesh filename="package://cobot_model/meshes/collision/segment07_real_collision.stl" scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
         <inertial>
-            <mass value="3.0"/>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.07"/>
-            <inertia ixx="0.00910541" iyy="0.01309269" izz="0.01268213" ixy="0.0" ixz="0.0" iyz="0.0" />
+            <mass value="4.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.09 0.04"/>
+           <inertia ixx="0.02693367" iyy="0.01533367" izz="0.02185067" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
   </link>
     <link name="TCP">
@@ -226,7 +226,7 @@
     </link> 
     <link name="finger1">
         <visual>
-           <origin rpy="0.0 0.0 0.0" xyz="0.0 0.01 -0.08"/>
+           <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
@@ -235,7 +235,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.01 -0.08"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
             <geometry>
                 <mesh filename="package://cobot_model/meshes/collision/finger01_real_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
@@ -248,7 +248,7 @@
     </link>
     <link name="finger2">
         <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.01 -0.08"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
@@ -257,7 +257,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.01 -0.08"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
             <geometry>
                 <mesh filename="package://cobot_model/meshes/collision/finger02_real_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
@@ -323,7 +323,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_6" type="revolute">
-        <origin rpy="0.0 1.57 0.0" xyz="0.14 0.0 -0.04"/>
+        <origin rpy="0.0 1.57 0.0" xyz="0.156 0.0 -0.04"/>
         <parent link="segment6"/>
         <child link="segment7"/>
         <axis xyz="0 0 1"/>
@@ -331,7 +331,7 @@
         <dynamics damping="0.0" friction="0.0"/>
     </joint>
     <joint name="JFix_TCP" type="fixed">
-        <origin rpy="-0.785 0.0 0.0" xyz="0.0 -0.01 0.08"/>
+        <origin rpy="-0.785 0.0 0.0" xyz="0.0 -0.08 0.06"/>
         <parent link="segment7"/>
         <child link="TCP"/>
     </joint>
