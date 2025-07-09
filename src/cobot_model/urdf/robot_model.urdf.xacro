@@ -145,7 +145,7 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment05_visual_big.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment05_power_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment5_material">
                 <color rgba="1.0 0.929 0.0 1.0" />
@@ -154,7 +154,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment05_collision_big.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment05_power_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -167,7 +167,7 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment06_visual_small.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment06_power_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment6_material">
                 <color rgba="1.0 1.0 1.0 1.0" />
@@ -176,7 +176,7 @@
         <collision>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment06_collision_small.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/segment06_power_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -307,7 +307,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_4" type="revolute">
-        <origin rpy="-1.5708 0.0 -1.5708" xyz="0.024 0.0 -0.168" />
+        <origin rpy="-1.5708 0.0 -1.5708" xyz="0.062 0.0 -0.168"/>
         <parent link="segment4" />
         <child link="segment5" />
         <axis xyz="0 0 1" />
