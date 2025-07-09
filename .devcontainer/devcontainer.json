@@ -1,0 +1,39 @@
+{
+    "name": "Ubuntu 24.04 with VNC",
+    "dockerFile": "Dockerfile",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash"
+            }
+        }
+    },
+    "appPort": [
+        "6080:80"
+    ],
+    //"forwardPorts": [
+    //    5901, // VNC port
+    //    6080 // noVNC port
+    //],
+    //"portsAttributes": {
+    //    "5901": {
+    //        "label": "VNC",
+    //        "onAutoForward": "openPreview"
+    //    },
+    //    "6080": {
+    //        "label": "noVNC",
+    //        "onAutoForward": "openPreview"
+    //    }
+    //},
+    "remoteUser": "ubuntu",
+    "overrideCommand": false,
+    "runArgs": [
+        //"-p 6080:80",
+        "--shm-size=512m",
+        "--init",
+        "--security-opt",
+        "seccomp=unconfined"
+    ]
+}
