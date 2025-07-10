@@ -18,24 +18,45 @@ from typing import List
 from py_utils.launch_utils import load_file
 
 from launch.actions import (
+    OpaqueFunction,
     DeclareLaunchArgument,
-    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+)
+from launch.substitutions import (
+    LaunchConfiguration,
+    PythonExpression,
+    PathJoinSubstitution,
 )
 
 from launch_ros.actions import Node
 from launch import LaunchDescription
-from launch.substitutions import LaunchConfiguration
+from launch.conditions import IfCondition
+from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description() -> LaunchDescription:
     """Creates the launch description for the Moveit2 / Gazebo example."""
+
     # declare all launch arguments
     declared_arguments = _generate_declared_arguments()
+    # run _setup_nodes as opaque function that hands over the context
+    # this is required in order to substitute launch arguments directly
+    return LaunchDescription(
+        declared_arguments + [OpaqueFunction(function=_setup_nodes)]
+    )
+
+
+def _setup_nodes(context, *args, **kwargs):
+    """Set up nodes to be launched."""
 
     rviz_config = LaunchConfiguration("rviz_config")
     use_sim_time = LaunchConfiguration("use_sim_time")
     log_level = LaunchConfiguration("log_level")
+    enable_realsense_camera = LaunchConfiguration("enable_realsense_camera").perform(
+        context
+    )
 
     # define package with configuration
     moveit_config_package = "cobot_moveit_config"
@@ -44,7 +65,10 @@ def generate_launch_description() -> LaunchDescription:
     robot_description_as_string = load_file(
         "cobot_model",
         path.join("urdf", "festo_cobot_model.urdf.xacro"),
-        mappings={"ros2_controls_plugin": "fake"},
+        mappings={
+            "ros2_controls_plugin": "fake",
+            "enable_realsense_camera": enable_realsense_camera,
+        },
     )
     robot_description = {"robot_description": robot_description_as_string}
 
@@ -197,7 +221,36 @@ def generate_launch_description() -> LaunchDescription:
             ),
         )
 
-    return LaunchDescription(declared_arguments + nodes)
+    # add external lauch-files
+    nodes.append(
+        # include realsense node if required
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution(
+                    [
+                        FindPackageShare("realsense2_camera"),
+                        "launch",
+                        "rs_launch.py",
+                    ]
+                )
+            ),
+            condition=(
+                IfCondition(
+                    PythonExpression(
+                        [
+                            "'",
+                            enable_realsense_camera,
+                            "'",
+                            " == ",
+                            "'true'",
+                        ]
+                    )
+                )
+            ),
+        ),
+    )
+
+    return nodes
 
 
 def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
@@ -227,5 +280,10 @@ def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
             "log_level",
             default_value="warn",
             description="The level of logging that is applied to all ROS 2 nodes launched by this script.",
+        ),
+        DeclareLaunchArgument(
+            "enable_realsense_camera",
+            default_value="false",
+            description="Activate RealSense Node.",
         ),
     ]

@@ -4,4 +4,18 @@
   <xacro:include filename="$(find cobot_model)/urdf/robot_model.urdf.xacro"/>
   <xacro:include filename="$(find cobot_model)/urdf/gz_ros_controls.urdf.xacro"/>
 
+  <xacro:arg name="enable_realsense_camera" default="false" />
+
+  <xacro:if value="${'$(arg enable_realsense_camera)' == 'true'}">
+    <xacro:arg name="use_nominal_extrinsics" default="true"/>
+    <xacro:arg name="add_plug" default="true" />
+    <xacro:arg name="use_mesh" default="true" />
+
+    <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+
+    <xacro:sensor_d435 parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
+      <origin xyz="-0.4 0.0 1.2" rpy="0.0 0.0 1.57"/>
+    </xacro:sensor_d435>
+  </xacro:if>
+
 </robot>
