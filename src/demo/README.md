@@ -37,3 +37,11 @@ ros2 launch demo pick_place_launch.py
 ```
 
 ![](vid/esslingen_pick_place.gif)
+
+## Launch Cobot in rviz with RealSense camera
+
+```
+ros2 launch demo rviz_demo_launch.py enable_realsense_camera:=true
+```
+
+![](img/realsense_setup.png)
