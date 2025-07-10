@@ -71,7 +71,7 @@ ros2 launch demo rviz_demo_launch.py
 ros2 launch demo pick_place_launch.py
 ```
 
-![](src/demo/vid/champion_pick_place.gif)
+![](src/demo/vid/esslingen_pick_place.gif)
 
 
 
