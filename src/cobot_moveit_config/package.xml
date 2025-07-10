@@ -5,7 +5,7 @@
   <version>0.0.1</version>
   <description>
      A partially auto-generated package (MoveIt2 setup assistant) with all the configuration
-     and launch files for the usage of the cobot_zebra robot model with the MoveIt Motion Planning Framework.
+     and launch files for the usage of the cobot robot model with the MoveIt Motion Planning Framework.
   </description>
   <maintainer email="Robert.Harbach@hs-esslingen.de">Robert Harbach</maintainer>
   <maintainer email="robgineer@gmail.com">Robert Harbach</maintainer>

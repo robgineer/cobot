@@ -12,7 +12,7 @@
     # Poses
     hand_open_pose: "open"
     hand_close_pose: "close"
-    arm_home_pose: "ready"
+    arm_home_pose: "balancer_mode"
 
     # Scene frames
     world_frame: "world"

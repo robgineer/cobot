@@ -57,7 +57,7 @@
         <visual>
              <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment01_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment_01_logo.dae" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment1_material">
                 <color rgba="0.89 0.133 0.098 1.0" />
@@ -82,7 +82,7 @@
                 <mesh filename="package://cobot_model/meshes/visual/segment02_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment2_material">
-                <color rgba="1.0 1.0 1.0 1.0" />
+                <color rgba="0 0.6 1.0 1.0" />
             </material>
         </visual>
         <collision>
@@ -104,7 +104,7 @@
                 <mesh filename="package://cobot_model/meshes/visual/segment03_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment3_material">
-                <color rgba="0.89 0.133 0.098 1.0" />
+               <color rgba="0.835 0.059 0.235 1.0" />
             </material>
         </visual>
         <collision>
@@ -126,7 +126,7 @@
                 <mesh filename="package://cobot_model/meshes/visual/segment04_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment4_material">
-                <color rgba="0.89 0.133 0.098 1.0" />
+                <color rgba="0.004 0.176 0.353 1.0" />
             </material>
         </visual>
         <collision>
@@ -148,7 +148,7 @@
                 <mesh filename="package://cobot_model/meshes/visual/segment05_power_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment5_material">
-                <color rgba="1.0 0.929 0.0 1.0" />
+                <color rgba="0 0.6 1.0 1.0" />
             </material>
         </visual>
         <collision>
@@ -170,7 +170,7 @@
                 <mesh filename="package://cobot_model/meshes/visual/segment06_power_visual.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="segment6_material">
-                <color rgba="1.0 1.0 1.0 1.0" />
+                <color rgba="0.835 0.059 0.235 1.0" />
             </material>
         </visual>
         <collision>
@@ -275,7 +275,7 @@
         <parent link="lin_axis" />
         <child link="lin_axis_carriage" />
         <axis xyz="0 0 1" />
-        <limit effort="300.0" velocity="3.141593" lower="-.35" upper=".55" />
+        <limit effort="300.0" velocity="3.141593" lower="-.29" upper=".55" />
     </joint>
     <joint name="mount_fixture" type="fixed">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.3 0.3" />
@@ -295,7 +295,7 @@
         <parent link="segment2" />
         <child link="segment3" />
         <axis xyz="0 0 1" />
-        <limit effort="150.0" velocity="3.141593" lower="-0.9" upper="1.570796" />
+        <limit effort="150.0" velocity="3.141593" lower="-0.9" upper="2.35" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_3" type="revolute">
@@ -303,7 +303,7 @@
         <parent link="segment3" />
         <child link="segment4" />
         <axis xyz="0 0 1" />
-        <limit effort="100.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
+        <limit effort="100.0" velocity="3.141593" lower="-2.35" upper="1.570796" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_4" type="revolute">
@@ -327,7 +327,7 @@
         <parent link="segment6"/>
         <child link="segment7"/>
         <axis xyz="0 0 1"/>
-        <limit effort="20." lower="-2.356194" upper="2.356194" velocity="3.141593"/>
+        <limit effort="20." lower="-3.1" upper="3.1" velocity="3.141593"/>
         <dynamics damping="0.0" friction="0.0"/>
     </joint>
     <joint name="JFix_TCP" type="fixed">

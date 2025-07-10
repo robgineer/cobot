@@ -36,4 +36,4 @@ Run the demo (in a separate terminal)
 ros2 launch demo pick_place_launch.py
 ```
 
-![](vid/champion_pick_place.gif)
+![](vid/esslingen_pick_place.gif)
