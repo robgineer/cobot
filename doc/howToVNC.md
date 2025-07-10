@@ -36,14 +36,14 @@ On your host machine, open ``http://127.0.0.1:6080`` in a browser. This should o
 
 You may also open the ubuntu desktop within Visual Studio Code. Just open the "Ports" tab and use the preview icon:
 
-![](doc/ports.png)
+![](img/ports.png)
 
 As a test, open a terminal in VS Code and start xeyes on the Ubuntu Desktop:
 ```
 ubuntu@ros2-vnc-docker:/workspace$ export DISPLAY=:1
 ubuntu@ros2-vnc-docker:/workspace$ xeyes
 ```
-![](doc/xeyes.png)
+![](img/xeyes.png)
 
 
 ## Build and run the project
@@ -63,6 +63,6 @@ ubuntu@ros2-vnc-docker:/workspace$ ros2 launch cobot_moveit_config gz_demo_launc
 ```
 
 This should look similar to this:
-![](doc/vnc_example.png)
+![](img/vnc_example.png)
 
 Done!
