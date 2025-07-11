@@ -21,15 +21,17 @@ In its original form, the model does not contain any physics related information
 ![Original Cobot Model](img/festo_cobot_original.png)
 
 
-### Current Cobot Model: Champion
+### Current Cobot Model: Esslingen
 
-**The color scheme serves as a tribute to VfB Stuttgart’s victory in the DFB-Pokal (German Cup) of 2025**
+**The color scheme is a tribute to Festo SE & Co. KG, the sponsor of the Cobot, as well as to the Esslingen University, the sponsor of this project.**
 
 Adjustments made:
 * added world link
 * added functional gripper
+* added correct end effector model
 * combined links (the original version contained several smaller links that made inertia calculations tricky)
-* added collision meshes
+* re-modelled several links w.r.t. their dimensions
+* added collision meshes (with reduced faces)
 * added realistic physical attributes for simulation (inertia and mass)
 * cleaned up numerical values
 * adjusted XML formatting
@@ -37,5 +39,5 @@ Adjustments made:
 
 The entire re-modelling (incl. all calculations) is documented in ```doc/cobot_modelling.ipynb```.
 
-![Latest Cobot Model](img/festo_cobot_champion.png)
+![Latest Cobot Model](img/festo_cobot_esslingen.png)
 
