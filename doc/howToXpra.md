@@ -40,7 +40,7 @@ If building the docker container fails due to the following error:
 0.276 groupadd: GID '1000' already exists
 ```
 
-then you are probably running on host that has only one user (your user) and the user id is the same as the `ubuntu` user (uid=1000) created within the docker build. Unfortunately we could not find elegant solutions for this issue. Some options are creating a different user (`uid!=1000`) and re-running the `docker_configuration` script or deleting the `ubuntu` user within the dockerfile. As mentioned above, it is absolutely necessary to port your current user into the docker container (otherwise xpra authentications will fail). If you cannot create a new user on your machine, kindly check out the [VCP option](howToVCN.md).
+then you are probably running on a host that has only one user (your user) and the user id is the same as the `ubuntu` user (uid=1000) created within the docker build. Unfortunately we could not find elegant solutions for this issue. Some options are creating a different user (`uid!=1000`) and re-running the `docker_configuration` script or deleting the `ubuntu` user within the dockerfile. As mentioned above, it is absolutely necessary to port your current user into the docker container (otherwise xpra authentications will fail). If you cannot create a new user on your machine, kindly check out the [VNC option](howToVNC.md).
 
 ## 3. Run X11 sessions from your terminal
 
