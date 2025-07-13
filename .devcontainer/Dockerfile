@@ -52,7 +52,9 @@ ARG USERNAME=*IAmNotAUser*
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 
-RUN if [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
+RUN if [[ -v GITHUB_ACTIONS ]] ; then \
+    echo "Running in GitHub Actions, skipping user creation." ; \
+elif [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
     # create the user
     groupadd --gid $GROUP_ID $USERNAME && \
     useradd --uid $USER_ID --gid $GROUP_ID -m $USERNAME && \

@@ -13,24 +13,9 @@
     "appPort": [
         "6080:80"
     ],
-    //"forwardPorts": [
-    //    5901, // VNC port
-    //    6080 // noVNC port
-    //],
-    //"portsAttributes": {
-    //    "5901": {
-    //        "label": "VNC",
-    //        "onAutoForward": "openPreview"
-    //    },
-    //    "6080": {
-    //        "label": "noVNC",
-    //        "onAutoForward": "openPreview"
-    //    }
-    //},
     "remoteUser": "ubuntu",
     "overrideCommand": false,
     "runArgs": [
-        //"-p 6080:80",
         "--hostname=ros2-vnc-docker",
         "--shm-size=512m",
         "--init",
