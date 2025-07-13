@@ -35,7 +35,7 @@
         <visual>
              <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/carriage_visual.dae" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/carriage_real_visual.dae" scale="0.001 0.001 0.001" />
                 <material name="silver">
                     <color rgba="1.0 1.0 1.0 1.0" />
                 </material>
@@ -44,7 +44,7 @@
         <collision>
              <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/carriage_collision.dae" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/collision/carriage_real_collision.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <inertial>
@@ -271,14 +271,14 @@
 
     <!-- Joints -->
     <joint name="joint_0" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.3" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
         <parent link="lin_axis" />
         <child link="lin_axis_carriage" />
         <axis xyz="0 0 1" />
-        <limit effort="300.0" velocity="3.141593" lower="-.29" upper=".55" />
+        <limit effort="300.0" velocity="3.141593" lower="0.0" upper="0.894" />
     </joint>
     <joint name="mount_fixture" type="fixed">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.3 0.3" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.37 0.52" />
         <parent link="lin_axis_carriage" />
         <child link="segment1" />
     </joint>
