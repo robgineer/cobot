@@ -14,12 +14,12 @@
     </group>
     <group_state group="arm_group" name="balancer_mode">
     <joint name="joint_0" value="0.155"/>
-    <joint name="joint_1" value="1.57"/>
-    <joint name="joint_2" value="2.18"/>
-    <joint name="joint_3" value="-2.3"/>
-    <joint name="joint_4" value="-1.57"/>
-    <joint name="joint_5" value="1.57"/>
-    <joint name="joint_6" value="3.1"/>
+    <joint name="joint_1" value="-1.57"/>
+    <joint name="joint_2" value="0.610865"/>
+    <joint name="joint_3" value="-0.785398"/>
+    <joint name="joint_4" value="1.57"/>
+    <joint name="joint_5" value="-1.57"/>
+    <joint name="joint_6" value="-0.2"/>
   </group_state>
 
   <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->

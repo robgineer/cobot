@@ -283,27 +283,27 @@
         <child link="segment1" />
     </joint>
     <joint name="joint_1" type="revolute">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+        <origin rpy="0.0 0.0 -3.14" xyz="0.0 0.0 0.0" />
         <parent link="segment1" />
         <child link="segment2" />
         <axis xyz="0 0 1" />
-        <limit effort="200.0" velocity="3.141593" lower="-0.7853976732051033" upper="3.9269903267948965" />
+        <limit effort="200.0" velocity="3.141593" lower="-2.37365" upper="2.37365" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_2" type="revolute">
-        <origin rpy="1.5708 0.0 0.0" xyz="0.0 -0.111 0.118" />
+        <origin rpy="1.5708 -1.5708 0.0" xyz="0.0 -0.111 0.118" />
         <parent link="segment2" />
         <child link="segment3" />
         <axis xyz="0 0 1" />
-        <limit effort="150.0" velocity="3.141593" lower="-0.9" upper="2.35" />
+        <limit effort="150.0" velocity="3.141593" lower="-2.26893" upper="0.785398" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_3" type="revolute">
-        <origin rpy="0.0 0.0 0.0" xyz="0.254 0.0 0.06" />
+        <origin rpy="0.0 0.0 -1.57" xyz="0.254 0.0 0.06" />
         <parent link="segment3" />
         <child link="segment4" />
         <axis xyz="0 0 1" />
-        <limit effort="100.0" velocity="3.141593" lower="-2.35" upper="1.570796" />
+        <limit effort="100.0" velocity="3.141593" lower="-0.785398" upper="2.26893" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_4" type="revolute">
@@ -315,7 +315,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_5" type="revolute">
-        <origin rpy="-1.570 -1.570 0.0" xyz="0.0 0.042 0.193" />
+        <origin rpy="-1.570 -1.570 0.0" xyz="0.0 0.042 0.183" />
         <parent link="segment5" />
         <child link="segment6" />
         <axis xyz="0 0 1" />
@@ -327,7 +327,7 @@
         <parent link="segment6"/>
         <child link="segment7"/>
         <axis xyz="0 0 1"/>
-        <limit effort="20." lower="-3.1" upper="3.1" velocity="3.141593"/>
+        <limit effort="20." lower="-2.37365" upper="2.37365" velocity="3.141593"/>
         <dynamics damping="0.0" friction="0.0"/>
     </joint>
     <joint name="JFix_TCP" type="fixed">
