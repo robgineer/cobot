@@ -11,27 +11,24 @@ if [ ! -e "Dockerfile" ]; then
     exit
 fi
 
-# create the Ubuntu 22.04 image with required configuration (refer Dockerfile for more information)
+# create the Ubuntu 24.04 image with required configuration (refer Dockerfile for more information)
 # and add current user to docker container
 echo "============== Build container =============="
-docker build --build-arg USERNAME=${USER} --build-arg USER_ID=${UID} --build-arg GROUP_ID=$(id -r -g $UID) -t cobot_noble_image .
+docker build --build-arg USERNAME=${USER} --build-arg USER_ID=${UID} --build-arg GROUP_ID=$(id -r -g $UID) -t cobot_noble_image ../.devcontainer
 echo ""
 
 echo "============== Start container =============="
 # Create instance of built image 
 # bind local home directory to docker container (careful: you have write access to your host home directory),
-# run as current user (with correspinding user id and group id) 
+# run as current user (with corresponding user id and group id)
 # takeover X11 and password configs => this way we take over the username / passwords from the host machine
 # use GPU drivers of host
 docker run -itd \
             --privileged \
-            --runtime=nvidia --gpus all \
             --mount type=bind,src=/home/${USER},dst=/home/${USER} \
             --user=${UID}:${GID} -w /home/${USER} \
-            --volume /tmp/.X11-unix:/tmp/.X11-unix \
             --volume /etc/shadow:/etc/shadow \
             --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket \
-            --volume /usr/local/cuda-12.8:/usr/local/cuda-12.8 \
             --network host \
             --device=/dev/bus/usb:/dev/bus/usb \
             --rm \

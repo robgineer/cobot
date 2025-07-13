@@ -1,6 +1,12 @@
 # Environment Setup
 
-Docker boilerplate installation.
+The entire development environment is based on an Ubuntu 24.04 docker container.
+This allows to migrate fast between host systems. In order to build the development environment, run the following scripts:
+
+1. ```scripts/pre-installation.sh```: to run in case you are using a remote cloud server (such as AWS EC2) that requires the creation of a new user
+2. ```scripts/docker_installation.sh```: to install docker on host system and to add current user to docker group (this script is obsolete on most cloud severs)
+3. ```scripts/docker_configuration.sh```: to build and start the docker image that contains the development environment
+
 
 ## ```docker_installation.sh```
 Installs docker and enables non-sudo usage of docker (requires sudo rights for execution).
@@ -13,12 +19,12 @@ This script eases up migration between cloud servers (as AWS EC2 instances) by i
 4. Configures GitHub access (optional)
 5. Adds user to docker group (optional)
 
-## Dockerfile
-The Dockerfile contains the necessary configuration / package installations for the development environment. Summary:
-1. uses Ubuntu 24.04 (noble)
-2. installs useful utilities as vim, zimfw, openssh, xpra, etc.
-3. creates initial user (user executing script) within the docker container
-4. enables activation of sudo user without a password
-
 ## ```docker_configuration.sh```
-Builds the docker image, creates the docker cointainer with required X11 configs / GPU usage and a local docker repo (registry).
+
+1. Builds the docker container and creates a user with the same username, user id and the group id as the user executing the script. This means your current user will be present in the docker container.
+2. Mounts your home directory, exposes `/etc/shadows` (for authentication), `/run/dbus/system_bus_socket` (for xpra communication) and the usb ports.
+
+The container within the same network as the host and in `--priviledged` mode (required for USB access).<br/>
+
+Porting the current user to the docker container is unfortunately essential to enable a seamless xpra integration. Using this setup, you will be able to authenticate in your xpra session with the same user and password as on your host.
+
