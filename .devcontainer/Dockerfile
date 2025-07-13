@@ -52,7 +52,7 @@ ARG USERNAME=*IAmNotAUser*
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 
-RUN if [[ -v GITHUB_ACTIONS ]] ; then \
+RUN if [ "$USERNAME" == "runner" ] ; then \
     echo "Running in GitHub Actions, skipping user creation." ; \
 elif [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
     # create the user
