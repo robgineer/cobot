@@ -275,7 +275,7 @@
         <parent link="lin_axis" />
         <child link="lin_axis_carriage" />
         <axis xyz="0 0 1" />
-        <limit effort="300.0" velocity="3.141593" lower="0.0" upper="0.894" />
+        <limit effort="300.0" velocity="3.141593" lower="-0.0001" upper="0.894" />
     </joint>
     <joint name="mount_fixture" type="fixed">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.37 0.52" />
