@@ -28,36 +28,40 @@
   <disable_collisions link1="lin_axis" link2="lin_axis_carriage" reason="Adjacent"/>
   <disable_collisions link1="lin_axis" link2="segment1" reason="Never"/>
   <disable_collisions link1="lin_axis" link2="segment2" reason="Never"/>
-  <disable_collisions link1="lin_axis" link2="segment5" reason="Never"/>
+  <disable_collisions link1="lin_axis" link2="segment3" reason="Never"/>
+  <disable_collisions link1="lin_axis" link2="segment4" reason="Never"/>
+
   <disable_collisions link1="lin_axis_carriage" link2="segment1" reason="Adjacent"/>
   <disable_collisions link1="lin_axis_carriage" link2="segment2" reason="Never"/>
   <disable_collisions link1="lin_axis_carriage" link2="segment3" reason="Never"/>
   <disable_collisions link1="lin_axis_carriage" link2="segment4" reason="Never"/>
-  <disable_collisions link1="lin_axis_carriage" link2="segment5" reason="Never"/>
+
   <disable_collisions link1="segment1" link2="segment2" reason="Adjacent"/>
   <disable_collisions link1="segment1" link2="segment3" reason="Never"/>
+
   <disable_collisions link1="segment2" link2="segment3" reason="Adjacent"/>
   <disable_collisions link1="segment2" link2="segment4" reason="Never"/>
   <disable_collisions link1="segment2" link2="segment5" reason="Never"/>
+
   <disable_collisions link1="segment3" link2="segment4" reason="Adjacent"/>
   <disable_collisions link1="segment3" link2="segment5" reason="Never"/>
   <disable_collisions link1="segment3" link2="segment6" reason="Never"/>
   <disable_collisions link1="segment3" link2="segment7" reason="Never"/>
+
   <disable_collisions link1="segment4" link2="segment5" reason="Adjacent"/>
   <disable_collisions link1="segment4" link2="segment6" reason="Never"/>
   <disable_collisions link1="segment4" link2="segment7" reason="Never"/>
+  
   <disable_collisions link1="segment5" link2="segment6" reason="Adjacent"/>
   <disable_collisions link1="segment5" link2="segment7" reason="Never"/>
   <disable_collisions link1="segment6" link2="segment7" reason="Adjacent"/>
+  
   <disable_collisions link1="TCP" link2="segment7" reason="Adjacent"/>
   <disable_collisions link1="TCP" link2="segment6" reason="Never"/>
   <disable_collisions link1="TCP" link2="segment5" reason="Never"/>
   <disable_collisions link1="TCP" link2="segment4" reason="Never"/>
   <disable_collisions link1="TCP" link2="segment3" reason="Never"/>
   <disable_collisions link1="TCP" link2="segment2" reason="Never"/>
-  <disable_collisions link1="TCP" link2="segment1" reason="Never"/>
-  <disable_collisions link1="TCP" link2="lin_axis" reason="Never"/>
-  <disable_collisions link1="TCP" link2="lin_axis_carriage" reason="Never"/>
 
   <group name="gripper_group">
       <!-- <link name="TCP"/> -->
@@ -71,31 +75,29 @@
     <joint name="finger2_joint" value="0.015" />
   </group_state>
   <group_state name="close" group="gripper_group">
-    <joint name="finger1_joint" value="-0.01" />
-    <joint name="finger2_joint" value="-0.01" />
+    <joint name="finger1_joint" value="-0.008" />
+    <joint name="finger2_joint" value="-0.008" />
   </group_state>
   <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
   <end_effector name="end_effector_cobot" group="gripper_group" parent_group="arm_group" parent_link="TCP" />
 
+  <disable_collisions link1="finger1" link2="TCP" reason="Adjacent"/>
   <disable_collisions link1="finger1" link2="finger2" reason="Adjacent"/>
-  <disable_collisions link1="finger1" link2="lin_axis" reason="Never"/>
-  <disable_collisions link1="finger1" link2="lin_axis_carriage" reason="Never"/>
+  <disable_collisions link1="finger1" link2="segment7" reason="Adjacent"/>
   <disable_collisions link1="finger1" link2="segment2" reason="Never"/>
   <disable_collisions link1="finger1" link2="segment3" reason="Never"/>
   <disable_collisions link1="finger1" link2="segment4" reason="Never"/>
   <disable_collisions link1="finger1" link2="segment5" reason="Never"/>
   <disable_collisions link1="finger1" link2="segment6" reason="Never"/>
-  <disable_collisions link1="finger1" link2="segment7" reason="Adjacent"/>
-  <disable_collisions link1="finger2" link2="lin_axis" reason="Never"/>
-  <disable_collisions link1="finger2" link2="lin_axis_carriage" reason="Never"/>
+
+  <disable_collisions link1="finger2" link2="TCP" reason="Adjacent"/>
+  <disable_collisions link1="finger2" link2="segment7" reason="Adjacent"/>
   <disable_collisions link1="finger2" link2="segment2" reason="Never"/>
   <disable_collisions link1="finger2" link2="segment3" reason="Never"/>
   <disable_collisions link1="finger2" link2="segment4" reason="Never"/>
   <disable_collisions link1="finger2" link2="segment5" reason="Never"/>
   <disable_collisions link1="finger2" link2="segment6" reason="Never"/>
-  <disable_collisions link1="finger2" link2="segment7" reason="Adjacent"/>
-  <disable_collisions link1="TCP" link2="finger1" reason="Adjacent"/>
-  <disable_collisions link1="TCP" link2="finger2" reason="Adjacent"/>
+
 
   <group name="cobot_full">
     <group name="arm_group"/>
