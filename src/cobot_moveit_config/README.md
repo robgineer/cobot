@@ -21,28 +21,21 @@ source install/setup.{bash/zsh}
 
 Run the manipulation example
 ```
-export DISPLAY=:100 # or any display number you prefer that is not used
-xpra start :100
-
 ros2 launch cobot_moveit_config gz_demo_launch.py
 ```
+This will open a gazebo / rviz GUI that allows the manipulation of the cobot.
 
-On client run:
-```
-xpra attach ssh://<user>@<server>:22/100
-```
+![](../cobot_moveit_config/vid/zebra_moveit_gz_run.gif)
 
-To control the joints in gazebo and rviz manually, run the ```rqt_joint_trajectory_controller``` in a separate terminal (don't forget to start an xpra session with a different display and connect to it from your client machine)
-
+To control the joints in gazebo and rviz manually run the ```rqt_joint_trajectory_controller``` in a separate terminal (don't forget to start an xpra session with a different display
+and connect to it from your client machine if you are using xpra).
 ```
 ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
 ```
 
 ## Limitations
 
-1. We did not yet define the joint limits properly. This could result in potential collisions with link elements.
-2. In addition, the gripper does seem to have issues as well. This might result from the usage of the **JointTrajectoryController** instead of the **GripperController**
-3. Since we are using **position** controllers, we do not have any information on force and hence no option for the interaction with the real world. Changing to **effort** controllers should fix this.
+Since we are using **position** controllers, we do not have any information on force and hence no option for the interaction with the real world. Changing to **effort** controllers should fix this.
    => Using effort controllers implies the presence of proper effort values in the robot model (URDF). These are yet to be identified.
 
 

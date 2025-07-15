@@ -5,6 +5,20 @@ We have currently two demos implemented:
 * a pick and place demo using the MoveIt Task Constructor
 
 
+## Runing the MoveIt2 Gazebo demo
+```
+ros2 launch cobot_moveit_config gz_demo_launch.py
+```
+This will open a gazebo / rviz GUI that allows the manipulation of the cobot.
+
+![](../cobot_moveit_config/vid/zebra_moveit_gz_run.gif)
+
+To control the joints in gazebo and rviz manually run the ```rqt_joint_trajectory_controller``` in a separate terminal (don't forget to start an xpra session with a different display
+and connect to it from your client machine if you are using xpra).
+```
+ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
+```
+
 ## Running the IK demo
 
 Launch the gazebo demo

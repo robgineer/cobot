@@ -1,7 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ubuntu:24.04
-
-ENV DEBIAN_FRONTEND=noninteractive
+FROM tiryoh/ros2-desktop-vnc:jazzy
 
 # update apt for further downloads
 RUN apt-get update
@@ -10,31 +8,20 @@ RUN apt-get update
 RUN apt-get install -y apt-utils software-properties-common x11-apps wget vim curl
 # install dev. packages
 RUN apt-get install -y git build-essential python3.10 python-is-python3 python3-pip
-# install firefox (without snap)
-RUN add-apt-repository ppa:mozillateam/ppa
-RUN apt-get install -y firefox-esr
 # get zsh and zimfw
 RUN apt-get install -y zsh && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
-## install ROS2 Jazzy ##
-# set locales
+## set locales for ROS2 Jazzy ##
 RUN apt-get install locales
 RUN locale-gen en_US en_US.UTF-8
 RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 ENV LANG=en_US.UTF-8
-# set universe repo
-RUN add-apt-repository universe
-# get ROS2 package sources
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
-RUN apt-get update && apt-get upgrade -y
-# install ROS2
-RUN apt-get install -y ros-jazzy-desktop python3-colcon-common-extensions python3-rosdep
+
 # install ROS2 control
 RUN apt-get update
 RUN apt-get install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers
-# install Gazebo Hamonic
-RUN apt-get install -y ros-jazzy-ros-gz ros-jazzy-gz-ros2-control
+# install Gazebo Hamonic ROS2 control
+RUN apt-get install -y ros-jazzy-gz-ros2-control
 # install Moveit2
 RUN apt-get install -y ros-jazzy-moveit
 RUN apt-get install -y ros-jazzy-moveit-visual-tools
@@ -49,30 +36,36 @@ RUN apt-get install -y ros-jazzy-py-binding-tools
 RUN apt-get install -y python3-colcon-clean python3-colcon-mixin
 # realsense drivers
 RUN apt-get install -y ros-jazzy-librealsense2*
+# pyaudio
+RUN apt-get install -y python3-pyaudio
 
 ## install xpra (with latest version) ##
-# ssh server is necessary for xpra
-RUN apt-get install -y openssh-server
-# get latest version of xpra
 RUN wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc \
     && wget -P /etc/apt/sources.list.d/ https://raw.githubusercontent.com/Xpra-org/xpra/master/packaging/repos/noble/xpra.sources \
     && apt-get update \
     && apt-get install -y xpra
 
-####################################### 
-## add a first user to the container ##
-#######################################
-ARG USERNAME=developer
+#################################################
+## port current user to container if required ##
+#################################################
+ARG USERNAME=*IAmNotAUser*
 ARG USER_ID=1000
-ARG GROUP_ID=$USER_ID
-# create the user
-RUN groupadd --gid $GROUP_ID $USERNAME \
-    && useradd --uid $USER_ID --gid $GROUP_ID -m $USERNAME
-# enable sudo with no password (there is no need for that but its a nice to have)
-RUN apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers \
-    && chmod 0440 /etc/sudoers
-# create dicrectories required for xpra logging
-RUN mkdir /run/user/$USER_ID && chown $USERNAME /run/user/$USER_ID
+ARG GROUP_ID=1000
 
-#USER $USERNAME
+RUN if [ "$USERNAME" == "runner" ] ; then \
+    echo "Running in GitHub Actions, skipping user creation." ; \
+elif [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
+    # create the user
+    groupadd --gid $GROUP_ID $USERNAME && \
+    useradd --uid $USER_ID --gid $GROUP_ID -m $USERNAME && \
+    apt-get update && apt-get install -y sudo && \
+    # enable sudo with no password (there is no need for that but its a nice to have)
+    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME && \
+    chmod 0440 /etc/sudoers.d/$USERNAME && \
+    # create directories required for xpra logging
+    mkdir -p /run/user/$USER_ID && chown $USERNAME /run/user/$USER_ID ; \
+fi
+
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["sleep", "infinity"]
