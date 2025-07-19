@@ -14,3 +14,6 @@ ros2 run py_demo simple_ik_fk
 ```
 
 ![](vid/simple_ik_fk_demo.gif)
+<br/>
+
+**Note: the OMPL planner does not always find a solution. If planning fails, re-run the demo, increase the goal tolerance or adapt your pose_goal.**
