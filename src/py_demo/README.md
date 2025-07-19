@@ -12,3 +12,5 @@ In a separate terminal run:
 ```
 ros2 run py_demo simple_ik_fk
 ```
+
+![](vid/simple_ik_fk_demo.gif)
