@@ -23,7 +23,7 @@ RUN apt-get install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers
 # install Gazebo Hamonic ROS2 control
 RUN apt-get install -y ros-jazzy-gz-ros2-control
 # install Moveit2
-RUN apt-get install -y ros-jazzy-moveit
+RUN apt-get install -y ros-jazzy-moveit ros-jazzy-moveit-py
 RUN apt-get install -y ros-jazzy-moveit-visual-tools
 # install panda config (for reference purposes)
 RUN apt-get install -y ros-jazzy-moveit-resources-panda-moveit-config
