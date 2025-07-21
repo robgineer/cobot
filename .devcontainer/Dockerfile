@@ -12,7 +12,7 @@ RUN apt-get install -y git build-essential python3.10 python-is-python3 python3-
 RUN apt-get install -y zsh && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
 ## set locales for ROS2 Jazzy ##
-RUN apt-get install locales
+RUN apt-get install -y locales
 RUN locale-gen en_US en_US.UTF-8
 RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 ENV LANG=en_US.UTF-8
