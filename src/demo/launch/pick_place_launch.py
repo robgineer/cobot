@@ -45,7 +45,7 @@ def generate_launch_description():
         "default_planning_pipeline": "ompl",
     }
     planning_pipeline["ompl"] = load_file(
-        moveit_config_package, path.join("config", "ompl_planning_conf.yaml")
+        moveit_config_package, path.join("config", "ompl_planning.yaml")
     )
 
     node = Node(

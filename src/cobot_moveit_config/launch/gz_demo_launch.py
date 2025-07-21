@@ -100,7 +100,7 @@ def _setup_nodes(context, *args, **kwargs):
         "default_planning_pipeline": "ompl",
     }
     planning_pipeline["ompl"] = load_file(
-        moveit_config_package, path.join("config", "ompl_planning_conf.yaml")
+        moveit_config_package, path.join("config", "ompl_planning.yaml")
     )
     # deine params for planning scene
     planning_scene_monitor_parameters = {
@@ -113,13 +113,10 @@ def _setup_nodes(context, *args, **kwargs):
     }
 
     # load controller definition for the MoveIt controller manager
-    moveit_controller_manager_yaml = load_file(
-        moveit_config_package, path.join("config", "moveit_controller_manager.yaml")
+    # load controller definition for the MoveIt controller manager
+    moveit_controllers_yaml = load_file(
+        moveit_config_package, path.join("config", "moveit_controllers.yaml")
     )
-    moveit_controller_manager = {
-        "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
-        "moveit_simple_controller_manager": moveit_controller_manager_yaml,
-    }
 
     # configure trajectory execution
     trajectory_execution = {
@@ -189,7 +186,7 @@ def _setup_nodes(context, *args, **kwargs):
                 planning_pipeline,
                 trajectory_execution,
                 planning_scene_monitor_parameters,
-                moveit_controller_manager,
+                moveit_controllers_yaml,
                 {"use_sim_time": use_sim_time},
             ],
         ),
@@ -217,9 +214,9 @@ def _setup_nodes(context, *args, **kwargs):
     ]
 
     # add nodes for loading controllers
-    for controller in moveit_controller_manager_yaml["controller_names"] + [
-        "joint_state_broadcaster"
-    ]:
+    for controller in moveit_controllers_yaml["moveit_simple_controller_manager"][
+        "controller_names"
+    ] + ["joint_state_broadcaster"]:
         nodes.append(
             Node(
                 package="controller_manager",
