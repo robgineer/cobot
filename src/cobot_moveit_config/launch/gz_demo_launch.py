@@ -20,6 +20,7 @@ from typing import List
 from py_utils.launch_utils import load_file
 
 from launch.actions import (
+    OpaqueFunction,
     DeclareLaunchArgument,
     IncludeLaunchDescription,
     DeclareLaunchArgument,
@@ -39,39 +40,37 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description() -> LaunchDescription:
     """Creates the launch description for the Moveit2 / Gazebo example."""
+
     # declare all launch arguments
     declared_arguments = _generate_declared_arguments()
+    # run _setup_nodes as opaque function that hands over the context
+    # this is required in order to substitute launch arguments directly
+    return LaunchDescription(
+        declared_arguments + [OpaqueFunction(function=_setup_nodes)]
+    )
+
+
+def _setup_nodes(context, *args, **kwargs):
+    """Creates the launch description for the Moveit2 / Gazebo example."""
 
     world = LaunchConfiguration("world")
     rviz_config = LaunchConfiguration("rviz_config")
     use_sim_time = LaunchConfiguration("use_sim_time")
     log_level = LaunchConfiguration("log_level")
     gz_verbosity = LaunchConfiguration("gz_verbosity")
+    use_collision_meshes = LaunchConfiguration("use_collision_meshes").perform(context)
 
     # define package with configuration
     moveit_config_package = "cobot_moveit_config"
 
-    # add external lauch-files
-    launch_descriptions = [
-        # include ROS Gazebo launch-file
-        # (convenient way to start the gz sim node)
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                PathJoinSubstitution(
-                    [
-                        FindPackageShare("ros_gz_sim"),
-                        "launch",
-                        "gz_sim.launch.py",
-                    ]
-                )
-            ),
-            launch_arguments=[("gz_args", [world, " -r -v ", gz_verbosity])],
-        ),
-    ]
-
     # get URDF model (from xacro)
     robot_description_as_string = load_file(
-        "cobot_model", path.join("urdf", "festo_cobot_model.urdf.xacro")
+        "cobot_model",
+        path.join("urdf", "festo_cobot_model.urdf.xacro"),
+        mappings={
+            "ros2_controls_plugin": "gz",
+            "use_collision_meshes": use_collision_meshes,
+        },
     )
     robot_description = {"robot_description": robot_description_as_string}
 
@@ -230,8 +229,24 @@ def generate_launch_description() -> LaunchDescription:
                 parameters=[{"use_sim_time": use_sim_time}],
             ),
         )
+    nodes.append(
+        # include ROS Gazebo launch-file
+        # (convenient way to start the gz sim node)
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution(
+                    [
+                        FindPackageShare("ros_gz_sim"),
+                        "launch",
+                        "gz_sim.launch.py",
+                    ]
+                )
+            ),
+            launch_arguments=[("gz_args", [world, " -r -v ", gz_verbosity])],
+        ),
+    )
 
-    return LaunchDescription(declared_arguments + launch_descriptions + nodes)
+    return nodes
 
 
 def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
@@ -271,5 +286,10 @@ def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
             "gz_verbosity",
             default_value="3",
             description="Verbosity level for Gazebo (0~4).",
+        ),
+        DeclareLaunchArgument(
+            "use_collision_meshes",
+            default_value="true",
+            description="Use meshes for collisions. If false, using simple geometric objects.",
         ),
     ]

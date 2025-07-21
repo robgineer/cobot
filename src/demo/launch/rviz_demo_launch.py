@@ -57,6 +57,7 @@ def _setup_nodes(context, *args, **kwargs):
     enable_realsense_camera = LaunchConfiguration("enable_realsense_camera").perform(
         context
     )
+    use_collision_meshes = LaunchConfiguration("use_collision_meshes").perform(context)
 
     # define package with configuration
     moveit_config_package = "cobot_moveit_config"
@@ -68,6 +69,7 @@ def _setup_nodes(context, *args, **kwargs):
         mappings={
             "ros2_controls_plugin": "fake",
             "enable_realsense_camera": enable_realsense_camera,
+            "use_collision_meshes": use_collision_meshes,
         },
     )
     robot_description = {"robot_description": robot_description_as_string}
@@ -285,5 +287,10 @@ def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
             "enable_realsense_camera",
             default_value="false",
             description="Activate RealSense Node.",
+        ),
+        DeclareLaunchArgument(
+            "use_collision_meshes",
+            default_value="true",
+            description="Use meshes for collisions. If false, using simple geometric objects.",
         ),
     ]
