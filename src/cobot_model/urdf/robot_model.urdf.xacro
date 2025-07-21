@@ -282,26 +282,10 @@
            <inertia ixx="0.02693367" iyy="0.01533367" izz="0.02185067" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
   </link>
-    <link name="TCP">
-        <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <cylinder radius="0.00001" length="0.000001" />
-            </geometry>
-            <material name="silver">
-                <color rgba="0.629 0.629 0.625 1.0" />
-            </material>
-        </visual>
-        <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <cylinder radius="0.00001" length="0.00001" />
-            </geometry>
-        </collision>
-    </link> 
+    <link name="TCP"/>
     <link name="finger1">
         <visual>
-           <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
+           <origin rpy="0.0 0.0 0.0" xyz="0.0 0.065 -0.065"/>
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
@@ -311,7 +295,7 @@
         </visual>
         <collision>
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
-                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.065 -0.065"/>
                 <geometry>
                     <mesh filename="package://cobot_model/meshes/collision/finger01_real_collision.stl" scale="0.001 0.001 0.001" />
                 </geometry>
@@ -331,7 +315,7 @@
     </link>
     <link name="finger2">
         <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.065 -0.065"/>
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
@@ -341,7 +325,7 @@
         </visual>
         <collision>
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
-                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.065 -0.065"/>
                 <geometry>
                     <mesh filename="package://cobot_model/meshes/collision/finger02_real_collision.stl" scale="0.001 0.001 0.001" />
                 </geometry>
@@ -422,7 +406,7 @@
         <dynamics damping="0.0" friction="0.0"/>
     </joint>
     <joint name="JFix_TCP" type="fixed">
-        <origin rpy="-0.785 0.0 0.0" xyz="0.0 -0.08 0.06"/>
+        <origin rpy="-0.785 0.0 0.0" xyz="0.0 -0.02 0.12"/>
         <parent link="segment7"/>
         <child link="TCP"/>
     </joint>
@@ -432,15 +416,15 @@
         <child link="lin_axis" />
     </joint>
     <joint name="finger1_joint" type="prismatic">
-        <origin rpy="0.785 0.0 0.0" xyz="0.0 0.0 0.0" />
-        <parent link="TCP" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
+        <parent link="segment7" />
         <child link="finger1" />
         <axis xyz="-1 0 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
     </joint>
     <joint name="finger2_joint" type="prismatic">
-        <origin rpy="0.785 0.0 0.0" xyz="0.0 0.0 0.0" />
-        <parent link="TCP" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
+        <parent link="segment7" />
         <child link="finger2" />
         <axis xyz="1 0 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
