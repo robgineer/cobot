@@ -6,3 +6,6 @@
 	path = src/realsense-ros
 	url = https://github.com/IntelRealSense/realsense-ros.git
 	branch = ros2-master
+[submodule "src/moveit_calibration"]
+	path = src/moveit_calibration
+	url = https://github.com/td-code/moveit_calibration.git
