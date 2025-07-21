@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:arg name="use_collision_meshes" default="true" />
+
     <link name="world" />
     <joint name="robot_in_world" type="fixed">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
@@ -20,10 +23,18 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/axis_collision.dae" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/axis_collision.dae" scale="0.001 0.001 0.001" />
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.03 0.6"/>
+                <geometry>
+                    <box size="0.162 0.069 1.21"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="8.6" />
@@ -42,10 +53,18 @@
             </geometry>
         </visual>
         <collision>
-             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/carriage_real_collision.stl" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+                <geometry>
+                   <mesh filename="package://cobot_model/meshes/visual/carriage_real_visual.dae" scale="0.001 0.001 0.001" />
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.06 0.26 0.2"/>
+                <geometry>
+                    <box size="0.302 0.431 0.02"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="0.7" />
@@ -64,10 +83,18 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment01_collision.stl" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/segment01_collision.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.156"/>
+                <geometry>
+                    <cylinder radius="0.09" length="0.312"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="7.3" />
@@ -86,10 +113,18 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment02_collision.stl" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/segment02_collision.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.09"/>
+                <geometry>
+                    <box size="0.155 0.238 0.186"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="5.0" />
@@ -108,10 +143,18 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment03_collision.stl" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/segment03_collision.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 1.57 0.0" xyz="0.126 0.0 0.06"/>
+                <geometry>
+                    <cylinder radius="0.06" length="0.372"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="2.5" />
@@ -130,10 +173,18 @@
             </material>
         </visual>
         <collision>
-             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment04_collision.stl" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/segment04_collision.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.1125"/>
+                <geometry>
+                    <cylinder radius="0.07" length="0.225"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="3.4" />
@@ -152,10 +203,18 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment05_power_collision.stl" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/segment05_power_collision.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.1"/>
+                <geometry>
+                    <cylinder radius="0.07" length="0.23"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="1.1" />
@@ -174,10 +233,18 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment06_power_collision.stl" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/segment06_power_collision.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+             </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 1.57 0.0" xyz="0.12 0.0 -0.04"/>
+                <geometry>
+                    <cylinder length="0.15" radius="0.04"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="1.5" />
@@ -196,10 +263,18 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/segment07_real_collision.stl" scale="0.001 0.001 0.001"/>
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/segment07_real_collision.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="-0.786 0.0 0.0" xyz="0.0 -0.1 0.05"/>
+                <geometry>
+                    <box size="0.124 0.135 0.14"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="4.0"/>
@@ -218,7 +293,7 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="-0.12 -0.03 0.0"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
                 <cylinder radius="0.00001" length="0.00001" />
             </geometry>
@@ -235,10 +310,18 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/finger01_real_collision.stl" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/finger01_real_collision.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="-0.786 0.25 0.0" xyz="-0.020 0.040 0.036"/>
+                <geometry>
+                    <cylinder length="0.10" radius="0.01"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="0.05" />
@@ -257,10 +340,18 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
-            <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/finger02_real_collision.stl" scale="0.001 0.001 0.001" />
-            </geometry>
+            <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.08 -0.06"/>
+                <geometry>
+                    <mesh filename="package://cobot_model/meshes/collision/finger02_real_collision.stl" scale="0.001 0.001 0.001" />
+                </geometry>
+            </xacro:if>
+            <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+                <origin rpy="-0.786 -0.25 0.0" xyz="0.020 0.040 0.036"/>
+                <geometry>
+                    <cylinder length="0.10" radius="0.01"/>
+                </geometry>
+            </xacro:unless>
         </collision>
         <inertial>
             <mass value="0.05" />
