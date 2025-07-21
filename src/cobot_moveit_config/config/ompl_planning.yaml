@@ -15,8 +15,8 @@ planner_configs:
     shortcut: 1  # Attempt to shortcut all new solution paths
     hybridize: 1  # Compute hybrid solution trajectories
     max_hybrid_paths: 36  # Number of hybrid paths generated per iteration
-    num_planners: 8  # The number of default planners to use for planning
-    planners: "RRTConnect,RRTConnect,RRTConnect,RRTConnect,RRTConnect,RRTConnect,RRTConnect,RRTConnect"  # A comma-separated list of planner types (e.g., "PRM,EST,RRTConnect"Optionally, planner parameters can be passed to change the default:"PRM[max_nearest_neighbors=5],EST[goal_bias=.5],RRT[range=10. goal_bias=.1]"
+    num_planners: 6  # The number of default planners to use for planning
+    planners: "RRTConnect,RRTstar,LBKPIECE,EST,SBL,TRRT" # A comma-separated list of planner types (e.g., "PRM,EST,RRTConnect"Optionally, planner parameters can be passed to change the default:"PRM[max_nearest_neighbors=5],EST[goal_bias=.5],RRT[range=10. goal_bias=.1]"
   SBLkConfigDefault:
     type: geometric::SBL
     range: 0.0 # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
@@ -48,10 +48,10 @@ planner_configs:
     goal_bias: 0.05 # When close to goal select goal, with this probability? default: 0.05
   RRTConnectkConfigDefault:
     type: geometric::RRTConnect
-    range: 0.0 # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+    range: 0.1 # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
   RRTstarkConfigDefault:
     type: geometric::RRTstar
-    range: 0.0 # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+    range: 0.1 # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
     goal_bias: 0.05 # When close to goal select goal, with this probability? default: 0.05
     delay_collision_checking: 1 # Stop collision checking as soon as C-free parent found. default 1
   TRRTkConfigDefault:
@@ -143,8 +143,9 @@ planner_configs:
 
 arm_group:
   enforce_constrained_state_space: true #enables simplifying dimensions "How to Configure OMPL to use Constrained Planning"
-  projection_evaluator: joints(joint_0,joint_1)
+  projection_evaluator: joints(joint_0,joint_1,joint_2)
   planner_configs:
+    - APSConfigDefault
     - SBLkConfigDefault
     - ESTkConfigDefault
     - LBKPIECEkConfigDefault
