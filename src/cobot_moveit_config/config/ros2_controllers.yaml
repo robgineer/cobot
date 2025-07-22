@@ -9,6 +9,9 @@ controller_manager:
     gripper_group_controller:
       type: position_controllers/GripperActionController
 
+    vacuum_gripper_group_controller:
+      type: position_controllers/GripperActionController
+
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
@@ -32,5 +35,8 @@ gripper_group_controller:
   ros__parameters:
     joint: finger1_joint
 
+vacuum_gripper_group_controller:
+   ros__parameters:
+    joint: vacuum_up_joint
 
 
