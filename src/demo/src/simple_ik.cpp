@@ -25,6 +25,7 @@ int main(int argc, char **argv)
   // get move group
   const auto kArmGroup = "arm_group";
   moveit::planning_interface::MoveGroupInterface move_group(simple_ik_node, kArmGroup);
+  move_group.setPlannerId("APSConfigDefault");
 
   // handle the visual part (do not start with planning until topic has been subscribed in rviz)
   moveit_visual_tools::MoveItVisualTools visual_tools(simple_ik_node, "world", "visual_tools_topic",
@@ -38,7 +39,7 @@ int main(int argc, char **argv)
   visual_tools.deleteAllMarkers();
 
   geometry_msgs::msg::Pose football_pose;
-  football_pose.position.x = 0.6;
+  football_pose.position.x = -0.6;
   football_pose.position.y = 0.3;
   football_pose.position.z = 1.0;
   // publish football
@@ -54,6 +55,8 @@ int main(int argc, char **argv)
   if (success)
   {
     move_group.execute(reach_football_plan);
+    RCLCPP_INFO(logger, "Planning succeeded.");
+    RCLCPP_INFO(logger, "Planner ID used: %s", move_group.getPlannerId().c_str());
   }
   else
   {

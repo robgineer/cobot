@@ -57,6 +57,7 @@ def _setup_nodes(context, *args, **kwargs):
     enable_realsense_camera = LaunchConfiguration("enable_realsense_camera").perform(
         context
     )
+    use_collision_meshes = LaunchConfiguration("use_collision_meshes").perform(context)
 
     # define package with configuration
     moveit_config_package = "cobot_moveit_config"
@@ -68,6 +69,7 @@ def _setup_nodes(context, *args, **kwargs):
         mappings={
             "ros2_controls_plugin": "fake",
             "enable_realsense_camera": enable_realsense_camera,
+            "use_collision_meshes": use_collision_meshes,
         },
     )
     robot_description = {"robot_description": robot_description_as_string}
@@ -99,7 +101,7 @@ def _setup_nodes(context, *args, **kwargs):
         "default_planning_pipeline": "ompl",
     }
     planning_pipeline["ompl"] = load_file(
-        moveit_config_package, path.join("config", "ompl_planning_conf.yaml")
+        moveit_config_package, path.join("config", "ompl_planning.yaml")
     )
     # deine params for planning scene
     planning_scene_monitor_parameters = {
@@ -112,13 +114,9 @@ def _setup_nodes(context, *args, **kwargs):
     }
 
     # load controller definition for the MoveIt controller manager
-    moveit_controller_manager_yaml = load_file(
-        moveit_config_package, path.join("config", "moveit_controller_manager.yaml")
+    moveit_controllers_yaml = load_file(
+        moveit_config_package, path.join("config", "moveit_controllers.yaml")
     )
-    moveit_controller_manager = {
-        "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
-        "moveit_simple_controller_manager": moveit_controller_manager_yaml,
-    }
 
     # ros2_control using FakeSystem as hardware
     ros2_controllers_path = path.join(
@@ -179,7 +177,7 @@ def _setup_nodes(context, *args, **kwargs):
                 planning_pipeline,
                 trajectory_execution,
                 planning_scene_monitor_parameters,
-                moveit_controller_manager,
+                moveit_controllers_yaml,
                 {"use_sim_time": use_sim_time},
                 move_group_capabilities,
             ],
@@ -208,9 +206,9 @@ def _setup_nodes(context, *args, **kwargs):
     ]
 
     # add nodes for loading controllers
-    for controller in moveit_controller_manager_yaml["controller_names"] + [
-        "joint_state_broadcaster"
-    ]:
+    for controller in moveit_controllers_yaml["moveit_simple_controller_manager"][
+        "controller_names"
+    ] + ["joint_state_broadcaster"]:
         nodes.append(
             Node(
                 package="controller_manager",
@@ -221,7 +219,7 @@ def _setup_nodes(context, *args, **kwargs):
             ),
         )
 
-    # add external lauch-files
+    # add external launch-files
     nodes.append(
         # include realsense node if required
         IncludeLaunchDescription(
@@ -285,5 +283,10 @@ def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
             "enable_realsense_camera",
             default_value="false",
             description="Activate RealSense Node.",
+        ),
+        DeclareLaunchArgument(
+            "use_collision_meshes",
+            default_value="true",
+            description="Use meshes for collisions. If false, using simple geometric objects.",
         ),
     ]

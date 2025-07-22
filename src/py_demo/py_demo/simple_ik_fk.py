@@ -13,7 +13,12 @@ import rclpy
 from rclpy.logging import get_logger
 
 # moveit python library
-from moveit.planning import MoveItPy
+from moveit.planning import (
+    MoveItPy,
+    MultiPipelinePlanRequestParameters,
+    PlanRequestParameters,
+)
+
 from moveit.core.robot_state import RobotState
 from moveit_configs_utils import MoveItConfigsBuilder
 from ament_index_python.packages import get_package_share_directory
@@ -27,12 +32,23 @@ def plan_and_execute(
     robot,
     planning_component,
     logger,
+    single_plan_parameters=None,
+    multi_plan_parameters=None,
     sleep_time=0.0,
 ):
     """Helper function to plan and execute a motion."""
     # plan to goal
     logger.info("Planning trajectory")
-    plan_result = planning_component.plan()
+    if multi_plan_parameters is not None:
+        plan_result = planning_component.plan(
+            multi_plan_parameters=multi_plan_parameters
+        )
+    elif single_plan_parameters is not None:
+        plan_result = planning_component.plan(
+            single_plan_parameters=single_plan_parameters
+        )
+    else:
+        plan_result = planning_component.plan()
 
     # execute the plan
     if plan_result:
@@ -53,13 +69,13 @@ def main():
     rclpy.init()
     logger = get_logger("moveit_py.pose_goal")
 
-    # the Python MoveIt2 API requires lots of configuration
+    # the Python MoveIt2 API requires configuration
     # we basically need most of the config files required to start the move group here again
     # it is also close to impossible to create a config that is accepted by MoveItPy
     # without the MoveItConfigsBuilder (hence, the config creation differs from the launch files)
     # TODO @rharbach: we need to pass the "real" controller param here somewhere for the urdf
     moveit_config = (
-        MoveItConfigsBuilder(robot_name="cobot", package_name="cobot_model")
+        MoveItConfigsBuilder(robot_name="cobot")
         .robot_description(
             file_path=get_package_share_directory("cobot_model")
             + "/urdf/festo_cobot_model.urdf.xacro"
@@ -77,9 +93,15 @@ def main():
             + "/config/joint_limits.yaml"
         )
         .trajectory_execution(
-            file_path=get_package_share_directory("py_demo")
+            file_path=get_package_share_directory("cobot_moveit_config")
             + "/config/moveit_controllers.yaml"
         )
+        # apparently this file is read based on convention
+        # in <robot_name>_moveit_config
+        # .planning_pipelines(
+        #    file_path=get_package_share_directory("cobot_moveit_config")
+        #    + "/config/ompl_planning.yaml"
+        # )
         .pilz_cartesian_limits(
             file_path=get_package_share_directory("py_demo")
             + "/config/pilz_cartesian_limits.yaml"
@@ -97,6 +119,7 @@ def main():
     )
     cobot_arm = cobot.get_planning_component("arm_group")
     logger.info("MoveItPy instance created")
+    cobot_arm.set_workspace(-1.0, -0.2, 0.0, 1.0, 1.0, 1.2)
 
     ###########################################################################
     # Option 1: run IK
@@ -109,8 +132,9 @@ def main():
 
     pose_goal = PoseStamped()
     pose_goal.header.frame_id = "base_link"
-    pose_goal.pose.orientation.w = 1.0
-    pose_goal.pose.position.x = 0.6
+
+    pose_goal.pose.orientation.w = -1.0
+    pose_goal.pose.position.x = -0.6
     pose_goal.pose.position.y = 0.3
     pose_goal.pose.position.z = 1.0
 
@@ -128,13 +152,25 @@ def main():
     sphere.dimensions = [0.05]  # 5 cm radius
     position_constraint.constraint_region.primitives.append(sphere)
     position_constraint.constraint_region.primitive_poses.append(pose_goal.pose)
-    position_constraint.weight = 1.0
+    position_constraint.weight = 0.8
     constraints.position_constraints.append(position_constraint)
+
     # set the goal state with tolerance of 5cm
     cobot_arm.set_goal_state(motion_plan_constraints=[constraints])
 
+    single_plan_request_parameters = PlanRequestParameters(cobot, "ompl_rrtc")
+    # define preferred planner
+    single_plan_request_parameters.planner_id = "APSConfigDefault"
+    single_plan_request_parameters.planning_pipeline = "ompl"
+
     # plan to goal
-    plan_and_execute(cobot, cobot_arm, logger, sleep_time=2.0)
+    plan_and_execute(
+        cobot,
+        cobot_arm,
+        logger,
+        single_plan_parameters=single_plan_request_parameters,
+        sleep_time=3.0,
+    )
 
     ###########################################################################
     # Option 2: run FK
