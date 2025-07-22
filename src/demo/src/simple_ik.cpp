@@ -39,8 +39,7 @@ int main(int argc, char **argv)
   visual_tools.deleteAllMarkers();
 
   geometry_msgs::msg::Pose football_pose;
-  football_pose.orientation.w = 1.0;
-  football_pose.position.x = -0.3;
+  football_pose.position.x = -0.6;
   football_pose.position.y = 0.3;
   football_pose.position.z = 1.0;
   // publish football
@@ -48,8 +47,7 @@ int main(int argc, char **argv)
   visual_tools.trigger();
   // run inverse kinematic solver
   move_group.setPositionTarget(football_pose.position.x, football_pose.position.y, football_pose.position.z);
-  move_group.setPoseTarget(football_pose);
-  move_group.setGoalTolerance(0.1);
+  move_group.setGoalTolerance(0.05);
   moveit::planning_interface::MoveGroupInterface::Plan reach_football_plan;
   bool success = (move_group.plan(reach_football_plan) == moveit::core::MoveItErrorCode::SUCCESS);
 
