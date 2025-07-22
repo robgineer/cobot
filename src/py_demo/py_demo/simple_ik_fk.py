@@ -132,8 +132,9 @@ def main():
 
     pose_goal = PoseStamped()
     pose_goal.header.frame_id = "base_link"
-    pose_goal.pose.orientation.w = 1.0
-    pose_goal.pose.position.x = 0.6
+
+    pose_goal.pose.orientation.w = -1.0
+    pose_goal.pose.position.x = -0.6
     pose_goal.pose.position.y = 0.3
     pose_goal.pose.position.z = 1.0
 
@@ -151,7 +152,7 @@ def main():
     sphere.dimensions = [0.05]  # 5 cm radius
     position_constraint.constraint_region.primitives.append(sphere)
     position_constraint.constraint_region.primitive_poses.append(pose_goal.pose)
-    position_constraint.weight = 1.0
+    position_constraint.weight = 0.8
     constraints.position_constraints.append(position_constraint)
 
     # set the goal state with tolerance of 5cm
