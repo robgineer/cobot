@@ -12,7 +12,7 @@ RUN apt-get install -y git build-essential python3.10 python-is-python3 python3-
 RUN apt-get install -y zsh && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
 ## set locales for ROS2 Jazzy ##
-RUN apt-get install locales
+RUN apt-get install -y locales
 RUN locale-gen en_US en_US.UTF-8
 RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 ENV LANG=en_US.UTF-8
@@ -23,7 +23,7 @@ RUN apt-get install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers
 # install Gazebo Hamonic ROS2 control
 RUN apt-get install -y ros-jazzy-gz-ros2-control
 # install Moveit2
-RUN apt-get install -y ros-jazzy-moveit
+RUN apt-get install -y ros-jazzy-moveit ros-jazzy-moveit-py
 RUN apt-get install -y ros-jazzy-moveit-visual-tools
 # install panda config (for reference purposes)
 RUN apt-get install -y ros-jazzy-moveit-resources-panda-moveit-config
