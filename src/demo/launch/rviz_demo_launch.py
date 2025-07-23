@@ -58,6 +58,7 @@ def _setup_nodes(context, *args, **kwargs):
         context
     )
     use_collision_meshes = LaunchConfiguration("use_collision_meshes").perform(context)
+    controller_type = LaunchConfiguration("controller_type").perform(context)
 
     # define package with configuration
     moveit_config_package = "cobot_moveit_config"
@@ -67,7 +68,7 @@ def _setup_nodes(context, *args, **kwargs):
         "cobot_model",
         path.join("urdf", "festo_cobot_model.urdf.xacro"),
         mappings={
-            "ros2_controls_plugin": "fake",
+            "ros2_controls_plugin": controller_type,
             "enable_realsense_camera": enable_realsense_camera,
             "use_collision_meshes": use_collision_meshes,
         },
@@ -288,5 +289,10 @@ def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
             "use_collision_meshes",
             default_value="true",
             description="Use meshes for collisions. If false, using simple geometric objects.",
+        ),
+        DeclareLaunchArgument(
+            "controller_type",
+            default_value="fake",
+            description="Define controllers: fake or real.",
         ),
     ]
