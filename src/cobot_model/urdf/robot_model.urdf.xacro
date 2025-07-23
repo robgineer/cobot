@@ -343,7 +343,66 @@
             <inertia ixx="3.46666667e-05" iyy="2.64166667e-05" izz="1.78833333e-05" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
-
+    <link name="vacuum_gripper_up">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.026 -0.103"/>
+      <material name="silver">
+        <color rgba="0.629 0.629 0.625 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="package://cobot_model/meshes/visual/vacuum_gripper_up_visual.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+    <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.026 -0.103"/>
+        <geometry>
+            <mesh filename="package://cobot_model/meshes/collision/vacuum_gripper_up_collision.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+    </xacro:if>
+    <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+        <origin rpy="-0.786 0.0 0.0" xyz="0.0 -0.008 0.042"/>
+        <geometry>
+            <cylinder length="0.10" radius="0.01"/>
+        </geometry>
+    </xacro:unless>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <origin rpy="-0.785 0.0 0.0" xyz="0.0 0.001 0.052"/>
+      <inertia ixx="3.46666667e-05" ixy="0.0" ixz="0.0" iyy="2.64166667e-05" iyz="0.0" izz="1.78833333e-05"/>
+    </inertial>
+  </link>
+  <link name="vacuum_gripper_down">
+    <visual>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.026 -0.103"/>
+      <material name="silver">
+        <color rgba="0.629 0.629 0.625 1.0"/>
+      </material>
+      <geometry>
+        <mesh filename="package://cobot_model/meshes/visual/vacuum_gripper_down_visual.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+        <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.026 -0.103"/>
+            <geometry>
+                <mesh filename="package://cobot_model/meshes/collision/vacuum_gripper_down_collision.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </xacro:if>
+       <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
+            <origin rpy="-0.786 0.0 0.0" xyz="0.0 0.042 -0.008"/>
+            <geometry>
+                <cylinder length="0.10" radius="0.01"/>
+            </geometry>
+       </xacro:unless>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <origin rpy="-0.785 0.0 0.0" xyz="0.0 0.052 0.001"/>
+      <inertia ixx="3.46666667e-05" ixy="0.0" ixz="0.0" iyy="2.64166667e-05" iyz="0.0" izz="1.78833333e-05"/>
+    </inertial>
+  </link>
     <!-- Joints -->
     <joint name="joint_0" type="prismatic">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
@@ -429,5 +488,20 @@
         <axis xyz="1 0 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
         <mimic joint="finger1_joint" />
+    </joint>
+    <joint name="vacuum_up_joint" type="prismatic">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
+        <parent link="segment7"/>
+        <child link="vacuum_gripper_up"/>
+        <axis xyz="0 1 1"/>
+        <limit effort="30.0" lower="-0.01" upper="0.035" velocity="0.1"/>
+    </joint>
+    <joint name="vacuum_down_joint" type="prismatic">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
+        <parent link="segment7"/>
+        <child link="vacuum_gripper_down"/>
+        <axis xyz="0 1 1"/>
+        <limit effort="30.0" lower="-0.01" upper="0.035" velocity="0.1"/>
+        <mimic joint="vacuum_up_joint"/>
     </joint>
 </robot>

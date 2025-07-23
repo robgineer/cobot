@@ -99,9 +99,47 @@
   <disable_collisions link1="finger2" link2="segment6" reason="Never"/>
 
 
+  <group name="vacuum_gripper_group">
+      <link name="vacuum_gripper_up"/>
+      <link name="vacuum_gripper_down"/>
+      <joint name="vacuum_up_joint"/>
+      <passive_joint name="vacuum_down_joint"/>
+  </group>
+  <group_state name="active" group="vacuum_gripper_group">
+    <joint name="vacuum_up_joint" value="0.035" />
+    <joint name="vacuum_down_joint" value="0.035" />
+  </group_state>
+  <group_state name="inactive" group="vacuum_gripper_group">
+    <joint name="vacuum_up_joint" value="-0.009" />
+    <joint name="vacuum_down_joint" value="-0.008" />
+  </group_state>
+
+  <disable_collisions link1="vacuum_gripper_up" link2="vacuum_gripper_down" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="TCP" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="finger2" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="segment7" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="finger1" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="finger2" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="segment2" reason="Never"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="segment3" reason="Never"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="segment4" reason="Never"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="segment5" reason="Never"/>
+  <disable_collisions link1="vacuum_gripper_up" link2="segment6" reason="Never"/>
+
+  <disable_collisions link1="vacuum_gripper_down" link2="TCP" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_down" link2="segment7" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_down" link2="finger1" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_down" link2="finger2" reason="Adjacent"/>
+  <disable_collisions link1="vacuum_gripper_down" link2="segment2" reason="Never"/>
+  <disable_collisions link1="vacuum_gripper_down" link2="segment3" reason="Never"/>
+  <disable_collisions link1="vacuum_gripper_down" link2="segment4" reason="Never"/>
+  <disable_collisions link1="vacuum_gripper_down" link2="segment5" reason="Never"/>
+  <disable_collisions link1="vacuum_gripper_down" link2="segment6" reason="Never"/>
+
   <group name="cobot_full">
     <group name="arm_group"/>
     <group name="gripper_group"/>
+    <group name="vacuum_gripper_group"/>
   </group>
 
 </robot>
