@@ -5,8 +5,14 @@ echo " ▐▌   ▐▌ ▐▌▐▛▚▖▐▌  █ ▐▌ ▐▌  █  ▐▛�
 echo " ▐▌   ▐▌ ▐▌▐▌ ▝▜▌  █ ▐▛▀▜▌  █  ▐▌ ▝▜▌▐▛▀▀▘▐▛▀▚▖    ▐▛▀▚▖▐▌ ▐▌  █  ▐▌   ▐▌  █ "
 echo " ▝▚▄▄▖▝▚▄▞▘▐▌  ▐▌  █ ▐▌ ▐▌▗▄█▄▖▐▌  ▐▌▐▙▄▄▖▐▌ ▐▌    ▐▙▄▞▘▝▚▄▞▘▗▄█▄▖▐▙▄▄▖▐▙▄▄▀ "
 
+# This should be run from script directory
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+if [ "$PWD" != "$SCRIPT_DIR" ]; then 
+    echo -e "\nPlease run $(basename "$0") from 'cobot/scripts' directory!"
+    exit
+fi
 
-if [ ! -e "Dockerfile" ]; then
+if [ ! -e "../.devcontainer/Dockerfile" ]; then
     echo -e "\nDockerfile not found. Execute this script from a directory with a Dockerfile!"
     exit
 fi
