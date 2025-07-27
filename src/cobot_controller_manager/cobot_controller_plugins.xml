@@ -1,0 +1,6 @@
+<library path="cobot_controller_manager">
+  <class 
+        name="cobot_controller_manager/CobotControllerManager"
+        type="cobot_controller_manager::CobotControllerManager"
+        base_class_type="moveit_controller_manager::MoveItControllerManager"/>
+</library>
