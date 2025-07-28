@@ -115,8 +115,14 @@ def _setup_nodes(context, *args, **kwargs):
     }
 
     # load controller definition for the MoveIt controller manager
+    moveit_controllers = (
+        "moveit_controllers.yaml"
+        if controller_type != "real"
+        else "moveit_custom_controllers.yaml"
+    )
+
     moveit_controllers_yaml = load_file(
-        moveit_config_package, path.join("config", "moveit_controllers.yaml")
+        moveit_config_package, path.join("config", moveit_controllers)
     )
 
     # ros2_control using FakeSystem as hardware
@@ -204,21 +210,52 @@ def _setup_nodes(context, *args, **kwargs):
                 {"use_sim_time": use_sim_time},
             ],
         ),
+        # start controllers
+        Node(
+            package="controller_manager",
+            executable="spawner",
+            output="log",
+            arguments=["arm_group_controller", "--ros-args", "--log-level", log_level],
+            parameters=[{"use_sim_time": use_sim_time}],
+        ),
+        Node(
+            package="controller_manager",
+            executable="spawner",
+            output="log",
+            arguments=[
+                "gripper_group_controller",
+                "--ros-args",
+                "--log-level",
+                log_level,
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+        ),
+        Node(
+            package="controller_manager",
+            executable="spawner",
+            output="log",
+            arguments=[
+                "vacuum_gripper_group_controller",
+                "--ros-args",
+                "--log-level",
+                log_level,
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+        ),
+        # run joint state broadcaster (so we can see the current robot state in rviz)
+        Node(
+            package="controller_manager",
+            executable="spawner",
+            output="log",
+            arguments=[
+                "joint_state_broadcaster",
+                "--ros-args",
+                "--log-level",
+                log_level,
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+        ),
     ]
-
-    # add nodes for loading controllers
-    for controller in moveit_controllers_yaml["moveit_simple_controller_manager"][
-        "controller_names"
-    ] + ["joint_state_broadcaster"]:
-        nodes.append(
-            Node(
-                package="controller_manager",
-                executable="spawner",
-                output="log",
-                arguments=[controller, "--ros-args", "--log-level", log_level],
-                parameters=[{"use_sim_time": use_sim_time}],
-            ),
-        )
 
     # add external launch-files
     nodes.append(

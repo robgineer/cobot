@@ -1,0 +1,34 @@
+moveit_controller_manager: cobot_controller_manager/CobotControllerManage
+
+cobot_controller_manager:
+  controller_names:
+    - arm_group_controller
+    - gripper_group_controller
+    - vacuum_gripper_group_controller
+
+  arm_group_controller:
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - joint_0
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+
+  gripper_group_controller:
+    action_ns: gripper_cmd
+    type: GripperCommand
+    default: true
+    joints:
+      - finger1_joint
+
+  vacuum_gripper_group_controller:
+    action_ns: gripper_cmd
+    type: GripperCommand
+    default: true
+    joints:
+      - vacuum_up_joint
