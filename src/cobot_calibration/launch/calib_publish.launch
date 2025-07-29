@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+<node pkg="tf" type="static_transform_publisher" name="cal" args="0 0 0 0 0 0 1 /camera_link /camera_depth_optical_frame 100"/> 
+
+<include file="$(find easy_handeye)/launch/publish.launch">
+ <arg name="eye_on_hand" value="false"/>
+ <arg name="namespace_prefix" value="my_eob_calib"/>
+</include>
+
+</launch>

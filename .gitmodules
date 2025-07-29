@@ -9,6 +9,9 @@
 [submodule "src/cobot_hardware"]
 	path = src/cobot_hardware
 	url = https://gitlab.hs-esslingen.de/rharbach/cobot_hardware.git
-[submodule "src/moveit_calibration"]
-	path = src/moveit_calibration
-	url = https://github.com/td-code/moveit_calibration.git
+[submodule "src/easy_handeye2"]
+	path = src/easy_handeye2
+	url = https://github.com/marcoesposito1988/easy_handeye2.git
+[submodule "src/ros_aruco_opencv"]
+	path = src/ros_aruco_opencv
+	url = https://github.com/fictionlab/ros_aruco_opencv.git
