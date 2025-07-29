@@ -15,6 +15,7 @@
     ],
     "remoteUser": "ubuntu",
     "overrideCommand": false,
+    "privileged": true,
     "runArgs": [
         "--hostname=ros2-vnc-docker",
         "--shm-size=512m",
