@@ -11,8 +11,10 @@ from rclpy.node import Node
 from rclpy.time import Duration, Time
 import tf2_ros
 from sensor_msgs.msg import Image, CameraInfo
+from rclpy_message_converter import message_converter
 
 from .record_calib_data_gui import CalibrationGUI
+from .image_to_numpy import image_to_numpy
 
 
 class ImageSubscriber(Node):
@@ -86,7 +88,8 @@ class ImageSubscriber(Node):
     
     def image_callback(self, msg):
         with self.mutex:
-            curr_time = Time().from_msg(msg.header.stamp) 
+            # why is this needed?
+            curr_time = Time().from_msg(msg.header.stamp) - Duration(seconds=2)
 
             # here we trick the library (it is actually made for eye_in_hand only). Trust me, I'm an engineer
             try:
@@ -107,6 +110,7 @@ class ImageSubscriber(Node):
                 """
             except tf2_ros.ExtrapolationException as e:
                 self.get_logger().error(f'Failed to get the tracking transform: {e}')
+                return
 
             """
             ret = Sample()
@@ -116,11 +120,25 @@ class ImageSubscriber(Node):
             """
             
         self.get_logger().info('Received new sample data')
+        print('timestamp:', Time().from_msg(msg.header.stamp))
+        
+        robot_transform = message_converter.convert_ros_message_to_dictionary(robot.transform)
+        #tracking_transform = message_converter.convert_ros_message_to_dictionary(tracking.transform)
+        
+        # Log the received data
+        self.get_logger().info(f"Robot transform: {robot_transform}")
+        #self.get_logger().info(f"Tracking transform: {tracking_transform}")
+        
+        camera_info_dict = message_converter.convert_ros_message_to_dictionary(self.camera_info) if self.camera_info else {}
+        self.get_logger().info(f"Camera info: {camera_info_dict}")
+
+        numpy_image = image_to_numpy(msg)
+        print('numpy_image:', numpy_image.shape, numpy_image.dtype)
         
     def camera_info_callback(self, msg):
         with self.mutex:
             self.camera_info = msg
-        self.get_logger().info('Received camera info')
+        self.get_logger().debug('Received camera info')
 
 
 def main():
