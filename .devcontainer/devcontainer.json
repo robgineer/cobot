@@ -22,7 +22,9 @@
         "-v",
         "./docker/bash:/home/ubuntu/bash",
         "--security-opt",
-        "seccomp=unconfined"
+        "seccomp=unconfined",
+        "-v",
+        "${localWorkspaceFolder}/../../data:/workspace/data"
     ],
     "postCreateCommand": "cat .devcontainer/bashrc >> ~/.bashrc"
 }
