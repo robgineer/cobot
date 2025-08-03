@@ -1,0 +1,8 @@
+<library path="cobot_trajectory_controller">
+  <class
+      name="cobot_trajectory_controller/CobotTrajectoryController"
+      type="cobot_trajectory_controller::CobotTrajectoryController"
+      base_class_type="controller_interface::ControllerInterface">
+    <description>A custom ROS2 controller that publishes either the last point of a trajectory or a full path to the hardware interface</description>
+  </class>
+</library>
