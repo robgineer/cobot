@@ -210,13 +210,58 @@ def _setup_nodes(context, *args, **kwargs):
                 {"use_sim_time": use_sim_time},
             ],
         ),
-        # start controllers
+        ### start controllers ###
+        # arm group controller (with fake controls)
         Node(
             package="controller_manager",
             executable="spawner",
             output="log",
-            arguments=["arm_group_controller", "--ros-args", "--log-level", log_level],
+            arguments=[
+                "arm_group_controller",
+                "--ros-args",
+                "--log-level",
+                log_level,
+            ],
             parameters=[{"use_sim_time": use_sim_time}],
+            condition=(
+                IfCondition(
+                    PythonExpression(
+                        [
+                            "'",
+                            controller_type,
+                            "'",
+                            " == ",
+                            "'fake'",
+                        ]
+                    )
+                )
+            ),
+        ),
+        # cobot arm group controller (for real cobot)
+        Node(
+            package="controller_manager",
+            executable="spawner",
+            output="log",
+            arguments=[
+                "cobot_arm_group_controller",
+                "--ros-args",
+                "--log-level",
+                log_level,
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+            condition=(
+                IfCondition(
+                    PythonExpression(
+                        [
+                            "'",
+                            controller_type,
+                            "'",
+                            " == ",
+                            "'real'",
+                        ]
+                    )
+                )
+            ),
         ),
         Node(
             package="controller_manager",

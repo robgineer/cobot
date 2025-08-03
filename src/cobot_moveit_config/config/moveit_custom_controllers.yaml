@@ -1,12 +1,12 @@
-moveit_controller_manager: cobot_controller_manager/CobotControllerManage
+moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControllerManager
 
-cobot_controller_manager:
+moveit_simple_controller_manager:
   controller_names:
-    - arm_group_controller
+    - cobot_arm_group_controller
     - gripper_group_controller
     - vacuum_gripper_group_controller
 
-  arm_group_controller:
+  cobot_arm_group_controller:
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     default: true
