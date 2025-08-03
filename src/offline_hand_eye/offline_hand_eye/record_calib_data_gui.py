@@ -11,6 +11,8 @@ import json
 import os
 import time
 
+NO_TRACKER_MARKER_STR = "none - compute offline"
+
 class CalibrationGUI:
     def __init__(self, node: Optional[Node] = None):
         self.node = node
@@ -197,7 +199,7 @@ class CalibrationGUI:
         ttk.Label(main_frame, text="Tracking Marker Frame:").grid(
             row=row, column=0, sticky=tk.W, pady=5)
         
-        marker_frame_values = self.tf_frame_ids + ["none - compute offline"]
+        marker_frame_values = self.tf_frame_ids + [NO_TRACKER_MARKER_STR]
         tracking_marker_combo = ttk.Combobox(
             main_frame,
             textvariable=self.tracking_marker_frame,
@@ -206,7 +208,7 @@ class CalibrationGUI:
             width=30
         )
         tracking_marker_combo.grid(row=row, column=1, sticky=(tk.W, tk.E), pady=5, padx=(10, 0))
-        tracking_marker_combo.set("none - compute offline")
+        tracking_marker_combo.set(NO_TRACKER_MARKER_STR)
         row += 1
         
         # Buttons frame - First row
@@ -310,7 +312,7 @@ class CalibrationGUI:
             for child in widget.winfo_children():
                 if isinstance(child, ttk.Combobox) and child['textvariable'] != str(self.calibration_type):
                     if child['textvariable'] == str(self.tracking_marker_frame):
-                        child['values'] = self.tf_frame_ids + ["none - compute offline"]
+                        child['values'] = self.tf_frame_ids + [NO_TRACKER_MARKER_STR]
                     else:
                         child['values'] = self.tf_frame_ids
         
@@ -326,9 +328,18 @@ class CalibrationGUI:
         config = self.get_configuration()
         self.node.set_new_subscriptions(config)
 
+        storage_root = "/workspace/data/cobot/calibration"
+        filepath = datetime.now().strftime(os.path.join(storage_root, "calibdata_%Y_%m_%d-%H_%M_%S"))
+        if not os.path.exists(filepath):
+            os.makedirs(filepath)        
+        
+        self.log_message(f"Recording calibration data to: {filepath}")
+        self.node.start_recording(filepath)
+
     def _stop_recording(self):
         """Stop recording calibration data"""
         self.log_message("Stopped recording...", "INFO")
+        self.node.stop_recording()
         self.recording_active = False
 
     def _save_parameters(self):
@@ -451,8 +462,8 @@ class CalibrationGUI:
                 # Validate frame parameters
                 elif param_name.endswith("_frame"):
                     if param_name == "tracking_marker_frame":
-                        # Special case for tracking_marker_frame (can include "none - compute offline")
-                        valid_values = self.tf_frame_ids + ["none - compute offline"]
+                        # Special case for tracking_marker_frame (can include NO_TRACKER_MARKER_STR)
+                        valid_values = self.tf_frame_ids + [NO_TRACKER_MARKER_STR]
                     else:
                         valid_values = self.tf_frame_ids
                     
