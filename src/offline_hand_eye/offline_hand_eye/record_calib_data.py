@@ -101,8 +101,6 @@ class ImageSubscriber(Node):
         """Stop recording the calibration data"""
         self.get_logger().info("Stopping calibration data recording")
         self.recording_active_ = False
-        self._frame_file_path = None
-        self._frame_counter = 0
         
     def is_recording_active(self) -> bool:
         """Check if recording is active"""

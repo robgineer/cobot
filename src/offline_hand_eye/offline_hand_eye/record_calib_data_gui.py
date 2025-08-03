@@ -18,7 +18,7 @@ class CalibrationGUI:
         self.node = node
         self.root = tk.Tk()
         self.root.title("Hand-Eye Calibration Configuration")
-        self.root.geometry("500x500")
+        self.root.geometry("500x550")
         
         self.recording_active = False
         
@@ -30,6 +30,7 @@ class CalibrationGUI:
         self.robot_effector_frame = tk.StringVar()
         self.tracking_base_frame = tk.StringVar()
         self.tracking_marker_frame = tk.StringVar()
+        self.storage_root = tk.StringVar(value="/workspace/data/cobot/calibration")
         
         # Wait a bit for TF data to be available
         if self.node is not None:
@@ -211,6 +212,30 @@ class CalibrationGUI:
         tracking_marker_combo.set(NO_TRACKER_MARKER_STR)
         row += 1
         
+        # Storage Directory
+        ttk.Label(main_frame, text="Recording Directory:").grid(
+            row=row, column=0, sticky=tk.W, pady=5)
+        
+        storage_frame = ttk.Frame(main_frame)
+        storage_frame.grid(row=row, column=1, sticky=(tk.W, tk.E), pady=5, padx=(10, 0))
+        storage_frame.columnconfigure(0, weight=1)
+        
+        self.storage_entry = ttk.Entry(
+            storage_frame,
+            textvariable=self.storage_root,
+            width=25
+        )
+        self.storage_entry.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=(0, 5))
+        
+        ttk.Button(
+            storage_frame,
+            text="Browse",
+            command=self._select_storage_directory,
+            width=8
+        ).grid(row=0, column=1)
+        
+        row += 1
+        
         # Buttons frame - First row
         button_frame1 = ttk.Frame(main_frame)
         button_frame1.grid(row=row, column=0, columnspan=2, pady=(10, 5))
@@ -302,6 +327,19 @@ class CalibrationGUI:
         self.log_text.config(state=tk.DISABLED)
         self.log_message("Log cleared", "INFO")
     
+    def _select_storage_directory(self):
+        """Open directory selection dialog"""
+        directory = filedialog.askdirectory(
+            title="Select Recording Directory",
+            initialdir=self.storage_root.get()
+        )
+        
+        if directory:
+            self.storage_root.set(directory)
+            self.log_message(f"Storage directory set to: {directory}", "INFO")
+        else:
+            self.log_message("Directory selection cancelled", "INFO")
+    
     def _refresh_tf_frames(self):
         """Refresh the list of available TF frames"""
         self.log_message("Refreshing TF frames...", "INFO")
@@ -328,12 +366,23 @@ class CalibrationGUI:
         config = self.get_configuration()
         self.node.set_new_subscriptions(config)
 
-        storage_root = "/workspace/data/cobot/calibration"
-        filepath = datetime.now().strftime(os.path.join(storage_root, "calibdata_%Y_%m_%d-%H_%M_%S"))
-        if not os.path.exists(filepath):
-            os.makedirs(filepath)        
+        # Use the configured storage directory
+        storage_root = self.storage_root.get()
+        if not storage_root:
+            storage_root = "/workspace/data/cobot/calibration"
+            self.log_message("No storage directory set, using default", "WARNING")
         
-        self.log_message(f"Recording calibration data to: {filepath}")
+        filepath = datetime.now().strftime(os.path.join(storage_root, "calibdata_%Y_%m_%d-%H_%M_%S"))
+        
+        # Create directory if it doesn't exist
+        try:
+            if not os.path.exists(filepath):
+                os.makedirs(filepath)
+        except Exception as e:
+            self.log_message(f"Failed to create directory {filepath}: {e}", "ERROR")
+            return
+        
+        self.log_message(f"Recording calibration data to: {filepath}", "SUCCESS")
         self.node.start_recording(filepath)
 
     def _stop_recording(self):
@@ -428,7 +477,8 @@ class CalibrationGUI:
             "robot_base_frame": self.robot_base_frame,
             "robot_effector_frame": self.robot_effector_frame,
             "tracking_base_frame": self.tracking_base_frame,
-            "tracking_marker_frame": self.tracking_marker_frame
+            "tracking_marker_frame": self.tracking_marker_frame,
+            "storage_root": self.storage_root
         }
         
         # Load each parameter if it exists and is valid
@@ -443,6 +493,14 @@ class CalibrationGUI:
                         self.log_message(f"Loaded {param_name}: {value}", "INFO")
                     else:
                         self.log_message(f"Invalid calibration_type: {value}, using default", "WARNING")
+                
+                # Validate storage_root (directory path)
+                elif param_name == "storage_root":
+                    if os.path.isdir(value) or not os.path.exists(value):  # Allow non-existing dirs (can be created)
+                        param_var.set(value)
+                        self.log_message(f"Loaded {param_name}: {value}", "INFO")
+                    else:
+                        self.log_message(f"Invalid storage directory: {value}, using default", "WARNING")
                 
                 # Validate topic names
                 elif param_name in ["camera_image_topic"]:
@@ -488,7 +546,8 @@ class CalibrationGUI:
             "robot_base_frame": self.robot_base_frame.get(),
             "robot_effector_frame": self.robot_effector_frame.get(),
             "tracking_base_frame": self.tracking_base_frame.get(),
-            "tracking_marker_frame": self.tracking_marker_frame.get()
+            "tracking_marker_frame": self.tracking_marker_frame.get(),
+            "storage_root": self.storage_root.get()
         }
     
     def spin_once(self, timeout_sec: float = 0.1, period: float = 0.2):
@@ -501,5 +560,3 @@ class CalibrationGUI:
         """Start the GUI main loop"""
         self.spin_once()
         self.root.mainloop()
-
-
