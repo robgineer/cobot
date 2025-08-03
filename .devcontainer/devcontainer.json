@@ -20,8 +20,6 @@
         "--shm-size=512m",
         "--init",
         "--security-opt",
-        "seccomp=unconfined",
-        "-v",
-        "${localWorkspaceFolder}/../../data:/workspace/data"
+        "seccomp=unconfined"
     ]
 }
