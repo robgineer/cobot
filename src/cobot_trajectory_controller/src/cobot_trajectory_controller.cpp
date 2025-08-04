@@ -29,7 +29,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-
 #include <pluginlib/class_list_macros.hpp>
 
 #include "cobot_hardware/shared_trajectory_buffer.hpp"
@@ -82,7 +81,7 @@ namespace cobot_trajectory_controller
         std::bind(&CobotTrajectoryController::goal_callback, this, std::placeholders::_1, std::placeholders::_2),
         std::bind(&CobotTrajectoryController::cancel_callback, this, std::placeholders::_1),
         std::bind(&CobotTrajectoryController::accepted_callback, this, std::placeholders::_1));
-    
+
     // get the joint names from the URDF
     get_node()->declare_parameter<std::vector<std::string>>("joints", std::vector<std::string>{});
     if (!get_node()->get_parameter("joints", joint_names_))
@@ -94,7 +93,7 @@ namespace cobot_trajectory_controller
     // TODO @rharbach: think of error handling
     external_trajectory_buffer_ = SharedTrajectoryBuffer::getTrajectoryBuffer();
     // declare the execution mode
-     get_node()->declare_parameter<std::string>("execution_mode", execution_mode_);
+    get_node()->declare_parameter<std::string>("execution_mode", execution_mode_);
 
     return controller_interface::CallbackReturn::SUCCESS;
   }
@@ -117,13 +116,15 @@ namespace cobot_trajectory_controller
     {
       // handle execution modes
       get_node()->get_parameter("execution_mode", execution_mode_);
-      if (execution_mode_ == "full_trajectory"){
-        // we need to reduce the number of points of the trajectory so the 
+      if (execution_mode_ == "full_trajectory")
+      {
+        // we need to reduce the number of points of the trajectory so the
         // hardware interface can handle the list execution
         auto resampled_trajectory = resample_trajectory(full_trajectory->value());
         external_trajectory_buffer_->writeFromNonRT(resampled_trajectory);
       }
-      else if(execution_mode_ == "single_point"){
+      else if (execution_mode_ == "single_point")
+      {
         trajectory_msgs::msg::JointTrajectory single_point_trajectory;
         single_point_trajectory.header.stamp = full_trajectory->value().header.stamp;
         single_point_trajectory.joint_names = full_trajectory->value().joint_names;
@@ -132,9 +133,10 @@ namespace cobot_trajectory_controller
         single_point_trajectory.points.push_back(last_trajectory_point);
         external_trajectory_buffer_->writeFromNonRT(single_point_trajectory);
       }
-      else {
+      else
+      {
         RCLCPP_ERROR(*local_logger_, "Invalid execution mode. Set execution_mode parameter to single_point or full_trajectory and reset controller.");
-          return controller_interface::return_type::ERROR;
+        return controller_interface::return_type::ERROR;
       }
 
       // reset the buffer
@@ -155,14 +157,17 @@ namespace cobot_trajectory_controller
     // TODO @rharbach: implement a more complex approach using linear interpolation
     const auto kUseEveryNthTrajectoryPoint = 10;
     trajectory_msgs::msg::JointTrajectory resampled_trajectory;
-    for (size_t i = 0; i < trajectory.points.size(); i++) {
-      if (i ==  trajectory.points.size() - 1) {
+    for (size_t i = 0; i < trajectory.points.size(); i++)
+    {
+      if (i == trajectory.points.size() - 1)
+      {
         // always add last point
-         resampled_trajectory.points.push_back(trajectory.points[i]);
-      }
-      else if(i % kUseEveryNthTrajectoryPoint == 0){
         resampled_trajectory.points.push_back(trajectory.points[i]);
-       }
+      }
+      else if (i % kUseEveryNthTrajectoryPoint == 0)
+      {
+        resampled_trajectory.points.push_back(trajectory.points[i]);
+      }
     }
     return resampled_trajectory;
   }

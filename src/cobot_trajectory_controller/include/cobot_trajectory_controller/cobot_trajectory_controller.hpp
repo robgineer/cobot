@@ -46,11 +46,11 @@ namespace cobot_trajectory_controller
    * Implementation of a JointTrajectoryController tailored for the Cobot.
    * Unlike the standard implementation this controller does not use real time
    * joint commands (command interfaces) for the control of the hardware.
-   * Instead, it accepts a trajectory and passes either its last point or 
+   * Instead, it accepts a trajectory and passes either its last point or
    * the entire trajectory to the hardware interface using a real time buffer (singleton).
    * Rationale: the Cobot to be controlled does not accept single commands for trajectory
    * execution but either the final trajectory point or a list of trajectory points.
-   * 
+   *
    * Sending one point or the entire trajectory is configured using the parameter "execution_mode",
    * which enables on demand changes of the trajectory execution.
    *
