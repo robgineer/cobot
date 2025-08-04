@@ -1,6 +1,23 @@
 # Offline Hand Eye Calibration
 
-## Installation
+## ROS2 data extraction 
+
+Play recording (if not running with live realsense):
+```bash
+ros2 bag play data/cobot/rosbag2_2025_07_31-10_56_58 --clock
+```
+
+Run data extractor:
+```bash
+ros2 run offline_hand_eye record_calib_data
+```
+
+Publish calibration result (after calibration has been computed):
+```bash
+ros2 run offline_hand_eye calib_publisher --ros-args -p calibration_file:=handeye_calibration.json
+```
+
+## Install Python Calibration
 
 ```bash
 conda create --name offline-hand-eye python=3.12 ipython jupyter conda-forge::matplotlib 

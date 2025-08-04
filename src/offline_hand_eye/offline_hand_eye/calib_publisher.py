@@ -11,7 +11,7 @@ class CalibrationPublisher(rclpy.node.Node):
     def __init__(self):
         super().__init__('calib_publisher')
 
-        self.declare_parameter('calibration_file', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('calibration_file', value='handeye_calibration.json', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
         filename = self.get_parameter('calibration_file').get_parameter_value().string_value
 
         self.get_logger().info(f'Loading the calibration from file {filename}')
@@ -32,8 +32,20 @@ class CalibrationPublisher(rclpy.node.Node):
         self.static_transformStamped.child_frame_id = dest
 
         (hcqw, hcqx, hcqy, hcqz) = self.calibration['rotation_q_wxyz']
+        if type(hcqw) is list:
+            assert len(hcqw) == 1, "Expected a single value for rotation quaternion w"
+            hcqw = hcqw[0]
+            hcqx = hcqx[0]
+            hcqy = hcqy[0]
+            hcqz = hcqz[0]
+            
         (hctx, hcty, hctz) = self.calibration['translation']
-
+        if type(hctx) is list:
+            assert len(hctx) == 1, "Expected a single value for translation x"
+            hctx = hctx[0]
+            hcty = hcty[0]
+            hctz = hctz[0]
+        
         self.static_transformStamped.transform = Transform(translation=Vector3(x=hctx, y=hcty, z=hctz),
                            rotation=Quaternion(x=hcqx, y=hcqy, z=hcqz, w=hcqw))        
 
