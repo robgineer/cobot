@@ -153,10 +153,14 @@ namespace cobot_trajectory_controller
   trajectory_msgs::msg::JointTrajectory CobotTrajectoryController::resample_trajectory(const trajectory_msgs::msg::JointTrajectory &trajectory)
   {
     // TODO @rharbach: implement a more complex approach using linear interpolation
-    const auto kUseEveryNthTrajectoryPoint = 20;
+    const auto kUseEveryNthTrajectoryPoint = 10;
     trajectory_msgs::msg::JointTrajectory resampled_trajectory;
-    for (size_t i = 0; i <= trajectory.points.size(); i++) {
-       if(i % kUseEveryNthTrajectoryPoint == 0){
+    for (size_t i = 0; i < trajectory.points.size(); i++) {
+      if (i ==  trajectory.points.size() - 1) {
+        // always add last point
+         resampled_trajectory.points.push_back(trajectory.points[i]);
+      }
+      else if(i % kUseEveryNthTrajectoryPoint == 0){
         resampled_trajectory.points.push_back(trajectory.points[i]);
        }
     }
