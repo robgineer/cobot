@@ -150,7 +150,10 @@ class ImageSubscriber(Node):
             'robot_transform': message_converter.convert_ros_message_to_dictionary(robot.transform),
             'tracking_transform': message_converter.convert_ros_message_to_dictionary(tracking.transform) if tracking else None,
             'camera_info': message_converter.convert_ros_message_to_dictionary(self.camera_info) if self.camera_info else None,
-            'image': image_to_numpy(msg)
+            'image': image_to_numpy(msg),
+            'image_encoding': msg.encoding,
+            'image_width': msg.width,
+            'image_height': msg.height
         }
         
         # Log the received data
