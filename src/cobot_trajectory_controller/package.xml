@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>cobot_trajectory_controller</name>
+  <version>1.0.0</version>
+  <description>A custom ROS2 controller that publishes either the last point of a trajectory or a full path to the hardware interface.</description>
+  <maintainer email="robgineer@gmail.com">Robert Harbach</maintainer>
+  <maintainer email="Robert.Harbach@hs-esslingen.de">Robert Harbach</maintainer>
+
+  <license>BSD-3-Clause</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>controller_interface</depend>
+  <depend>pluginlib</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>realtime_tools</depend>
+  <depend>cobot_hardware</depend>
+
+  <export>
+    <pluginlib plugin="${prefix}/cobot_trajectory_controller_plugins.xml"/>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
