@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'record_calib_data = offline_hand_eye.record_calib_data:main'
+            'record_calib_data = offline_hand_eye.record_calib_data:main',
+            'calib_publisher = offline_hand_eye.calib_publisher:main',
         ],
     },
 )

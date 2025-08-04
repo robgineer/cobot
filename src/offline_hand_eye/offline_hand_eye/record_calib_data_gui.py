@@ -1,11 +1,8 @@
-import sys
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import rclpy
 from rclpy.node import Node
-import tf2_ros
 from typing import List, Optional
-import logging
 from datetime import datetime
 import json
 import os
