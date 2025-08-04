@@ -1,8 +1,6 @@
-import sys
-from typing import List, Optional
-import logging
-from datetime import datetime
-import json
+#!/usr/bin/env python
+
+from typing import List
 import os
 import threading
 import pickle
@@ -178,7 +176,6 @@ class ImageSubscriber(Node):
 
 def main():
     """Main function to run the GUI"""
-    # Initialize ROS 2 (optional)
     rclpy.init()
     
     try:
