@@ -2,6 +2,12 @@
 
 ## ROS2 data extraction 
 
+To record a bag file:
+```bash
+ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
+ros2 bag record --all
+```
+
 Play recording (if not running with live realsense):
 ```bash
 ros2 bag play data/cobot/rosbag2_2025_07_31-10_56_58 --clock
@@ -47,5 +53,5 @@ sudo apt install ros-jazzy-apriltag-ros
 ros2 run apriltag_ros apriltag_node --ros-args \
     -r image_rect:=/camera/camera/color/image_raw \
     -r camera_info:=/camera/camera/color/camera_info \
-    --params-file /workspace/src/offline_hand_eye/doc/tags_41h12.yaml
+    --params-file /workspace/src/offline_hand_eye/doc/tags_36h11.yaml
 ```

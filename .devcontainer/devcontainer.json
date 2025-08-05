@@ -15,6 +15,7 @@
     ],
     "remoteUser": "ubuntu",
     "overrideCommand": false,
+    "privileged": true,
     "runArgs": [
         "--hostname=ros2-vnc-docker",
         "--shm-size=512m",
@@ -24,7 +25,9 @@
         "--security-opt",
         "seccomp=unconfined",
         "-v",
-        "${localWorkspaceFolder}/../../data:/workspace/data"
+        "${localWorkspaceFolder}/../../data:/workspace/data",
+        "-v",
+        "/mnt/data/cobot:/workspace/data"
     ],
     "postCreateCommand": "cat .devcontainer/bashrc >> ~/.bashrc"
 }
