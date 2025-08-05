@@ -5,6 +5,7 @@
 install/
 log/
 build/
+data/
 
 # Ignore generated docs
 *.dox

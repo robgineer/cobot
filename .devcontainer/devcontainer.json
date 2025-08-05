@@ -15,11 +15,13 @@
     ],
     "remoteUser": "ubuntu",
     "overrideCommand": false,
+    "privileged": true,
     "runArgs": [
         "--hostname=ros2-vnc-docker",
         "--shm-size=512m",
         "--init",
         "--security-opt",
-        "seccomp=unconfined"
+        "seccomp=unconfined",
+        "-v", "/mnt/data/cobot:/workspace/data"
     ]
 }
