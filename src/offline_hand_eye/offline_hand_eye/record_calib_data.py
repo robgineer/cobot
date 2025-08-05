@@ -118,19 +118,24 @@ class ImageSubscriber(Node):
             return
         
         with self.mutex:
-            # why is this needed?
-            curr_time = Time().from_msg(msg.header.stamp) - Duration(seconds=2)
+            # todo: why is time correction needed?
+            curr_time = Time().from_msg(msg.header.stamp) 
+            curr_time_corrected = curr_time - Duration(seconds=2)
+            timeout = Duration(seconds=1)
 
-            # here we trick the library (it is actually made for eye_in_hand only). Trust me, I'm an engineer
+            # cf https://github.com/marcoesposito1988/easy_handeye2
             try:
                 if self.config['calibration_type'] == 'eye_in_hand':
                     robot = self.tf_buffer.lookup_transform(self.config['robot_base_frame'],
-                                                            self.config['robot_effector_frame'], curr_time,
-                                                            Duration(seconds=1))
+                                                            self.config['robot_effector_frame'], curr_time_corrected,
+                                                            timeout)
                 else:
                     robot = self.tf_buffer.lookup_transform(self.config['robot_effector_frame'],
-                                                            self.config['robot_base_frame'], curr_time,
-                                                            Duration(seconds=1))                    
+                                                            self.config['robot_base_frame'], curr_time_corrected,
+                                                            timeout)
+                if robot is None:
+                    self.get_logger().error('Robot transform is None, cannot process image')
+                    return                    
                 
                 if self.config['tracking_marker_frame'] == NO_TRACKER_MARKER_STR:
                     tracking = None
@@ -138,7 +143,10 @@ class ImageSubscriber(Node):
                     # If tracking marker is set, get the transform
                     tracking = self.tf_buffer.lookup_transform(self.config['tracking_base_frame'],
                                                                self.config['tracking_marker_frame'], curr_time,
-                                                               Duration(seconds=1))
+                                                               timeout)
+                    if tracking is None:
+                        self.get_logger().error('Tracking transform is None, cannot process image')
+                        return
 
             except tf2_ros.ExtrapolationException as e:
                 self.get_logger().error(f'Failed to get the tracking transform: {e}')

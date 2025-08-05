@@ -274,16 +274,13 @@ def main():
                        help='Path to calibration data directory')
     parser.add_argument('--tagsize', '-t', type=float, default=0.074,
                        help='Size of the AprilTag in meters (default: 0.074)')
-    parser.add_argument('--apriltag_family', '-f', default='tagStandard41h12',
-                       help='AprilTag family (default: tagStandard41h12)')
+    parser.add_argument('--apriltag_family', '-f', default='tag36h11',
+                       help='AprilTag family (default: tag36h11)')
     parser.add_argument('--config', '-c', default='handeye_calibration_params.json',
                        help='Path to the calibration config file (default: handeye_calibration_params.json)')
     parser.add_argument('--output', '-o', default='handeye_calibration.json',
                        help='Path to save the calibration results (default: handeye_calibration.json)')
-    
-    # calibration_config_file = '../../../handeye_calibration_params.json'
-    # calibration_output_file = '../../../handeye_calibration.json'
-    
+        
     args = parser.parse_args()
     
     # Use default data path if not provided

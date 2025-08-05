@@ -1,5 +1,9 @@
 # Offline Hand Eye Calibration
 
+[doc/tag36h11_0_140mm.pdf](doc/tag36h11_0_140mm.pdf)
+https://shiqiliu-67.github.io/apriltag-generator/
+
+
 ## ROS2 data extraction 
 
 To record a bag file:
@@ -10,12 +14,16 @@ ros2 bag record --all
 
 Play recording (if not running with live realsense):
 ```bash
-ros2 bag play data/cobot/rosbag2_2025_07_31-10_56_58 --clock
+ros2 bag play data/cobot/rosbag2_2025_07_31-10_56_58 --clock 100
 ```
 
-Run data extractor:
+Run data extractor (if running live):
 ```bash
 ros2 run offline_hand_eye record_calib_data
+```
+or if from recording:
+```bash
+ros2 run offline_hand_eye record_calib_data --ros-args --remap use_sim_time:=true
 ```
 
 Publish calibration result (after calibration has been computed):

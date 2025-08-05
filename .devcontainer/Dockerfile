@@ -38,8 +38,8 @@ RUN apt-get install -y python3-colcon-clean python3-colcon-mixin
 RUN apt-get install -y ros-jazzy-librealsense2*
 # pyaudio
 RUN apt-get install -y python3-pyaudio
-# message converter for ROS2
-RUN apt-get install -y ros-jazzy-rclpy-message-converter
+# marker detection
+RUN apt-get install -y ros-jazzy-apriltag-ros
 
 ## install xpra (with latest version) ##
 RUN wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc \
