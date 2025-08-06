@@ -1,0 +1,18 @@
+# additions to ~/.bashrc
+
+# >>> persistent bash history >>>
+export HISTFILE=~/bash/.bash_history
+touch $HISTFILE
+
+# >>> ROS 2 Setup >>>
+# Adjust the ROS_DISTRO variable to match your installed ROS 2 distro
+# Supported: humble, iron, jazzy (Ubuntu 24.04 likely uses jazzy or iron)
+export ROS_DISTRO=jazzy  # change to 'iron' or 'humble' if needed
+
+# Source ROS 2
+source /opt/ros/$ROS_DISTRO/setup.bash
+
+# Colcon workspace setup (optional)
+if [ -f /workspace/install/setup.bash ]; then
+    source /workspace/install/setup.bash
+fi
