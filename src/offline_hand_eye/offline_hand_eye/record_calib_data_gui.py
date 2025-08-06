@@ -17,7 +17,7 @@ class CalibrationGUI:
         self.root.title("Hand-Eye Calibration Configuration")
         self.root.geometry("500x550")
         
-        self.recording_active = False
+        self.filepath = None
         
         # Initialize variables for parameters
         self.calibration_type = tk.StringVar(value="eye_in_hand")
@@ -256,6 +256,12 @@ class CalibrationGUI:
             command=self._stop_recording
         ).pack(side=tk.LEFT, padx=5)
         
+        ttk.Button(
+            button_frame1,
+            text="Record Single",
+            command=self._record_single
+        ).pack(side=tk.LEFT, padx=5)        
+        
         row += 1
         
         # Buttons frame - Second row
@@ -353,40 +359,52 @@ class CalibrationGUI:
         
         self.log_message(f"Found {len(self.tf_frame_ids)} TF frames", "SUCCESS")
     
-    def _start_recording(self):
+    def _start_recording(self, single_frame: bool = False):
         """Start recording calibration data"""
-        self.log_message("Start recording...", "INFO")
-        self.recording_active = True
-        self.camera_image_combo.config(state=tk.DISABLED)
-        self.camera_info_combo.config(state=tk.DISABLED)
+        if not single_frame:
+            self.log_message("Start recording...", "INFO")
+        else:
+            self.log_message("Record single frame...", "INFO")
         
-        config = self.get_configuration()
-        self.node.set_new_subscriptions(config)
+        if not self.filepath: 
+            # prepare recording and create directory for storing frames 
+            self.camera_image_combo.config(state=tk.DISABLED)
+            self.camera_info_combo.config(state=tk.DISABLED)
+            
+            config = self.get_configuration()
+            self.node.set_new_subscriptions(config)
 
-        # Use the configured storage directory
-        storage_root = self.storage_root.get()
-        if not storage_root:
-            storage_root = "/workspace/data/cobot/calibration"
-            self.log_message("No storage directory set, using default", "WARNING")
-        
-        filepath = datetime.now().strftime(os.path.join(storage_root, "calibdata_%Y_%m_%d-%H_%M_%S"))
-        
-        # Create directory if it doesn't exist
-        try:
-            if not os.path.exists(filepath):
-                os.makedirs(filepath)
-        except Exception as e:
-            self.log_message(f"Failed to create directory {filepath}: {e}", "ERROR")
-            return
-        
-        self.log_message(f"Recording calibration data to: {filepath}", "SUCCESS")
-        self.node.start_recording(filepath)
+            # Use the configured storage directory
+            storage_root = self.storage_root.get()
+            if not storage_root:
+                storage_root = "/workspace/data/cobot/calibration"
+                self.log_message("No storage directory set, using default", "WARNING")
+            
+            self.filepath = datetime.now().strftime(os.path.join(storage_root, "calibdata_%Y_%m_%d-%H_%M_%S"))
+            
+            # Create directory if it doesn't exist
+            try:
+                if not os.path.exists(self.filepath):
+                    os.makedirs(self.filepath)
+            except Exception as e:
+                self.log_message(f"Failed to create directory {self.filepath}: {e}", "ERROR")
+                return
+
+            self.log_message(f"Recording calibration data to: {self.filepath}", "SUCCESS")
+
+        if not single_frame:
+            self.node.start_recording(self.filepath)
+        else:
+            self.node.single_frame_recording(self.filepath)
 
     def _stop_recording(self):
         """Stop recording calibration data"""
         self.log_message("Stopped recording...", "INFO")
         self.node.stop_recording()
-        self.recording_active = False
+
+    def _record_single(self):
+        """Record a single frame of calibration data"""
+        self._start_recording(single_frame=True)
 
     def _save_parameters(self):
         """Save current parameters to a JSON file"""

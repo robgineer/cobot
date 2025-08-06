@@ -15,6 +15,9 @@ from rclpy_message_converter import message_converter
 from .record_calib_data_gui import CalibrationGUI, NO_TRACKER_MARKER_STR
 from .image_to_numpy import image_to_numpy
 
+RECORDING_OFF = 0
+RECORDING_ON = 1
+RECORDING_SINGLE = 2
 
 class ImageSubscriber(Node):
 
@@ -42,7 +45,7 @@ class ImageSubscriber(Node):
         self.mutex = threading.Lock()
         self.frame_counter_ = 0
         self.frame_file_path_ = None
-        self.recording_active_ = False
+        self.recording_mode_ = RECORDING_OFF # RECORDING_OFF, RECORDING_ON, RECORDING_SINGLE
             
     def get_available_topics(self):
         """Get available image and camera info topics"""                
@@ -91,21 +94,26 @@ class ImageSubscriber(Node):
     def start_recording(self, file_path: str):
         """Start recording the calibration data"""
         self.get_logger().info("Starting calibration data recording")
-        self._frame_counter = 0
         self._frame_file_path = file_path
-        self.recording_active_ = True
+        self.recording_mode_ = RECORDING_ON
 
     def stop_recording(self):
         """Stop recording the calibration data"""
         self.get_logger().info("Stopping calibration data recording")
-        self.recording_active_ = False
+        self.recording_mode_ = RECORDING_OFF
+        
+    def single_frame_recording(self, file_path: str):
+        """Record a single frame of calibration data"""
+        self.get_logger().info("Stopping calibration data recording")
+        self._frame_file_path = file_path
+        self.recording_mode_ = RECORDING_SINGLE        
         
     def is_recording_active(self) -> bool:
         """Check if recording is active"""
-        return self.recording_active_
+        return self.recording_mode_ != RECORDING_OFF
 
     def image_callback(self, msg):
-        if not self.recording_active_:
+        if not self.is_recording_active():
             self.get_logger().debug('Recording is not active, ignoring image message')
             return
         
@@ -173,11 +181,14 @@ class ImageSubscriber(Node):
         
         # Save the frame to file
         if self._frame_file_path:
-            frame_file = os.path.join(self._frame_file_path, f'frame_{self._frame_counter:04d}.pkl')
+            frame_file = os.path.join(self._frame_file_path, f'frame_{self.frame_counter_:04d}.pkl')
             with open(frame_file, 'wb') as f:
                 pickle.dump(frame, f)
-            self.get_logger().info(f'Saved frame {self._frame_counter} to {frame_file}')
-            self._frame_counter += 1
+            self.get_logger().info(f'Saved frame {self.frame_counter_} to {frame_file}')
+            self.frame_counter_ += 1
+
+        if self.recording_mode_ == RECORDING_SINGLE:
+            self.recording_mode_ = RECORDING_OFF
                 
     def camera_info_callback(self, msg):
         with self.mutex:

@@ -41,6 +41,8 @@ RUN apt-get install -y ros-jazzy-librealsense2*
 RUN apt-get install -y python3-pyaudio
 # marker detection
 RUN apt-get install -y ros-jazzy-apriltag-ros
+# ros2 message converter
+RUN apt-get install -y ros-jazzy-rclpy-message-converter
 
 ## install xpra (with latest version) ##
 RUN wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc \
