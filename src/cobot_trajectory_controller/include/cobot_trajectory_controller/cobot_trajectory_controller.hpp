@@ -114,7 +114,7 @@ namespace cobot_trajectory_controller
     void accepted_callback(
         const std::shared_ptr<ServerGoalHandle> goal_handle);
     /*
-     * Spacial trajectory resampling for the reduction of points.
+     * Spatial trajectory resampling for the reduction of points.
      *
      * In case full trajectory forwarding is active (execution_mode == "full_trajectory"), we forward the entire
      * trajectory to the hardware interface.
