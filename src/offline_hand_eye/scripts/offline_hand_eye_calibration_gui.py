@@ -280,7 +280,6 @@ def main():
                        help='Path to the calibration config file (default: handeye_calibration_params.json)')
     parser.add_argument('--output', '-o', default='handeye_calibration.json',
                        help='Path to save the calibration results (default: handeye_calibration.json)')
-        
     args = parser.parse_args()
     
     # Use default data path if not provided

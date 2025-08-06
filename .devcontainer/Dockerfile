@@ -56,7 +56,7 @@ ARG GROUP_ID=1000
 
 RUN if [ "$USERNAME" == "runner" ] ; then \
     echo "Running in GitHub Actions, skipping user creation." ; \
-elif [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
+    elif [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
     # create the user
     groupadd --gid $GROUP_ID $USERNAME && \
     useradd --uid $USER_ID --gid $GROUP_ID -m $USERNAME && \
@@ -66,7 +66,7 @@ elif [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
     chmod 0440 /etc/sudoers.d/$USERNAME && \
     # create directories required for xpra logging
     mkdir -p /run/user/$USER_ID && chown $USERNAME /run/user/$USER_ID ; \
-fi
+    fi
 
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
