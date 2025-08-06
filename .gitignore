@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/ros2
 # Edit at https://www.toptal.com/developers/gitignore?templates=ros2
 
+# devcontainer persistent bash history
+docker/bash/.bash_history
+
 ### ROS2 ###
 install/
 log/

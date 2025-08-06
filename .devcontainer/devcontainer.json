@@ -19,7 +19,10 @@
         "--hostname=ros2-vnc-docker",
         "--shm-size=512m",
         "--init",
+        "-v",
+        "./docker/bash:/home/ubuntu/bash",
         "--security-opt",
         "seccomp=unconfined"
-    ]
+    ],
+    "postCreateCommand": "cat .devcontainer/bashrc >> ~/.bashrc"
 }
