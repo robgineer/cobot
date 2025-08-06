@@ -114,13 +114,51 @@ namespace cobot_trajectory_controller
     void accepted_callback(
         const std::shared_ptr<ServerGoalHandle> goal_handle);
     /*
-     * Helper function. Resamples trajectory to reduce the number of points.
+     * Spatial trajectory resampling for the reduction of points.
+     *
+     * In case full trajectory forwarding is active (execution_mode == "full_trajectory"), we forward the entire
+     * trajectory to the hardware interface.
+     * Since the Cobot does not accept timing based commands but a path and since dense trajectory points
+     * imply jerky movements, we resample the trajectory based on a minimum distance between two subsequent
+     * trajectory points. This distance represents the maximum velocity of the Cobot and can be adjusted
+     * using the parameter: "resampling_delta".
+     * Note: a higher resampling_delta implies less trajectory points. For moving around obstacles, we would
+     * need at least 3 points.
+     *
+     * The resampling is rather simple but effective for the Cobot. We iterate through the trajectory points
+     * starting from the last point and use all points that have a minimum angular delta of "resampling_delta_".
+     * Since we have multiple joints, we orient ourselves on the fastest moving joint.
+     * Note: joint_0, the prismatic joint, is ignored (we only use its final trajectory point for control).
+     *
+     * Example with resampling_delta = 0.5
+     *
+     * Trajectory point:     0     1     2     3     4     5     6     7     8
+     * --------------------------------------------------------------------------
+     * Joint_1 pos (rad):   0.0   0.2   0.4   0.6   0.8   1.0   1.2   1.4   1.6
+     * Selected:             -     -     #     -     -     #     -     -     #
+     * Joint_2 pos (rad):   0.0   0.2   0.4   0.6   0.8   1.0   1.0   1.0   1.0
+     * Selected:             -     -     -     -     -     -     -     -     #
+     *
+     *
+     * # = selected point
+     * - = skipped point (delta < resampling_delta)
+     *
+     * Resampled trajectory point:     0     1     2
+     * -----------------------------------------------
+     * Resampled joint_1 pos (rad):   0.4   1.0   1.6
+     * Resampled joint_1 pos (rad):   0.4   1.0   1.0
+     *
+     * Note: in practice all joints move with the same velocity
+     * (we have defined the same limits for each joint in the configurations)
+     *
      * Args:
      *  trajectory: the trajectory to be resampled
      * Returns:
      *  resampled trajectory
      */
     trajectory_msgs::msg::JointTrajectory resample_trajectory(const trajectory_msgs::msg::JointTrajectory &trajectory);
+    // the minumum distance in rad between two trajectory points
+    float resampling_delta_ = 0.53;
     // Logger of this node (to avoid calling get_node()->get_logger() frequently)
     std::unique_ptr<rclcpp::Logger> local_logger_;
     // Define if only the last point or the full trajectory will be send to the hardware interface

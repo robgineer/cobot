@@ -94,6 +94,8 @@ namespace cobot_trajectory_controller
     external_trajectory_buffer_ = SharedTrajectoryBuffer::getTrajectoryBuffer();
     // declare the execution mode
     get_node()->declare_parameter<std::string>("execution_mode", execution_mode_);
+    // declare the minimum resampling delta
+    get_node()->declare_parameter<float>("resampling_delta", resampling_delta_);
 
     return controller_interface::CallbackReturn::SUCCESS;
   }
@@ -154,21 +156,53 @@ namespace cobot_trajectory_controller
 
   trajectory_msgs::msg::JointTrajectory CobotTrajectoryController::resample_trajectory(const trajectory_msgs::msg::JointTrajectory &trajectory)
   {
-    // TODO @rharbach: implement a more complex approach using linear interpolation
-    const auto kUseEveryNthTrajectoryPoint = 10;
+    // get resampling delta from parameter
+    get_node()->get_parameter("resampling_delta", resampling_delta_);
+    // start with the last point
+    auto reference_point_index = trajectory.points.size() - 1;
     trajectory_msgs::msg::JointTrajectory resampled_trajectory;
-    for (size_t i = 0; i < trajectory.points.size(); i++)
+    // always add last point of trajectory (this is the one we absolutely need)
+    resampled_trajectory.points.push_back(trajectory.points[reference_point_index]);
+    // iterate backwards through the trajectory points starting from the last point
+    for (int current_point_index = trajectory.points.size() - 1; current_point_index >= 0; current_point_index--)
     {
-      if (i == trajectory.points.size() - 1)
+      const auto &reference_point = trajectory.points[reference_point_index]; // initially the last point in the traj.
+      const auto &next_point = trajectory.points[current_point_index];
+
+      // create potential new point
+      trajectory_msgs::msg::JointTrajectoryPoint new_point;
+      new_point.positions.resize(trajectory.joint_names.size()); // to access the joint positions via index
+      // do not add new point until the delta is big enough
+      auto add_new_point = false;
+      // we do not use time_from_start but it doesn't hurt to set it right
+      new_point.time_from_start = next_point.time_from_start;
+      // iterate trough the joints and consider revolute joints only
+      // => we do not need resampling on the prismatic joint (for that one we send out the last position only).
+      for (size_t joint_index = 1; joint_index < reference_point.positions.size() - 1; joint_index++)
       {
-        // always add last point
-        resampled_trajectory.points.push_back(trajectory.points[i]);
+        const auto delta = next_point.positions[joint_index] - reference_point.positions[joint_index];
+        if (std::abs(delta) >= resampling_delta_)
+        {
+          new_point.positions[joint_index] = next_point.positions[joint_index];
+          reference_point_index = current_point_index;
+          add_new_point = true;
+        }
+        else
+        {
+          // nothing has changed for this joint => use reference point.
+          new_point.positions[joint_index] = reference_point.positions[joint_index];
+        }
       }
-      else if (i % kUseEveryNthTrajectoryPoint == 0)
+      if (add_new_point)
       {
-        resampled_trajectory.points.push_back(trajectory.points[i]);
+        // at least one joint had delta >= resampling_delta_
+        // => add this point to the resampled trajectory
+        resampled_trajectory.points.push_back(new_point);
       }
     }
+    // since we started with the last point and iterated backwards we, need to reverse the resampled_trajectory
+    std::reverse(resampled_trajectory.points.begin(), resampled_trajectory.points.end());
+
     return resampled_trajectory;
   }
 
