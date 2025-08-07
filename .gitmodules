@@ -9,4 +9,4 @@
 [submodule "src/cobot_hardware"]
 	path = src/cobot_hardware
 	url = https://gitlab.hs-esslingen.de/rharbach/cobot_hardware.git
-	branch = implement-full-trajectory-hw-interface
+	branch = implement-gripper-interface

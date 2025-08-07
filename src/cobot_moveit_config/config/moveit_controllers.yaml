@@ -4,7 +4,8 @@ moveit_simple_controller_manager:
   controller_names:
     - arm_group_controller
     - gripper_group_controller
-    - vacuum_gripper_group_controller
+    - vacuum_upper_joint_controller
+    - vacuum_lower_joint_controller
 
   arm_group_controller:
     action_ns: follow_joint_trajectory
@@ -26,9 +27,16 @@ moveit_simple_controller_manager:
     joints:
       - finger1_joint
 
-  vacuum_gripper_group_controller:
+  vacuum_upper_joint_controller:
     action_ns: gripper_cmd
     type: GripperCommand
     default: true
     joints:
       - vacuum_up_joint
+
+  vacuum_lower_joint_controller:
+      action_ns: gripper_cmd
+      type: GripperCommand
+      default: true
+      joints:
+        - vacuum_down_joint
