@@ -113,15 +113,15 @@
       <link name="vacuum_gripper_up"/>
       <link name="vacuum_gripper_down"/>
       <joint name="vacuum_up_joint"/>
-      <passive_joint name="vacuum_down_joint"/>
+      <joint name="vacuum_down_joint"/>
   </group>
   <group_state name="active" group="vacuum_gripper_group">
     <joint name="vacuum_up_joint" value="0.035" />
     <joint name="vacuum_down_joint" value="0.035" />
   </group_state>
   <group_state name="inactive" group="vacuum_gripper_group">
-    <joint name="vacuum_up_joint" value="-0.009" />
-    <joint name="vacuum_down_joint" value="-0.008" />
+    <joint name="vacuum_up_joint" value="0.0" />
+    <joint name="vacuum_down_joint" value="0.0" />
   </group_state>
 
   <disable_collisions link1="vacuum_gripper_up" link2="vacuum_gripper_down" reason="Adjacent"/>
