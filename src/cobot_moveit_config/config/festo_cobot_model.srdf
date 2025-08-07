@@ -81,12 +81,12 @@
       <passive_joint name="finger2_joint"/>
   </group>
   <group_state name="open" group="gripper_group">
-    <joint name="finger1_joint" value="0.015" />
-    <joint name="finger2_joint" value="0.015" />
+    <joint name="finger1_joint" value="0.0" />
+    <joint name="finger2_joint" value="0.0" />
   </group_state>
   <group_state name="close" group="gripper_group">
-    <joint name="finger1_joint" value="-0.008" />
-    <joint name="finger2_joint" value="-0.008" />
+    <joint name="finger1_joint" value="0.04" />
+    <joint name="finger2_joint" value="0.04" />
   </group_state>
   <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
   <end_effector name="end_effector_cobot" group="gripper_group" parent_group="arm_group" parent_link="TCP" />
