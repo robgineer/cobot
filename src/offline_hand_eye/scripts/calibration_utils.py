@@ -204,3 +204,30 @@ def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize):
     hand_camera_qwxyz = mat2quat(hand_camera_rot)
 
     return hand_camera_rot, hand_camera_tr, hand_camera_qwxyz
+
+def compute_TCP_image_position(frame, hand_camera_rot, hand_camera_tr):
+    """
+    Compute the image position of the TCP in the camera frame.
+    """
+    
+    base2gripper_trans = [frame['robot_transform']['translation']['x'], frame['robot_transform']['translation']['y'], frame['robot_transform']['translation']['z']]
+
+    base2gripper_quat_wxyz = [frame['robot_transform']['rotation']['w'], frame['robot_transform']['rotation']['x'], frame['robot_transform']['rotation']['y'], frame['robot_transform']['rotation']['z']]
+    base2gripper_rot = quat2mat(base2gripper_quat_wxyz)
+
+    gripper2base_rot = np.linalg.inv(base2gripper_rot)
+    gripper2base_trans = -gripper2base_rot @ base2gripper_trans
+
+    cam2base_rot = hand_camera_rot
+    cam2base_trans = hand_camera_tr
+
+    base2cam_rot = np.linalg.inv(cam2base_rot)
+    base2cam_trans = -base2cam_rot @ cam2base_trans
+
+    TCP_world = gripper2base_rot @ np.array([0,0,0]).reshape(3, 1) +  np.array(gripper2base_trans).reshape(3, 1)
+
+    d = np.array(frame['camera_info']['d'])
+    K = np.array(frame['camera_info']['k']).reshape(3, 3)
+
+    img_points, _ = cv2.projectPoints(objectPoints=TCP_world, rvec=base2cam_rot, tvec=base2cam_trans, cameraMatrix=K, distCoeffs=d)
+    return img_points.reshape(2,), TCP_world
