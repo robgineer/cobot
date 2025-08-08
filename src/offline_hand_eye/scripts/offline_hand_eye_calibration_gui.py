@@ -35,7 +35,7 @@ from apriltag import apriltag
 # Add the offline_hand_eye directory to the path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../offline_hand_eye")))
 from calib_io_utils import save_calibration, load_calibration
-from calibration_utils import load_and_detect, show_detections, compute_hand_eye_calibration
+from calibration_utils import load_and_detect, show_detections, compute_hand_eye_calibration, frame_is_valid
 
 
 class FrameViewer:
@@ -71,11 +71,15 @@ class FrameViewer:
         self.is_calibrated = False
 
         # Create the main figure and layout
-        self.fig = plt.figure(figsize=(14, 10))
+        self.fig = plt.figure(figsize=(16, 10))
         self.fig.suptitle('Interactive Frame Viewer for Hand-Eye Calibration', fontsize=16)
         
         # Main image axis
-        self.ax = plt.subplot2grid((4, 4), (0, 0), colspan=4, rowspan=3)
+        self.ax = plt.subplot2grid((4, 6), (0, 0), colspan=4, rowspan=3)
+        
+        # Text info axis for robot transform data
+        self.info_ax = plt.subplot2grid((4, 6), (0, 4), colspan=2, rowspan=3)
+        self.info_ax.axis('off')  # Hide axis for text display
         
         # Control panel area
         self.setup_controls()
@@ -219,24 +223,40 @@ class FrameViewer:
     def update_display(self):
         """Update the main display with current frame"""
         self.ax.clear()
+        self.info_ax.clear()
+        self.info_ax.axis('off')
         
         try:
             # Load and detect frame
             frame, gray, detections = load_and_detect(self.current_frame, self.data_path, self.detector)
-            
+            valid_frame = frame_is_valid(frame, detections)
+            if not valid_frame:
+                self.select_button.active = False  # Disable select button if frame is invalid
+            else:
+                self.select_button.active = True
+
             # Display the image with detections
             plt.sca(self.ax)
             self.ax.clear()
             show_detections(gray, detections, self.apriltag_family, show_legend=False, show_family=False)
 
+            # Display robot transform information in the info panel
+            self.display_robot_transform_info(frame, detections)
+
             # Update title with selection status
             selection_status = " ✓ SELECTED" if self.current_frame in self.selected_frames else ""
             detection_info = f" | {len(detections)} tags detected" if detections else " | No tags detected"
             
+            if not valid_frame:
+                color = 'red'
+            elif self.current_frame in self.selected_frames:
+                color = 'green'
+            else:
+                color = 'black'
             self.ax.set_title(
                 f'Frame {self.current_frame}{selection_status}{detection_info}', 
                 fontsize=14, 
-                color='green' if self.current_frame in self.selected_frames else 'black'
+                color=color
             )
             
             # Add colored border if frame is selected
@@ -251,6 +271,11 @@ class FrameViewer:
                         ha='center', va='center', transform=self.ax.transAxes,
                         bbox=dict(boxstyle="round,pad=0.5", facecolor="red", alpha=0.7))
             self.ax.set_title(f'Frame {self.current_frame} (ERROR)', color='red')
+            
+            # Show error in info panel as well
+            self.info_ax.text(0.5, 0.5, 'No transform data\navailable', 
+                             ha='center', va='center', transform=self.info_ax.transAxes,
+                             fontsize=12, color='red')
         
         # Update info text
         if not self.is_calibrated:
@@ -261,6 +286,63 @@ class FrameViewer:
             self.fig.suptitle(f'Interactive Frame Viewer | {info_text} | CALIBRATED', fontsize=14, color='green')
 
         plt.draw()
+    
+    def display_robot_transform_info(self, frame, detections):
+        """Display robot transform information in the info panel"""
+        try:
+            # Extract robot transform data
+            robot_transform = frame.get('robot_transform', {})
+            rotation = robot_transform.get('rotation', None)
+            translation = robot_transform.get('translation', None)
+            
+            # Format and display the information
+            info_text = f"Frame {self.current_frame}\n"
+            info_text += "=" * 35 + "\n\n"
+            
+            if rotation is not None:
+                info_text += "Rotation wxyz:\n"
+                info_text += f"  {rotation.get('w', None):.6f}\n"
+                info_text += f"  {rotation.get('x', None):.6f}\n"
+                info_text += f"  {rotation.get('y', None):.6f}\n"
+                info_text += f"  {rotation.get('z', None):.6f}\n"
+            else:
+                info_text += "Rotation wxyz: None\n"
+            
+            info_text += "\n"
+            
+            if translation is not None:
+                info_text += "Translation xyz:\n"
+                info_text += f"  {translation.get('x', None):.6f}\n"
+                info_text += f"  {translation.get('y', None):.6f}\n"
+                info_text += f"  {translation.get('z', None):.6f}\n"
+            else:
+                info_text += "Translation xyz: None\n"
+                
+            if detections is not None and len(detections) > 0:
+                info_text += "\nAprilTag Detections:\n"
+                for det in detections:
+                    info_text += f"  ID: {det['id']},\n  Center: {det['center'][0]:.1f}, {det['center'][1]:.1f}\n"
+            else:
+                info_text += "\nNo AprilTag detections found\n"
+                
+            # Add timestamp if available
+            timestamp = frame.get('timestamp', None)
+            if timestamp is not None:
+                info_text += f"\nTimestamp: {timestamp}"
+            
+            # Display the text
+            self.info_ax.text(0.05, 1.0, info_text, 
+                             ha='left', va='top', transform=self.info_ax.transAxes,
+                             fontsize=10, fontfamily='monospace',
+                             bbox=dict(boxstyle="round,pad=0.5", facecolor="lightgray", alpha=0.8))
+                        
+        except Exception as e:
+            # If there's an error extracting transform data, show a message
+            error_text = f"Error reading transform data:\n{str(e)}"
+            self.info_ax.text(0.5, 0.5, error_text, 
+                             ha='center', va='center', transform=self.info_ax.transAxes,
+                             fontsize=10, color='red',
+                             bbox=dict(boxstyle="round,pad=0.5", facecolor="lightyellow", alpha=0.8))
     
     def get_selected_frames(self):
         """Return the list of selected frames"""

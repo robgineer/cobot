@@ -4,6 +4,7 @@ from typing import List
 import os
 import threading
 import pickle
+import numpy as np
 
 import rclpy
 from rclpy.node import Node
@@ -112,6 +113,30 @@ class ImageSubscriber(Node):
         """Check if recording is active"""
         return self.recording_mode_ != RECORDING_OFF
 
+    def is_valid_transform(self, transform) -> bool:
+        """Check if the transform is valid (not None and contains necessary fields)"""
+        if transform is None:
+            self.get_logger().error('Robot transform is None, cannot process image')
+            return False
+        translation = [ transform['translation']['x'], \
+                        transform['translation']['y'], \
+                        transform['translation']['z']]
+        rotation = [transform['rotation']['w'], \
+                    transform['rotation']['x'], \
+                    transform['rotation']['y'], \
+                    transform['rotation']['z']]
+        if any(np.isnan(translation)) or any(np.isnan(rotation)):
+            self.get_logger().error("Invalid frame: Robot transform contains NaN values.")
+            return False
+        if any(np.isinf(translation)) or any(np.isinf(rotation)):
+            self.get_logger().error("Invalid frame: Robot transform contains infinite values.")
+            return False    
+        if np.allclose(translation, 0) and np.allclose(rotation, [1,0,0,0]):
+            self.get_logger().error("Invalid frame: Robot transform is all zeros.")
+            return False
+        
+        return True
+
     def image_callback(self, msg):
         if not self.is_recording_active():
             self.get_logger().debug('Recording is not active, ignoring image message')
@@ -141,9 +166,9 @@ class ImageSubscriber(Node):
                     robot = self.tf_buffer.lookup_transform(self.config['robot_effector_frame'],
                                                             self.config['robot_base_frame'], curr_time_corrected,
                                                             timeout)
-                if robot is None:
-                    self.get_logger().error('Robot transform is None, cannot process image')
-                    return                    
+                if not self.is_valid_transform(robot):
+                    self.get_logger().error('Robot transform is invalid, cannot process image')
+                    return
                 
                 if self.config['tracking_marker_frame'] == NO_TRACKER_MARKER_STR:
                     tracking = None
@@ -152,8 +177,8 @@ class ImageSubscriber(Node):
                     tracking = self.tf_buffer.lookup_transform(self.config['tracking_base_frame'],
                                                                self.config['tracking_marker_frame'], curr_time,
                                                                timeout)
-                    if tracking is None:
-                        self.get_logger().error('Tracking transform is None, cannot process image')
+                    if not self.is_valid_transform(tracking):
+                        self.get_logger().error('Tracking transform is invalid, cannot process image')
                         return
 
             except tf2_ros.ExtrapolationException as e:

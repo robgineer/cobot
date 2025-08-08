@@ -16,7 +16,49 @@ def load_and_detect(frame_count, data_root, detector):
     detections = detector.detect(gray)
     
     return frame, gray, detections
+
+def frame_is_valid(frame, detections):
+    if detections is None:
+        print("Invalid frame: no detection.")
+        return False
+    if len(detections) == 0:
+        print("Invalid frame: no detection.")
+        return False
+    elif len(detections) > 1:
+        print("Warning: Multiple detections found, using the first one.")
+    if 'center' not in detections[0] or 'id' not in detections[0]:
+        print("Invalid frame: no center or id in detection.")
+        return False
+    if detections[0]['id'] < 0:
+        print("Invalid frame: invalid detection id.")
+        return False
     
+    if frame.get('robot_transform') is None:
+        print("Invalid frame: No robot transform data found.")
+        return False
+    if 'translation' not in frame['robot_transform'] or 'rotation' not in frame['robot_transform']:
+        print("Invalid frame: Robot transform data is incomplete.")
+        return False
+    translation = [frame['robot_transform']['translation']['x'], \
+                 frame['robot_transform']['translation']['y'], \
+                 frame['robot_transform']['translation']['z']]
+    rotation = [frame['robot_transform']['rotation']['w'], \
+                frame['robot_transform']['rotation']['x'], \
+                frame['robot_transform']['rotation']['y'], \
+                frame['robot_transform']['rotation']['z']]
+    if any(np.isnan(translation)) or any(np.isnan(rotation)):
+        print("Invalid frame: Robot transform contains NaN values.")
+        return False
+    if any(np.isinf(translation)) or any(np.isinf(rotation)):
+        print("Invalid frame: Robot transform contains infinite values.")
+        return False
+    if np.allclose(translation, 0) and np.allclose(rotation, [1,0,0,0]):
+        print("Invalid frame: Robot transform is all zeros.")
+        return False
+    
+    return True
+    
+
 def show_detections(gray, detections, apriltag_family, show_legend=True, show_family=True):
     plt.imshow(gray, cmap='gray')
     if show_family:
@@ -137,11 +179,9 @@ def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize):
 
     for frame_count in frame_samples:
         frame, gray, detections = load_and_detect(frame_count, data_root, detector)
-        if not detections:
-            print(f"No detections in frame {frame_count}")
+        if not frame_is_valid(frame, detections):
+            print(f"Warning: Skipping invalid frame {frame_count}")
             continue
-        if len(detections) > 1:
-            print(f"Warning: Multiple detections in frame {frame_count}, using the first one.")
             
         _, tvec_marker, rmat_marker = extract_pose_from_detection(frame, detections[0], tagsize)
         marker_camera_rot.append(rmat_marker)
