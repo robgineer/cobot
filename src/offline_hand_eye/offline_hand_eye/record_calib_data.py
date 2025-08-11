@@ -113,18 +113,19 @@ class ImageSubscriber(Node):
         """Check if recording is active"""
         return self.recording_mode_ != RECORDING_OFF
 
-    def is_valid_transform(self, transform) -> bool:
+    def is_valid_transform(self, t) -> bool:
         """Check if the transform is valid (not None and contains necessary fields)"""
-        if transform is None:
+        if t is None:
             self.get_logger().error('Robot transform is None, cannot process image')
             return False
-        translation = [ transform['translation']['x'], \
-                        transform['translation']['y'], \
-                        transform['translation']['z']]
-        rotation = [transform['rotation']['w'], \
-                    transform['rotation']['x'], \
-                    transform['rotation']['y'], \
-                    transform['rotation']['z']]
+        
+        translation = [ t.transform.translation.x, \
+                        t.transform.translation.y, \
+                        t.transform.translation.z]
+        rotation = [t.transform.rotation.w, \
+                    t.transform.rotation.x, \
+                    t.transform.rotation.y, \
+                    t.transform.rotation.z]
         if any(np.isnan(translation)) or any(np.isnan(rotation)):
             self.get_logger().error("Invalid frame: Robot transform contains NaN values.")
             return False
@@ -151,9 +152,14 @@ class ImageSubscriber(Node):
             return
         
         with self.mutex:
-            # todo: why is time correction needed?
-            curr_time = Time().from_msg(msg.header.stamp) 
-            curr_time_corrected = curr_time - Duration(seconds=2)
+            get_newest_transform = True
+            if get_newest_transform:
+                curr_time = Time() # i.e. zero
+                curr_time_corrected = Time() # i.e. zero
+            else:
+                # todo: why is time correction needed?
+                curr_time = Time().from_msg(msg.header.stamp) 
+                curr_time_corrected = curr_time - Duration(seconds=2)
             timeout = Duration(seconds=1)
 
             # cf https://github.com/marcoesposito1988/easy_handeye2
