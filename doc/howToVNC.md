@@ -66,3 +66,11 @@ This should look similar to this:
 ![](img/vnc_example.png)
 
 Done!
+
+## Running on a remote server
+
+You can also run the container on a remote machine via ssh. In order to see the VNC desktop on your local machine, you need to set up an ssh tunnel on your local machine:
+```
+ssh -N -f -L 6081:localhost:6080 <your-user-id>@<remote-machine>
+```
+Now start vscode on your local machine, connect to your remote server, and open the project in a devcontainer. You can than view the VNC desktop on your local browser at ``http://127.0.0.1:6081``.
