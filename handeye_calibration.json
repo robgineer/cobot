@@ -1,0 +1,49 @@
+{
+  "calibration_type": "eye_on_base",
+  "robot_base_frame": "base_link",
+  "robot_effector_frame": "TCP",
+  "tracking_base_frame": "camera_color_optical_frame",
+  "translation": [
+    [
+      -0.6260287037726068
+    ],
+    [
+      -0.46355079538861454
+    ],
+    [
+      1.5376646326655592
+    ]
+  ],
+  "rotation_q_wxyz": [
+    0.06507728971768494,
+    0.02637870378119017,
+    0.9237891998787197,
+    0.37640752454920495
+  ],
+  "selected_samples": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+  ],
+  "data_file_path": "/mnt/data/cobot/realsense/calibration/calibdata_2025_08_11-11_51_22"
+}
