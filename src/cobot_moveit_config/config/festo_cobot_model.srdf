@@ -12,15 +12,25 @@
     <group name="arm_group">
         <chain base_link="base_link" tip_link="TCP"/>
     </group>
-    <group_state group="arm_group" name="balancer_mode">
-    <joint name="joint_0" value="0.156"/>
-    <joint name="joint_1" value="-1.56"/>
-    <joint name="joint_2" value="0.61"/>
-    <joint name="joint_3" value="-0.777"/>
-    <joint name="joint_4" value="1.56"/>
-    <joint name="joint_5" value="-1.56"/>
-    <joint name="joint_6" value="-0.4"/>
-  </group_state>
+    <group_state group="arm_group" name="home_pose">
+      <joint name="joint_0" value="0.0"/>
+      <joint name="joint_1" value="-1.56"/>
+      <joint name="joint_2" value="0.61"/>
+      <joint name="joint_3" value="-0.777"/>
+      <joint name="joint_4" value="1.56"/>
+      <joint name="joint_5" value="-1.56"/>
+      <joint name="joint_6" value="-0.4"/>
+    </group_state>
+
+    <group_state group="arm_group" name="init">
+      <joint name="joint_0" value="0.0"/>
+      <joint name="joint_1" value="0.0"/>
+      <joint name="joint_2" value="0.0"/>
+      <joint name="joint_3" value="0.0"/>
+      <joint name="joint_4" value="0.0"/>
+      <joint name="joint_5" value="0.0"/>
+      <joint name="joint_6" value="0.0"/>
+    </group_state>
 
   <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
   <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="base_link"/>
