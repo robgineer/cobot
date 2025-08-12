@@ -35,7 +35,7 @@ from apriltag import apriltag
 # Add the offline_hand_eye directory to the path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../offline_hand_eye")))
 from calib_io_utils import save_calibration, load_calibration
-from calibration_utils import load_and_detect, show_detections, compute_hand_eye_calibration, frame_is_valid
+from calibration_utils import load_and_detect, show_detections, compute_hand_eye_calibration, frame_is_valid, compute_TCP_image_position
 
 
 class FrameViewer:
@@ -69,6 +69,7 @@ class FrameViewer:
         self.calibration_output_file = calibration_output
         self.tagsize = tagsize
         self.is_calibrated = False
+        self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = None, None, None
 
         # Create the main figure and layout
         self.fig = plt.figure(figsize=(16, 10))
@@ -127,8 +128,8 @@ class FrameViewer:
         
         # Clear selection button
         clear_ax = plt.axes([0.58, 0.08, 0.12, 0.04])
-        self.clear_button = Button(clear_ax, 'Clear All')
-        self.clear_button.on_clicked(self.clear_selection)
+        self.clear_button = Button(clear_ax, 'Clear All/Select All')
+        self.clear_button.on_clicked(self.clear_select_all)
         
         # Run button
         run_ax = plt.axes([0.72, 0.08, 0.12, 0.04])
@@ -183,10 +184,14 @@ class FrameViewer:
         print(f"\nSelected frames ({len(selected_list)}): {selected_list}")
         return selected_list
     
-    def clear_selection(self, event):
+    def clear_select_all(self, event):
         """Clear all selected frames"""
-        self.selected_frames.clear()
-        print("All selections cleared")
+        if not self.selected_frames:
+            self.selected_frames = sorted(list(range(self.max_frames)))
+            print("All frames selected")
+        else:
+            self.selected_frames.clear()
+            print("All selections cleared")
         self.update_display()
     
     def run_calibration(self, event):
@@ -199,22 +204,22 @@ class FrameViewer:
             print("Error: At least 2 frames are required for calibration")
             return
 
-        hand_camera_rot, hand_camera_tr, hand_camera_qwxyz = \
+        self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = \
             compute_hand_eye_calibration(self.data_path, selected_list, self.detector, self.tagsize)
 
         print("Hand-Eye Calibration Results:")
         print("Rotation Matrix:")
-        print(hand_camera_rot)
+        print(self.hand_camera_rot)
         print("Quaternion (wxyz):")
-        print(hand_camera_qwxyz)
+        print(self.hand_camera_qwxyz)
         print("Translation Vector:")
-        print(hand_camera_tr)
+        print(self.hand_camera_tr)
         
         # Save all relevant calibration data
         with open(self.calibration_config_file, 'r') as f:
             calibration_config = json.load(f)
 
-        save_calibration(self.calibration_output_file, calibration_config, hand_camera_qwxyz.tolist(), hand_camera_tr.tolist(),
+        save_calibration(self.calibration_output_file, calibration_config, self.hand_camera_qwxyz.tolist(), self.hand_camera_tr.tolist(),
                          selected_list, self.data_path)
         print(f"Written calibration results to: {self.calibration_output_file}")
         self.is_calibrated = True
@@ -239,6 +244,10 @@ class FrameViewer:
             plt.sca(self.ax)
             self.ax.clear()
             show_detections(gray, detections, self.apriltag_family, show_legend=False, show_family=False)
+            
+            if self.is_calibrated:
+                img_points, _ = compute_TCP_image_position(frame, self.hand_camera_rot, self.hand_camera_tr)
+                plt.plot(img_points[0], img_points[1], 'g*', ms=12, label='TCP Projection')
 
             # Display robot transform information in the info panel
             self.display_robot_transform_info(frame, detections)
