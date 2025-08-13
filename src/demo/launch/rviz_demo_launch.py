@@ -315,6 +315,9 @@ def _setup_nodes(context, *args, **kwargs):
                     ]
                 )
             ),
+            launch_arguments={
+                "pointcloud.enable": "true",
+            }.items(),
             condition=(
                 IfCondition(
                     PythonExpression(
