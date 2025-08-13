@@ -412,13 +412,6 @@ class CalibrationGUI:
             # Get current configuration
             config = self.get_configuration()
             
-            # Add metadata
-            config["_metadata"] = {
-                "saved_at": datetime.now().isoformat(),
-                "gui_version": "1.0",
-                "available_tf_frames": self.tf_frame_ids
-            }
-            
             # Open file dialog
             filename = filedialog.asksaveasfilename(
                 title="Save Parameters",

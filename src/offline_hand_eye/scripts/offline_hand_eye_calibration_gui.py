@@ -15,16 +15,16 @@ Features:
 - Run calibration
 
 Usage:
-    ./offline_hand_eye_calibration_gui.py --data_path <path> --tagsize <size> --apriltag_family <family> --config <config_file> --output <output_file>
+    ./offline_hand_eye_calibration_gui.py --data_path <path> --config <config_file> --output <output_file>
     
 e.g.:
-    ./offline_hand_eye_calibration_gui.py --data_path ~/data/cobot/calibration/calibdata_2025_08_03-17_58_51 --tagsize 0.074 --config ../../../handeye_calibration_params.json --output ../../../handeye_calibration.json
+    ./offline_hand_eye_calibration_gui.py --data_path ~/data/cobot/calibration/calibdata_2025_08_03-17_58_51 --config ../../../handeye_calibration_params.json --output ../../../handeye_calibration.json
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from matplotlib.widgets import Slider, Button
+from matplotlib.widgets import Slider, Button, TextBox
 import os
 import glob
 import sys
@@ -46,30 +46,34 @@ class FrameViewer:
     for hand-eye calibration.
     """
     
-    def __init__(self, data_path, detector, apriltag_family, max_frames, calibration_config, calibration_output, tagsize=0.074):
+    def __init__(self, data_path, max_frames, calibration_config, calibration_output):
         """
         Initialize the Frame Viewer
         
         Args:
             data_path: Path to the calibration data directory
-            detector: AprilTag detector object
-            apriltag_family: AprilTag family name
             max_frames: Maximum number of frames available
             calibration_config: Path to the calibration config file
             calibration_output: Path to the calibration output file
-            tagsize: Size of the AprilTag in meters (default: 0.074)
         """
         self.data_path = data_path
-        self.detector = detector
-        self.apriltag_family = apriltag_family
         self.max_frames = max_frames
         self.current_frame = 0
         self.selected_frames = set()
         self.calibration_config_file = calibration_config
         self.calibration_output_file = calibration_output
-        self.tagsize = tagsize
+        self.tagsize = 0.14
         self.is_calibrated = False
         self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = None, None, None
+
+        # Available AprilTag families
+        self.apriltag_families = ['tag16h5', 'tag25h9', 'tag36h11', 'tagCircle21h7', 'tagCircle49h12', 
+                                  'tagCustom48h12', 'tagStandard41h12', 'tagStandard52h13']
+
+        # Initialize AprilTag detector
+        self.current_family_index = 2
+        self.apriltag_family = self.apriltag_families[self.current_family_index]
+        self.detector = apriltag(self.apriltag_family)
 
         # Create the main figure and layout
         self.fig = plt.figure(figsize=(16, 10))
@@ -96,16 +100,34 @@ class FrameViewer:
         print("- Space: Select/Unselect current frame")
         print("- 'q': Quit")
         print("- 's': Show selected frames")
+        print("- Edit tag size in the text box and press Enter")
+        print("- Click 'Family' button to cycle through AprilTag families")
+        print("- Click 'Update Detector' to apply new family setting")
     
     def setup_controls(self):
         """Setup all GUI controls"""
         # Frame slider
-        slider_ax = plt.axes([0.1, 0.15, 0.65, 0.03])
+        slider_ax = plt.axes([0.1, 0.22, 0.65, 0.03])
         self.frame_slider = Slider(
             slider_ax, 'Frame', 0, self.max_frames-1, 
             valinit=0, valfmt='%d', valstep=1
         )
         self.frame_slider.on_changed(self.update_frame_from_slider)
+        
+        # AprilTag size text box
+        tagsize_ax = plt.axes([0.1, 0.15, 0.08, 0.03])
+        self.tagsize_textbox = TextBox(tagsize_ax, 'Tag Size (m): ', initial=str(self.tagsize))
+        self.tagsize_textbox.on_submit(self.update_tagsize)
+        
+        # AprilTag family dropdown (implemented as cycling button)
+        family_ax = plt.axes([0.2, 0.15, 0.22, 0.03])
+        self.family_button = Button(family_ax, f'Family: {self.apriltag_families[self.current_family_index]}')
+        self.family_button.on_clicked(self.cycle_apriltag_family)
+        
+        # Update detector button
+        update_detector_ax = plt.axes([0.44, 0.15, 0.12, 0.03])
+        self.update_detector_button = Button(update_detector_ax, 'Update Detector')
+        self.update_detector_button.on_clicked(self.update_detector)
         
         # Navigation buttons
         prev_ax = plt.axes([0.1, 0.08, 0.08, 0.04])
@@ -136,6 +158,46 @@ class FrameViewer:
         self.run_button = Button(run_ax, 'Run Calibration')
         self.run_button.on_clicked(self.run_calibration)
 
+    def update_tagsize(self, text):
+        """Update AprilTag size from text input"""
+        try:
+            new_tagsize = float(text)
+            if new_tagsize > 0:
+                self.tagsize = new_tagsize
+                print(f"AprilTag size updated to: {self.tagsize} m")
+            else:
+                print("Error: Tag size must be positive")
+                self.tagsize_textbox.set_val(str(self.tagsize))
+        except ValueError:
+            print("Error: Invalid tag size format")
+            self.tagsize_textbox.set_val(str(self.tagsize))
+    
+    def cycle_apriltag_family(self, event):
+        """Cycle through available AprilTag families"""
+        self.current_family_index = (self.current_family_index + 1) % len(self.apriltag_families)
+        new_family = self.apriltag_families[self.current_family_index]
+        self.family_button.label.set_text(f'Family: {new_family}')
+        print(f"AprilTag family changed to: {new_family}")
+        plt.draw()
+    
+    def update_detector(self, event):
+        """Update the AprilTag detector with new family"""
+        new_family = self.apriltag_families[self.current_family_index]
+        if new_family != self.apriltag_family:
+            try:
+                self.detector = apriltag(new_family)
+                self.apriltag_family = new_family
+                self.update_display()  # Refresh display with new detector
+                print(f"Detector updated to family: {new_family}")
+                
+            except Exception as e:
+                print(f"Error updating detector: {e}")
+                # Reset to previous family on error
+                if self.apriltag_family in self.apriltag_families:
+                    self.current_family_index = self.apriltag_families.index(self.apriltag_family)
+                    self.family_button.label.set_text(f'Family: {self.apriltag_family}')
+                    plt.draw()
+    
     def on_key_press(self, event):
         """Handle keyboard events"""
         if event.key == 'left' or event.key == 'a':
@@ -203,6 +265,11 @@ class FrameViewer:
         if len(selected_list) < 2:
             print("Error: At least 2 frames are required for calibration")
             return
+
+        print(f"Running calibration with:")
+        print(f"  - Tag size: {self.tagsize} m")
+        print(f"  - AprilTag family: {self.apriltag_family}")
+        print(f"  - Selected frames: {selected_list}")
 
         self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = \
             compute_hand_eye_calibration(self.data_path, selected_list, self.detector, self.tagsize)
@@ -363,10 +430,6 @@ def main():
     parser = argparse.ArgumentParser(description='Interactive Frame Viewer for Hand-Eye Calibration')
     parser.add_argument('--data_path', '-d', 
                        help='Path to calibration data directory')
-    parser.add_argument('--tagsize', '-t', type=float, default=0.074,
-                       help='Size of the AprilTag in meters (default: 0.074)')
-    parser.add_argument('--apriltag_family', '-f', default='tag36h11',
-                       help='AprilTag family (default: tag36h11)')
     parser.add_argument('--config', '-c', default='handeye_calibration_params.json',
                        help='Path to the calibration config file (default: handeye_calibration_params.json)')
     parser.add_argument('--output', '-o', default='handeye_calibration.json',
@@ -400,21 +463,13 @@ def main():
     print(f"Loading data from: {args.data_path}")
     print(f"Using calibration config: {args.config}")
     print(f"Saving calibration results to: {args.output}")
-    print(f"AprilTag size: {args.tagsize} m")
-    print(f"AprilTag family: {args.apriltag_family}")
     print(f"Num. frames: {num_frames}")
-
-    # Initialize AprilTag detector
-    detector = apriltag(args.apriltag_family)
     
     # Create and show the GUI
     viewer = FrameViewer(data_path=args.data_path, 
-                         detector=detector, 
-                         apriltag_family=args.apriltag_family, 
                          max_frames=num_frames,
                          calibration_config=args.config,
-                         calibration_output=args.output, 
-                         tagsize=args.tagsize)
+                         calibration_output=args.output)
 
     try:
         plt.show()
