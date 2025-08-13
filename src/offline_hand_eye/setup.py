@@ -15,7 +15,7 @@ setup(
     zip_safe=True,
     maintainer='ubuntu',
     maintainer_email='thao.dang@hs-esslingen.de',
-    description='TODO: Package description',
+    description='A ROS2 package for offline hand-eye calibration, including data recording and calibration publishing tools.',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
