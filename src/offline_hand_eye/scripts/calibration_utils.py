@@ -164,8 +164,16 @@ def extract_pose_from_detection(frame, detection, tagsize=0.074):
     cameraMatrix = np.array(frame['camera_info']['k']).reshape((3, 3))
     distortion_coeffs = np.array(frame['camera_info']['d']).reshape((1, 5))
 
-    retval, rvec, tvec = cv2.solvePnP(objectPoints, imagePoints, cameraMatrix, distortion_coeffs)
-    assert retval, "Error: solvePnP failed"
+    try:
+        retval, rvec, tvec = cv2.solvePnP(objectPoints, imagePoints, cameraMatrix, distortion_coeffs)
+        if not retval:
+            raise RuntimeError("Error: solvePnP failed")
+    except cv2.error as e:
+        print(f"cv2.solvePnP error: {e}")
+        raise
+    except Exception as e:
+        print(f"Unexpected error in solvePnP: {e}")
+        raise
     rmat, _ = cv2.Rodrigues(rvec)
 
     return rvec, tvec, rmat
@@ -207,8 +215,17 @@ def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, me
     }
     assert method_str.upper() in calibration_variants, f"Unknown calibration method: {method_str}"
     method = calibration_variants.get(method_str.upper(), cv2.CALIB_HAND_EYE_TSAI)
-    hand_camera_rot, hand_camera_tr = cv2.calibrateHandEye(hand_world_rot, hand_world_tr,
-                                                           marker_camera_rot, marker_camera_tr, method=method)
+    try:
+        hand_camera_rot, hand_camera_tr = cv2.calibrateHandEye(
+            hand_world_rot, hand_world_tr,
+            marker_camera_rot, marker_camera_tr, method=method
+        )
+    except cv2.error as e:
+        print(f"cv2.calibrateHandEye error: {e}")
+        raise
+    except Exception as e:
+        print(f"Unexpected error in calibrateHandEye: {e}")
+        raise
     hand_camera_qwxyz = mat2quat(hand_camera_rot)
 
     return hand_camera_rot, hand_camera_tr, hand_camera_qwxyz
