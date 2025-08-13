@@ -1,3 +1,8 @@
+"""
+Copyright (c) 2025, Thao Dang, Esslingen University.
+This file is part of the offline_hand_eye package (see https://github.com/robgineer/cobot).
+License: 3-clause BSD, see https://opensource.org/licenses/BSD-3-Clause
+"""
 import json
 
 def save_calibration(filename, calibration_config, hand_camera_qwxyz, hand_camera_tr, 

@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+"""
+Copyright (c) 2025, Thao Dang, Esslingen University.
+This file is part of the offline_hand_eye package (see https://github.com/robgineer/cobot).
+License: 3-clause BSD, see https://opensource.org/licenses/BSD-3-Clause
+"""
+
 from typing import List
 import os
 import threading
