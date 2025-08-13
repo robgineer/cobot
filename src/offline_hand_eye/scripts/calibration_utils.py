@@ -170,7 +170,7 @@ def extract_pose_from_detection(frame, detection, tagsize=0.074):
 
     return rvec, tvec, rmat
 
-def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize):
+def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, method_str='TSAI'):
     """
     Computes the hand-eye calibration using the specified frames and detector.
     """
@@ -198,9 +198,17 @@ def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize):
         hand_world_rot.append(rmat_robot)
         hand_world_tr.append(tvec_robot)
         
-    method = cv2.CALIB_HAND_EYE_TSAI
-    hand_camera_rot, hand_camera_tr = cv2.calibrateHandEye(hand_world_rot, hand_world_tr, 
-                                                        marker_camera_rot, marker_camera_tr, method=method)
+    calibration_variants = {
+        'TSAI': cv2.CALIB_HAND_EYE_TSAI,
+        'PARK': cv2.CALIB_HAND_EYE_PARK,
+        'HORAUD': cv2.CALIB_HAND_EYE_HORAUD,
+        'ANDREFF': cv2.CALIB_HAND_EYE_ANDREFF,
+        'DANIILIDIS': cv2.CALIB_HAND_EYE_DANIILIDIS
+    }
+    assert method_str.upper() in calibration_variants, f"Unknown calibration method: {method_str}"
+    method = calibration_variants.get(method_str.upper(), cv2.CALIB_HAND_EYE_TSAI)
+    hand_camera_rot, hand_camera_tr = cv2.calibrateHandEye(hand_world_rot, hand_world_tr,
+                                                           marker_camera_rot, marker_camera_tr, method=method)
     hand_camera_qwxyz = mat2quat(hand_camera_rot)
 
     return hand_camera_rot, hand_camera_tr, hand_camera_qwxyz

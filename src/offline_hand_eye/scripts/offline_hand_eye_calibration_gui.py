@@ -75,6 +75,10 @@ class FrameViewer:
         self.apriltag_family = self.apriltag_families[self.current_family_index]
         self.detector = apriltag(self.apriltag_family)
 
+        # Available calibration methods
+        self.calibration_methods = ['TSAI', 'PARK', 'HORAUD', 'ANDREFF', 'DANIILIDIS']
+        self.current_method_index = 0
+
         # Create the main figure and layout
         self.fig = plt.figure(figsize=(16, 10))
         self.fig.suptitle('Interactive Frame Viewer for Hand-Eye Calibration', fontsize=16)
@@ -128,7 +132,12 @@ class FrameViewer:
         update_detector_ax = plt.axes([0.44, 0.15, 0.12, 0.03])
         self.update_detector_button = Button(update_detector_ax, 'Update Detector')
         self.update_detector_button.on_clicked(self.update_detector)
-        
+
+        # Calibration method dropdown (implemented as cycling button)
+        method_ax = plt.axes([0.58, 0.15, 0.26, 0.03])
+        self.method_button = Button(method_ax, f'Calib Method: {self.calibration_methods[self.current_method_index]}')
+        self.method_button.on_clicked(self.cycle_calibration_method)
+
         # Navigation buttons
         prev_ax = plt.axes([0.1, 0.08, 0.08, 0.04])
         self.prev_button = Button(prev_ax, '◀ Prev')
@@ -179,6 +188,14 @@ class FrameViewer:
         self.family_button.label.set_text(f'Family: {new_family}')
         print(f"AprilTag family changed to: {new_family}")
         plt.draw()
+
+    def cycle_calibration_method(self, event):
+        """Cycle through available calibration methods"""
+        self.current_method_index = (self.current_method_index + 1) % len(self.calibration_methods)
+        new_method = self.calibration_methods[self.current_method_index]
+        self.method_button.label.set_text(f'Calib Method: {new_method}')
+        print(f"Calibration method changed to: {new_method}")
+        plt.draw()    
     
     def update_detector(self, event):
         """Update the AprilTag detector with new family"""
@@ -272,7 +289,8 @@ class FrameViewer:
         print(f"  - Selected frames: {selected_list}")
 
         self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = \
-            compute_hand_eye_calibration(self.data_path, selected_list, self.detector, self.tagsize)
+            compute_hand_eye_calibration(self.data_path, selected_list, self.detector, self.tagsize, 
+                                         method_str=self.calibration_methods[self.current_method_index])
 
         print("Hand-Eye Calibration Results:")
         print("Rotation Matrix:")
