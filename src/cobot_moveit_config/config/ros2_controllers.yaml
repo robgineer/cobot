@@ -1,7 +1,7 @@
 # This config file is used by ros2_control
 controller_manager:
   ros__parameters:
-    update_rate: 100  # Hz
+    update_rate: 10  # Hz
 
     arm_group_controller:
       type: joint_trajectory_controller/JointTrajectoryController
@@ -12,7 +12,10 @@ controller_manager:
     gripper_group_controller:
       type: position_controllers/GripperActionController
 
-    vacuum_gripper_group_controller:
+    vacuum_upper_joint_controller:
+      type: position_controllers/GripperActionController
+
+    vacuum_lower_joint_controller:
       type: position_controllers/GripperActionController
 
     joint_state_broadcaster:
@@ -54,6 +57,10 @@ gripper_group_controller:
   ros__parameters:
     joint: finger1_joint
 
-vacuum_gripper_group_controller:
+vacuum_upper_joint_controller:
    ros__parameters:
     joint: vacuum_up_joint
+
+vacuum_lower_joint_controller:
+   ros__parameters:
+    joint: vacuum_down_joint

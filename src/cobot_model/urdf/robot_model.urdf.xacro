@@ -475,33 +475,33 @@
         <child link="lin_axis" />
     </joint>
     <joint name="finger1_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.02 -0.065 0.065"/>
         <parent link="segment7" />
         <child link="finger1" />
-        <axis xyz="-1 0 0" />
-        <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
+        <axis xyz="1 0 0" />
+        <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.029" />
     </joint>
     <joint name="finger2_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.02 -0.065 0.065"/>
         <parent link="segment7" />
         <child link="finger2" />
-        <axis xyz="1 0 0" />
-        <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.015" />
+        <axis xyz="-1 0 0" />
+        <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.029" />
         <mimic joint="finger1_joint" />
     </joint>
     <joint name="vacuum_up_joint" type="prismatic">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
         <parent link="segment7"/>
         <child link="vacuum_gripper_up"/>
+        <!-- The head of the cobot is rotated by 45deg => joint moves in two directions -->
         <axis xyz="0 1 1"/>
-        <limit effort="30.0" lower="-0.01" upper="0.035" velocity="0.1"/>
+        <limit effort="30.0" lower="-0.01" upper="0.036" velocity="0.1"/>
     </joint>
     <joint name="vacuum_down_joint" type="prismatic">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
         <parent link="segment7"/>
         <child link="vacuum_gripper_down"/>
         <axis xyz="0 1 1"/>
-        <limit effort="30.0" lower="-0.01" upper="0.035" velocity="0.1"/>
-        <mimic joint="vacuum_up_joint"/>
+        <limit effort="30.0" lower="-0.01" upper="0.036" velocity="0.1"/>
     </joint>
 </robot>
