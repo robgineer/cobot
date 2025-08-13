@@ -9,9 +9,16 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import os
+import sys
 
-from apriltag import apriltag
-
+# The apriltag package is required for AprilTag detection.
+# Install it with e.g.: conda install conda-forge::apriltag
+try:
+    from apriltag import apriltag
+except ImportError as e:
+    print("Error: The 'apriltag' package is required but not installed.")
+    print("Install it with: conda install conda-forge::apriltag")
+    sys.exit(1)
 
 def load_and_detect(frame_count, data_root, detector):
     with open(os.path.join(data_root, "frame_%04d.pkl" % frame_count), "rb") as input_file:
