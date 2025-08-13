@@ -151,7 +151,7 @@ def mat2quat(M):
         q *= -1
     return q
 
-def extract_pose_from_detection(frame, detection, tagsize=0.074):
+def extract_pose_from_detection(frame, detection, tagsize=0.14):
     objectPoints = np.array([
         [-tagsize / 2, -tagsize / 2, 0], # left bottom
         [+tagsize / 2, -tagsize / 2, 0], # right bottom
