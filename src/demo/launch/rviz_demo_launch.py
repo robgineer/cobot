@@ -280,7 +280,19 @@ def _setup_nodes(context, *args, **kwargs):
             executable="spawner",
             output="log",
             arguments=[
-                "vacuum_gripper_group_controller",
+                "vacuum_upper_joint_controller",
+                "--ros-args",
+                "--log-level",
+                log_level,
+            ],
+            parameters=[{"use_sim_time": use_sim_time}],
+        ),
+        Node(
+            package="controller_manager",
+            executable="spawner",
+            output="log",
+            arguments=[
+                "vacuum_lower_joint_controller",
                 "--ros-args",
                 "--log-level",
                 log_level,
@@ -315,6 +327,9 @@ def _setup_nodes(context, *args, **kwargs):
                     ]
                 )
             ),
+            launch_arguments={
+                "pointcloud.enable": "true",
+            }.items(),
             condition=(
                 IfCondition(
                     PythonExpression(
