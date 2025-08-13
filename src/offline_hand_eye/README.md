@@ -126,19 +126,40 @@ cd scripts
 
 ## Publish results
 
-After the calibration has been computed, you can publish the resulting TFs:
+After the calibration has been computed, you can publish the resulting TFs. Start the environment:
+
+```bash
+ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
+```
+
+and publish the calibrated TFs:
 
 ```bash
 ros2 run offline_hand_eye calib_publisher --ros-args -p calibration_file:=handeye_calibration.json
 ```
 
-Run
+Now, run
 
 ```bash
 ros2 run tf2_ros tf2_echo base_link camera_bottom_screw_frame
 ```
 
-to print the extrinsic calibration in the console. You may also use this output to adjust the camera transform in <cobot_model/urdf/festo_cobot_model.urdf.xacro>.
+to print the extrinsic calibration in the console, e.g.
+
+```
+At time 0.0
+- Translation: [-0.659, -0.459, 1.551]
+- Rotation: in Quaternion [0.695, 0.604, -0.255, 0.295]
+- Rotation: in RPY (radian) [2.997, 0.789, 1.371]
+- Rotation: in RPY (degree) [171.701, 45.233, 78.552]
+- Matrix:
+  0.140  0.990  0.002 -0.659
+  0.690 -0.096 -0.717 -0.459
+ -0.710  0.102 -0.697  1.551
+  0.000  0.000  0.000  1.000
+```
+
+You may also use this translation and rotation in RPY (radian) to adjust the camera transform in <cobot_model/urdf/festo_cobot_model.urdf.xacro>.
 
 ### For future use: running tag detectors online
 
