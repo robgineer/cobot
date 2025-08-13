@@ -260,5 +260,6 @@ def compute_TCP_image_position(frame, hand_camera_rot, hand_camera_tr):
     d = np.array(frame['camera_info']['d'])
     K = np.array(frame['camera_info']['k']).reshape(3, 3)
 
-    img_points, _ = cv2.projectPoints(objectPoints=TCP_world, rvec=base2cam_rot, tvec=base2cam_trans, cameraMatrix=K, distCoeffs=d)
+    base2cam_rvec, _ = cv2.Rodrigues(base2cam_rot)
+    img_points, _ = cv2.projectPoints(objectPoints=TCP_world, rvec=base2cam_rvec, tvec=base2cam_trans, cameraMatrix=K, distCoeffs=d)
     return img_points.reshape(2,), TCP_world
