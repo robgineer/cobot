@@ -39,6 +39,10 @@ RUN apt-get update
 RUN apt-get install -y ros-jazzy-librealsense2*
 # pyaudio
 RUN apt-get install -y python3-pyaudio
+# marker detection
+RUN apt-get install -y ros-jazzy-apriltag-ros
+# ros2 message converter
+RUN apt-get install -y ros-jazzy-rclpy-message-converter
 
 ## install xpra (with latest version) ##
 RUN wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc \
@@ -55,7 +59,7 @@ ARG GROUP_ID=1000
 
 RUN if [ "$USERNAME" == "runner" ] ; then \
     echo "Running in GitHub Actions, skipping user creation." ; \
-elif [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
+    elif [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
     # create the user
     groupadd --gid $GROUP_ID $USERNAME && \
     useradd --uid $USER_ID --gid $GROUP_ID -m $USERNAME && \
@@ -65,7 +69,7 @@ elif [ "$USERNAME" != "*IAmNotAUser*" ] ; then \
     chmod 0440 /etc/sudoers.d/$USERNAME && \
     # create directories required for xpra logging
     mkdir -p /run/user/$USER_ID && chown $USERNAME /run/user/$USER_ID ; \
-fi
+    fi
 
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

@@ -8,6 +8,7 @@ docker/bash/.bash_history
 install/
 log/
 build/
+data/
 
 # Ignore generated docs
 *.dox

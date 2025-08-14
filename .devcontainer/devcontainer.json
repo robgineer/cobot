@@ -15,6 +15,7 @@
     ],
     "remoteUser": "ubuntu",
     "overrideCommand": false,
+    "privileged": true,
     "runArgs": [
         "--hostname=ros2-vnc-docker",
         "--shm-size=512m",
@@ -22,7 +23,9 @@
         "-v",
         "./docker/bash:/home/ubuntu/bash",
         "--security-opt",
-        "seccomp=unconfined"
+        "seccomp=unconfined",
+        "-v",
+        "/mnt/data/cobot:/workspace/data"
     ],
     "postCreateCommand": "cat .devcontainer/bashrc >> ~/.bashrc"
 }

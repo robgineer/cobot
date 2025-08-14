@@ -1,0 +1,43 @@
+{
+  "calibration_type": "eye_on_base",
+  "camera_image_topic": "/camera/camera/color/image_raw",
+  "camera_info_topic": "/camera/camera/color/camera_info",
+  "robot_base_frame": "base_link",
+  "robot_effector_frame": "TCP",
+  "tracking_base_frame": "camera_color_optical_frame",
+  "tracking_marker_frame": "none - compute offline",
+  "storage_root": "/workspace/data/realsense/calibration",
+  "_metadata": {
+    "saved_at": "2025-08-08T11:36:59.044891",
+    "gui_version": "1.0",
+    "available_tf_frames": [
+      "TCP",
+      "base_link",
+      "camera_bottom_screw_frame",
+      "camera_color_frame",
+      "camera_color_optical_frame",
+      "camera_depth_frame",
+      "camera_depth_optical_frame",
+      "camera_infra1_frame",
+      "camera_infra1_optical_frame",
+      "camera_infra2_frame",
+      "camera_infra2_optical_frame",
+      "camera_link",
+      "camera_usb_plug_link",
+      "finger1",
+      "finger2",
+      "lin_axis",
+      "lin_axis_carriage",
+      "segment1",
+      "segment2",
+      "segment3",
+      "segment4",
+      "segment5",
+      "segment6",
+      "segment7",
+      "vacuum_gripper_down",
+      "vacuum_gripper_up",
+      "world"
+    ]
+  }
+}
