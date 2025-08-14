@@ -191,7 +191,7 @@ def extract_pose_from_detection(frame, detection, tagsize=0.14):
 
     return rvec, tvec, rmat
 
-def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, method_str='TSAI'):
+def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, method_str='PARK'):
     """
     Computes the hand-eye calibration using the specified frames and detector.
     """
@@ -270,3 +270,128 @@ def compute_TCP_image_position(frame, hand_camera_rot, hand_camera_tr):
     base2cam_rvec, _ = cv2.Rodrigues(base2cam_rot)
     img_points, _ = cv2.projectPoints(objectPoints=TCP_world, rvec=base2cam_rvec, tvec=base2cam_trans, cameraMatrix=K, distCoeffs=d)
     return img_points.reshape(2,), TCP_world
+
+def compute_target_to_gripper_transform(hand_camera_rot, hand_camera_tr, data_root, frame_samples, detector, tagsize):
+    """
+    Compute the 3D transform from the calibration target to the gripper coordinate frame.
+    Estimate is obtained by computing this transform for each frame and averaging the results (in 3d translation and 3d rotation vector space).
+    
+    Returns:
+        (rvec_target_to_gripper, tvec_target_to_gripper): rotation and translation vectors
+    """    
+    b_T_c = np.eye(4)
+    b_T_c[:3, :3] = hand_camera_rot
+    b_T_c[:3, 3] = hand_camera_tr.flatten()
+
+    tvecs_target_to_gripper = []
+    rvecs_target_to_gripper = []
+
+    # estimate target to gripper transform in each frame
+    for frame_count in frame_samples:
+        frame, _, detections = load_and_detect(frame_count, data_root, detector)
+        if not frame_is_valid(frame, detections):
+            print(f"Warning: Skipping invalid frame {frame_count}")
+            continue
+            
+        _, tvec_marker, rmat_marker = extract_pose_from_detection(frame, detections[0], tagsize)        
+        c_T_t = np.eye(4)
+        c_T_t[:3, :3] = rmat_marker
+        c_T_t[:3, 3] = tvec_marker.flatten()
+
+        tvec_robot = np.array([frame['robot_transform']['translation']['x'], 
+                            frame['robot_transform']['translation']['y'], 
+                            frame['robot_transform']['translation']['z']]).reshape((3, 1))
+        quat_wxyz_robot = np.array([frame['robot_transform']['rotation']['w'], 
+                                    frame['robot_transform']['rotation']['x'], 
+                                    frame['robot_transform']['rotation']['y'], 
+                                    frame['robot_transform']['rotation']['z']])
+        rmat_robot = quat2mat(quat_wxyz_robot)
+        
+        g_T_b = np.eye(4)
+        g_T_b[:3, :3] = rmat_robot 
+        g_T_b[:3, 3] = tvec_robot.flatten()     
+
+        g_T_t = g_T_b @ b_T_c @ c_T_t
+        rmat_target_to_gripper = g_T_t[:3, :3]
+        rvec_target_to_gripper, _ = cv2.Rodrigues(rmat_target_to_gripper)
+        tvec_target_to_gripper = g_T_t[:3, 3].reshape((3, 1))
+
+        tvecs_target_to_gripper.append(tvec_target_to_gripper)
+        rvecs_target_to_gripper.append(rvec_target_to_gripper)
+
+    # average in 3D translation and rotation vector space
+    rvec_target_to_gripper = np.zeros((3,1))
+    tvec_target_to_gripper = np.zeros((3,1))
+    for i in range(len(tvecs_target_to_gripper)):
+        rvec_target_to_gripper += rvecs_target_to_gripper[i]
+        tvec_target_to_gripper += tvecs_target_to_gripper[i]
+
+    rvec_target_to_gripper /= len(tvecs_target_to_gripper)
+    tvec_target_to_gripper /= len(tvecs_target_to_gripper)
+    
+    return rvec_target_to_gripper, tvec_target_to_gripper
+
+def compute_target_image_position(frame, hand_camera_rot, hand_camera_tr, target2gripper_rvec, target2gripper_trans, tagsize):
+    """
+    Compute the image positions of the calibration target.
+    Returns: 
+        Target image corners in order: left bottom, right bottom, right top, left top.
+    """
+    objectPoints = np.array([
+        [-tagsize / 2, -tagsize / 2, 0], # left bottom
+        [+tagsize / 2, -tagsize / 2, 0], # right bottom
+        [+tagsize / 2, +tagsize / 2, 0], # right top
+        [-tagsize / 2, +tagsize / 2, 0], # left top
+    ], dtype=np.float64)
+    
+    base2gripper_trans = [frame['robot_transform']['translation']['x'], frame['robot_transform']['translation']['y'], frame['robot_transform']['translation']['z']]
+    base2gripper_quat_wxyz = [frame['robot_transform']['rotation']['w'], frame['robot_transform']['rotation']['x'], frame['robot_transform']['rotation']['y'], frame['robot_transform']['rotation']['z']]
+    base2gripper_rot = quat2mat(base2gripper_quat_wxyz)
+
+    gripper2base_rot = np.linalg.inv(base2gripper_rot)
+    gripper2base_trans = -gripper2base_rot @ base2gripper_trans
+
+    cam2base_rot = hand_camera_rot
+    cam2base_trans = hand_camera_tr
+
+    base2cam_rot = np.linalg.inv(cam2base_rot)
+    base2cam_trans = -base2cam_rot @ cam2base_trans
+    base2cam_rvec, _ = cv2.Rodrigues(base2cam_rot)
+    
+    target2gripper_rot, _ = cv2.Rodrigues(target2gripper_rvec)
+    XC_gripper = target2gripper_rot @ np.transpose(objectPoints) +  np.array(target2gripper_trans).reshape(3, 1)
+    XC_world = gripper2base_rot @ XC_gripper +  np.array(gripper2base_trans).reshape(3, 1)
+
+    d = np.array(frame['camera_info']['d'])
+    K = np.array(frame['camera_info']['k']).reshape(3, 3)
+
+    img_points, _ = cv2.projectPoints(objectPoints=XC_world, rvec=base2cam_rvec, tvec=base2cam_trans, cameraMatrix=K, distCoeffs=d)
+    img_points = np.squeeze(img_points)
+    assert img_points.shape == (4, 2), f"Expected 4 points, got {img_points.shape}"
+
+    return img_points
+
+def compute_reprojection_error_mean_max(hand_camera_rot, hand_camera_tr, data_root, frame_samples, detector, target2gripper_rvec, target2gripper_trans, tagsize):
+    """
+    Compute the mean and max reprojection error for the calibration frames.
+
+    Returns:
+        (mean_error, max_error)
+    """
+    dist_norms = []
+    for frame_count in frame_samples:
+        frame, gray, detections = load_and_detect(frame_count, data_root, detector)
+        if not frame_is_valid(frame, detections):
+            print(f"Warning: Skipping invalid frame {frame_count}")
+            continue
+
+        xc_proj = compute_target_image_position(frame, hand_camera_rot, hand_camera_tr, target2gripper_rvec, target2gripper_trans, tagsize)
+        dist = xc_proj - detections[0]['lb-rb-rt-lt']
+        dist_norm = np.sqrt(np.sum(dist * dist, axis=1)).tolist()
+        dist_norms.extend(dist_norm)
+        #print(f'. difference projected to detected: {dist}')
+        #print(f'. distance: {dist_norm}')
+        
+    if dist_norms:
+        return np.mean(dist_norms), np.max(dist_norms)
+    return None, None
