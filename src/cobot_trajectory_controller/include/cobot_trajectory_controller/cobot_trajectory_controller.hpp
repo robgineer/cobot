@@ -154,7 +154,7 @@ namespace cobot_trajectory_controller
      * Resampled trajectory point:     0     1     2
      * -----------------------------------------------
      * Resampled joint_1 pos (rad):   0.4   1.0   1.6
-     * Resampled joint_1 pos (rad):   0.4   1.0   1.0
+     * Resampled joint_2 pos (rad):   0.4   1.0   1.0
      *
      * Note: in practice all joints move with the same velocity
      * (we have defined the same limits for each joint in the configurations)

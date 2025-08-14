@@ -33,7 +33,7 @@ MoveIt Simple Controller Manager
                 ↓
 ros2_control controller
                 ↓
-HardwareInterface (this package)
+HardwareInterface
 ```
 The ROS2 controllers are designed to send position commands to the hardware in real time; which is not suitable for the Cobot. 
 

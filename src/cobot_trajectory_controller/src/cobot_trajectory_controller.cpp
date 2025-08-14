@@ -121,7 +121,6 @@ namespace cobot_trajectory_controller
     {
       if (command_interfaces_[index].get_name() == "cobot_api/acknowledge_error")
       {
-
         acknowledge_error_command_index_ = index;
       }
       if (command_interfaces_[index].get_name() == "cobot_api/request_abort")
@@ -212,11 +211,11 @@ namespace cobot_trajectory_controller
     trajectory_msgs::msg::JointTrajectory resampled_trajectory;
     // always add last point of trajectory (this is the one we absolutely need)
     resampled_trajectory.points.push_back(trajectory.points[reference_point_index]);
-    // iterate backwards through the trajectory points starting from the last point
-    for (int current_point_index = trajectory.points.size() - 1; current_point_index >= 0; current_point_index--)
+    // iterate backwards through the trajectory points starting from the point before last
+    for (int current_point_index = trajectory.points.size() - 2; current_point_index >= 0; current_point_index--)
     {
       const auto &reference_point = trajectory.points[reference_point_index]; // initially the last point in the traj.
-      const auto &next_point = trajectory.points[current_point_index];
+      const auto &next_point = trajectory.points[current_point_index];        // initially the point before the last point
       // create potential new point
       trajectory_msgs::msg::JointTrajectoryPoint new_point;
       new_point.positions.resize(trajectory.joint_names.size()); // to access the joint positions via index
