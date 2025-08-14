@@ -1,0 +1,6 @@
+<library path="cobot_control_panel">
+  <class name="cobot_rviz_plugins/CobotControlPanel"
+         type="cobot_rviz_plugins::CobotControlPanel" base_class_type="rviz_common::Panel">
+    <description>Cobot Control Panel for rviz.</description>
+  </class>
+</library>
