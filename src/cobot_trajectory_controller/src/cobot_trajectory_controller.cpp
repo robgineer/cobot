@@ -50,6 +50,12 @@ namespace cobot_trajectory_controller
     {
       command_interface_configuration.names.push_back(joint + "/position");
     }
+    // claim custom commands that are out of the scope of MoveIt2
+    // => we send these commands in the cobot_control_panel (rviz) and forward them to the hardware interface
+    // they are not joints!
+    command_interface_configuration.names.push_back("cobot_api/acknowledge_error");
+    command_interface_configuration.names.push_back("cobot_api/request_abort");
+
     return command_interface_configuration;
   }
 
@@ -65,6 +71,7 @@ namespace cobot_trajectory_controller
       state_interface_configuration.names.push_back(joint + "/position");
       state_interface_configuration.names.push_back(joint + "/velocity");
     }
+
     return state_interface_configuration;
   }
 
@@ -90,13 +97,48 @@ namespace cobot_trajectory_controller
       return controller_interface::CallbackReturn::ERROR;
     }
     // initialise the singleton buffer
-    // TODO @rharbach: think of error handling
     external_trajectory_buffer_ = SharedTrajectoryBuffer::getTrajectoryBuffer();
     // declare the execution mode
     get_node()->declare_parameter<std::string>("execution_mode", execution_mode_);
     // declare the minimum resampling delta
     get_node()->declare_parameter<float>("resampling_delta", resampling_delta_);
+    // enable communication with control panel
+    setup_service_for_rviz_panel();
 
+    return controller_interface::CallbackReturn::SUCCESS;
+  }
+
+  controller_interface::CallbackReturn CobotTrajectoryController::on_activate(const rclcpp_lifecycle::State &)
+  {
+    // we need to identify the indexes of the custom commands
+    // they are included in the command_interfaces_ (the major communication channel between this controller and the hw interface)
+    // since we can have a different number of joints, we need to know at which position the custom commands are stored
+
+    // set to invalid value
+    acknowledge_error_command_index_ = request_abort_command_index_ = command_interfaces_.size() + 1;
+
+    for (auto index = 0; index < command_interfaces_.size(); index++)
+    {
+      if (command_interfaces_[index].get_name() == "cobot_api/acknowledge_error")
+      {
+
+        acknowledge_error_command_index_ = index;
+      }
+      if (command_interfaces_[index].get_name() == "cobot_api/request_abort")
+      {
+        request_abort_command_index_ = index;
+      }
+    }
+    if (acknowledge_error_command_index_ == command_interfaces_.size() + 1)
+    {
+      RCLCPP_ERROR(*local_logger_, "Could not set acknowledge_error command. Make sure the hardware interface is exporting it.");
+      return controller_interface::CallbackReturn::ERROR;
+    }
+    if (request_abort_command_index_ == command_interfaces_.size() + 1)
+    {
+      RCLCPP_ERROR(*local_logger_, "Could not set request_abort command. Make sure the hardware interface is exporting it.");
+      return controller_interface::CallbackReturn::ERROR;
+    }
     return controller_interface::CallbackReturn::SUCCESS;
   }
 
@@ -145,6 +187,13 @@ namespace cobot_trajectory_controller
       internal_trajectory_buffer_.writeFromNonRT(std::nullopt);
     }
 
+    // write the custom commands
+    const auto ack_error_set = command_interfaces_[acknowledge_error_command_index_].set_value(acknowledge_error_);
+    const auto req_abort_set = command_interfaces_[request_abort_command_index_].set_value(request_abort_);
+    // reset the command value (so the hardware interface will execute the command only once)
+    acknowledge_error_ = 0.0;
+    request_abort_ = 0.0;
+
     return controller_interface::return_type::OK;
   }
 
@@ -168,7 +217,6 @@ namespace cobot_trajectory_controller
     {
       const auto &reference_point = trajectory.points[reference_point_index]; // initially the last point in the traj.
       const auto &next_point = trajectory.points[current_point_index];
-
       // create potential new point
       trajectory_msgs::msg::JointTrajectoryPoint new_point;
       new_point.positions.resize(trajectory.joint_names.size()); // to access the joint positions via index
@@ -206,12 +254,52 @@ namespace cobot_trajectory_controller
     return resampled_trajectory;
   }
 
-  controller_interface::CallbackReturn CobotTrajectoryController::on_init()
+  void CobotTrajectoryController::setup_service_for_rviz_panel()
   {
-    // not required and hence not implemented
-    return controller_interface::CallbackReturn::SUCCESS;
+    // this service represents a communication channel between the cobot_control_panel in rviz and this controller
+    cobot_api_service_ =
+        get_node()->create_service<CobotApiSrv>(
+            "cobot_api_service",
+            [this](const std::shared_ptr<CobotApiSrv::Request> request, std::shared_ptr<CobotApiSrv::Response> response)
+            {
+              /**** Trajectory settings (handled in this controller) ****/
+              // get execution mode request
+              auto full_trajectory_mode_requested = request->request_full_trajectory_mode;
+              // get current parameter value
+              get_node()->get_parameter("execution_mode", execution_mode_);
+              // change parameter only in case request does not correspond to the current parameter value
+              if (full_trajectory_mode_requested == false && execution_mode_ == "full_trajectory")
+              {
+                execution_mode_ = "single_point";
+                get_node()->set_parameter(rclcpp::Parameter("execution_mode", execution_mode_));
+              }
+              else if (full_trajectory_mode_requested == true && execution_mode_ == "single_point")
+              {
+                execution_mode_ = "full_trajectory";
+                get_node()->set_parameter(rclcpp::Parameter("execution_mode", execution_mode_));
+              }
+              auto requested_resampling_delta = request->resampling_delta;
+              get_node()->get_parameter("resampling_delta", resampling_delta_);
+              if (requested_resampling_delta != resampling_delta_)
+              {
+                resampling_delta_ = requested_resampling_delta;
+                get_node()->set_parameter(rclcpp::Parameter("resampling_delta", resampling_delta_));
+              }
+              /**** Cobot API commands (handled in the hardware interface) ****/
+              if (request->acknowledge_error)
+              {
+                acknowledge_error_ = 1.0;
+              }
+              else if (request->request_abort)
+              {
+                request_abort_ = 1.0;
+              }
+              response->success = true;
+              response->message = "Commands accepted";
+            });
   }
-  controller_interface::CallbackReturn CobotTrajectoryController::on_activate(const rclcpp_lifecycle::State &)
+
+  controller_interface::CallbackReturn CobotTrajectoryController::on_init()
   {
     // not required and hence not implemented
     return controller_interface::CallbackReturn::SUCCESS;
