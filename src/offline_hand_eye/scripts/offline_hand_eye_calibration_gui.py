@@ -39,7 +39,7 @@ from apriltag import apriltag
 # Add the offline_hand_eye directory to the path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../offline_hand_eye")))
 from calib_io_utils import save_calibration, load_calibration
-from calibration_utils import load_and_detect, show_detections, compute_hand_eye_calibration, frame_is_valid, compute_TCP_image_position
+from calibration_utils import load_and_detect, show_detections, compute_hand_eye_calibration, frame_is_valid, compute_TCP_image_position, compute_target_to_gripper_transform, compute_target_image_position, compute_reprojection_error_mean_max
 
 
 class FrameViewer:
@@ -69,6 +69,7 @@ class FrameViewer:
         self.tagsize = 0.14
         self.is_calibrated = False
         self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = None, None, None
+        self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr = None, None
 
         # Available AprilTag families
         self.apriltag_families = ['tag16h5', 'tag25h9', 'tag36h11', 'tagCircle21h7', 'tagCircle49h12', 
@@ -81,7 +82,7 @@ class FrameViewer:
 
         # Available calibration methods
         self.calibration_methods = ['TSAI', 'PARK', 'HORAUD', 'ANDREFF', 'DANIILIDIS']
-        self.current_method_index = 0
+        self.current_method_index = 1
 
         # Create the main figure and layout
         self.fig = plt.figure(figsize=(16, 10))
@@ -291,6 +292,7 @@ class FrameViewer:
         print(f"  - Tag size: {self.tagsize} m")
         print(f"  - AprilTag family: {self.apriltag_family}")
         print(f"  - Selected frames: {selected_list}")
+        print(f"  - Method: {self.calibration_methods[self.current_method_index]}")
 
         self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = \
             compute_hand_eye_calibration(self.data_path, selected_list, self.detector, self.tagsize, 
@@ -304,6 +306,15 @@ class FrameViewer:
         print("Translation Vector:")
         print(self.hand_camera_tr)
         
+        # Compute target to gripper transformation (needed for reprojection error analysis)
+        self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr = \
+            compute_target_to_gripper_transform(self.hand_camera_rot, self.hand_camera_tr, self.data_path, selected_list, self.detector, self.tagsize)
+
+        # Compute overall reprojection error
+        mean_error, max_error = compute_reprojection_error_mean_max(self.hand_camera_rot, self.hand_camera_tr, self.data_path, selected_list, self.detector, 
+                                                                    self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr, self.tagsize)
+        print(f'Overall reprojection error: mean={mean_error:.2f}px, max={max_error:.2f}px')
+
         # Save all relevant calibration data
         with open(self.calibration_config_file, 'r') as f:
             calibration_config = json.load(f)
@@ -337,6 +348,10 @@ class FrameViewer:
             if self.is_calibrated:
                 img_points, _ = compute_TCP_image_position(frame, self.hand_camera_rot, self.hand_camera_tr)
                 plt.plot(img_points[0], img_points[1], 'g*', ms=12, label='TCP Projection')
+                
+                xc_proj = compute_target_image_position(frame, self.hand_camera_rot, self.hand_camera_tr, self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr, self.tagsize)
+                plt.plot(xc_proj[:,0], xc_proj[:,1], 'c.', ms=12, label='Target Projection')
+                plt.legend()                
 
             # Display robot transform information in the info panel
             self.display_robot_transform_info(frame, detections)
