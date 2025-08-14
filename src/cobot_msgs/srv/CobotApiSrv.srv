@@ -1,0 +1,7 @@
+bool request_full_trajectory_mode
+float32 resampling_delta
+bool acknowledge_error
+bool request_abort
+---
+bool success
+string message
