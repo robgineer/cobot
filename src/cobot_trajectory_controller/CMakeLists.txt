@@ -10,6 +10,7 @@ find_package(pluginlib REQUIRED)
 find_package(realtime_tools REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 find_package(cobot_hardware REQUIRED)
+find_package(cobot_msgs REQUIRED)
 
 include_directories(
   include
@@ -28,6 +29,7 @@ ament_target_dependencies(${PROJECT_NAME}
   realtime_tools
   trajectory_msgs
   cobot_hardware
+  cobot_msgs
 )
 pluginlib_export_plugin_description_file(controller_interface cobot_trajectory_controller_plugins.xml)
 

@@ -40,6 +40,8 @@
 #include <controller_interface/controller_interface.hpp>
 #include <control_msgs/action/follow_joint_trajectory.hpp>
 
+#include "cobot_msgs/srv/cobot_api_srv.hpp"
+
 namespace cobot_trajectory_controller
 {
   /*
@@ -52,12 +54,14 @@ namespace cobot_trajectory_controller
    * execution but either the final trajectory point or a list of trajectory points.
    *
    * Sending one point or the entire trajectory is configured using the parameter "execution_mode",
-   * which enables on demand changes of the trajectory execution.
+   * which enables on demand changes of the trajectory execution. This parameter can be updated
+   * in the cobot_control_panel in rviz.
    *
    * Note: the usage of a singleton buffer might violate some ROS2 control principles but
    * it is an acceptable tradeoff. Without it we would either need to send complex
    * data structures through the as double declared CommandInterfaces (via reinterpret_cast)
    * or implement a custom CommandInterfaces that can be handled by the ROS2 control manager.
+   *
    */
   class CobotTrajectoryController : public controller_interface::ControllerInterface
   {
@@ -77,6 +81,10 @@ namespace cobot_trajectory_controller
      */
     controller_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State &previous_state) override;
     /*
+     * Identifies the index of the custom commands that are used for sending custom cobot control commands.
+     */
+    controller_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State &previous_state) override;
+    /*
      * Cleanup
      */
     controller_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State &previous_state) override;
@@ -84,9 +92,8 @@ namespace cobot_trajectory_controller
      * Communication with the hardware interface. Fills a realtime buffer with a trajectory for the hardware interface.
      */
     controller_interface::return_type update(const rclcpp::Time &time, const rclcpp::Duration &period) override;
-    // not required pure virtual functions
+    // not required pure virtual function
     controller_interface::CallbackReturn on_init() override;
-    controller_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State &previous_state) override;
 
   private:
     using FollowJointTrajectory = control_msgs::action::FollowJointTrajectory;
@@ -102,8 +109,8 @@ namespace cobot_trajectory_controller
     rclcpp_action::GoalResponse goal_callback(
         const rclcpp_action::GoalUUID &uuid, std::shared_ptr<const FollowJointTrajectory::Goal> goal);
     /*
-     * Implementation is not required. We do not react on cancellations (the Cobot API does not contain a cancel implementation)
-     * and hence we simply return with rclcpp_action::CancelResponse:ACCEPT.
+     * Implementation is not required. We do not react on cancellations and hence we simply return with
+     * rclcpp_action::CancelResponse:ACCEPT.
      */
     rclcpp_action::CancelResponse cancel_callback(
         const std::shared_ptr<ServerGoalHandle> goal_handle);
@@ -146,7 +153,7 @@ namespace cobot_trajectory_controller
      * Resampled trajectory point:     0     1     2
      * -----------------------------------------------
      * Resampled joint_1 pos (rad):   0.4   1.0   1.6
-     * Resampled joint_1 pos (rad):   0.4   1.0   1.0
+     * Resampled joint_2 pos (rad):   0.4   1.0   1.0
      *
      * Note: in practice all joints move with the same velocity
      * (we have defined the same limits for each joint in the configurations)
@@ -157,7 +164,19 @@ namespace cobot_trajectory_controller
      *  resampled trajectory
      */
     trajectory_msgs::msg::JointTrajectory resample_trajectory(const trajectory_msgs::msg::JointTrajectory &trajectory);
-    // the minumum distance in rad between two trajectory points
+    /*
+     * Initiate the service (cobot_api_service_) between this controller
+     * and the rviz panel that sends out custom commands.
+     * Since communication between the rviz panel and this controller is rare, we are using a service.
+     *
+     * The service offers the following custom commands / settings:
+     * 1. set execution_mode (single_point or full_trajectory)
+     * 2. set the resampling_delta
+     * 3. acknowledge error in hardware
+     */
+    void setup_service_for_rviz_panel();
+
+    // The minumum distance in rad between two trajectory points (used in resample_trajectory())
     float resampling_delta_ = 0.53;
     // Logger of this node (to avoid calling get_node()->get_logger() frequently)
     std::unique_ptr<rclcpp::Logger> local_logger_;
@@ -172,6 +191,13 @@ namespace cobot_trajectory_controller
     realtime_tools::RealtimeBuffer<std::optional<JointTrajectory>> internal_trajectory_buffer_;
     // External buffer (singleton). Filled in case a new trajectory is available. Consumed by the hardware interface.
     std::shared_ptr<realtime_tools::RealtimeBuffer<std::optional<JointTrajectory>>> external_trajectory_buffer_;
+    // The instance of the communication service between the rviz panel and this controller
+    using CobotApiSrv = cobot_msgs::srv::CobotApiSrv;
+    rclcpp::Service<CobotApiSrv>::SharedPtr cobot_api_service_;
+    // The indexes of the custom API commands that are forwarded to the hardware interface
+    int acknowledge_error_command_index_;
+    // The values for the custom API commands
+    double acknowledge_error_; // hw interface only accepts double values
   };
 
 } // namespace cobot_trajectory_controller
