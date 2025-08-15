@@ -69,11 +69,11 @@ namespace cobot_rviz_plugins
     layout->addWidget(resampling_delta_spinbox_);
 
     /**** acknowledge error and request abort (Cobot API specific) ****/
-    QButtonGroup *cobot_api_group = new QButtonGroup(this);
+    //QButtonGroup *cobot_api_group = new QButtonGroup(this);
     acknowledge_error_checkbox_ = new QCheckBox("Acknowledge Error", this);
-    cobot_api_group->addButton(acknowledge_error_checkbox_);
+    //cobot_api_group->addButton(acknowledge_error_checkbox_);
     // we restrict to sending one command at the same time
-    cobot_api_group->setExclusive(true);
+    //cobot_api_group->setExclusive(true);
     layout->addWidget(acknowledge_error_checkbox_);
 
     QPushButton *send_button = new QPushButton("Send", this);
