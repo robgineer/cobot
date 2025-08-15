@@ -109,8 +109,7 @@ namespace cobot_trajectory_controller
     rclcpp_action::GoalResponse goal_callback(
         const rclcpp_action::GoalUUID &uuid, std::shared_ptr<const FollowJointTrajectory::Goal> goal);
     /*
-     * Implementation is not required. We do not react on cancellations (we use the request_abort that
-     * is set in the cobot_control_panel in rviz) and hence we simply return with
+     * Implementation is not required. We do not react on cancellations and hence we simply return with
      * rclcpp_action::CancelResponse:ACCEPT.
      */
     rclcpp_action::CancelResponse cancel_callback(
@@ -174,7 +173,6 @@ namespace cobot_trajectory_controller
      * 1. set execution_mode (single_point or full_trajectory)
      * 2. set the resampling_delta
      * 3. acknowledge error in hardware
-     * 4. request abort in hardware
      */
     void setup_service_for_rviz_panel();
 
@@ -198,10 +196,8 @@ namespace cobot_trajectory_controller
     rclcpp::Service<CobotApiSrv>::SharedPtr cobot_api_service_;
     // The indexes of the custom API commands that are forwarded to the hardware interface
     int acknowledge_error_command_index_;
-    int request_abort_command_index_;
     // The values for the custom API commands
     double acknowledge_error_; // hw interface only accepts double values
-    double request_abort_;
   };
 
 } // namespace cobot_trajectory_controller

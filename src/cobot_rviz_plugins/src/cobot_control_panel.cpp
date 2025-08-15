@@ -71,13 +71,10 @@ namespace cobot_rviz_plugins
     /**** acknowledge error and request abort (Cobot API specific) ****/
     QButtonGroup *cobot_api_group = new QButtonGroup(this);
     acknowledge_error_checkbox_ = new QCheckBox("Acknowledge Error", this);
-    request_abort_checkbox_ = new QCheckBox("Request Abort", this);
     cobot_api_group->addButton(acknowledge_error_checkbox_);
-    cobot_api_group->addButton(request_abort_checkbox_);
     // we restrict to sending one command at the same time
     cobot_api_group->setExclusive(true);
     layout->addWidget(acknowledge_error_checkbox_);
-    layout->addWidget(request_abort_checkbox_);
 
     QPushButton *send_button = new QPushButton("Send", this);
     layout->addWidget(send_button);
@@ -98,7 +95,6 @@ namespace cobot_rviz_plugins
 
     request->resampling_delta = resampling_delta_spinbox_->value();
     request->acknowledge_error = acknowledge_error_checkbox_->isChecked();
-    request->request_abort = request_abort_checkbox_->isChecked();
 
     if (!cobot_api_service_->wait_for_service(std::chrono::seconds(1)))
     {

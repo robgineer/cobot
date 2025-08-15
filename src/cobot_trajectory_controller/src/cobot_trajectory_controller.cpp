@@ -54,7 +54,6 @@ namespace cobot_trajectory_controller
     // => we send these commands in the cobot_control_panel (rviz) and forward them to the hardware interface
     // they are not joints!
     command_interface_configuration.names.push_back("cobot_api/acknowledge_error");
-    command_interface_configuration.names.push_back("cobot_api/request_abort");
 
     return command_interface_configuration;
   }
@@ -115,7 +114,7 @@ namespace cobot_trajectory_controller
     // since we can have a different number of joints, we need to know at which position the custom commands are stored
 
     // set to invalid value
-    acknowledge_error_command_index_ = request_abort_command_index_ = command_interfaces_.size() + 1;
+    acknowledge_error_command_index_ = command_interfaces_.size() + 1;
 
     for (auto index = 0; index < command_interfaces_.size(); index++)
     {
@@ -123,19 +122,10 @@ namespace cobot_trajectory_controller
       {
         acknowledge_error_command_index_ = index;
       }
-      if (command_interfaces_[index].get_name() == "cobot_api/request_abort")
-      {
-        request_abort_command_index_ = index;
-      }
     }
     if (acknowledge_error_command_index_ == command_interfaces_.size() + 1)
     {
       RCLCPP_ERROR(*local_logger_, "Could not set acknowledge_error command. Make sure the hardware interface is exporting it.");
-      return controller_interface::CallbackReturn::ERROR;
-    }
-    if (request_abort_command_index_ == command_interfaces_.size() + 1)
-    {
-      RCLCPP_ERROR(*local_logger_, "Could not set request_abort command. Make sure the hardware interface is exporting it.");
       return controller_interface::CallbackReturn::ERROR;
     }
     return controller_interface::CallbackReturn::SUCCESS;
@@ -188,10 +178,8 @@ namespace cobot_trajectory_controller
 
     // write the custom commands
     const auto ack_error_set = command_interfaces_[acknowledge_error_command_index_].set_value(acknowledge_error_);
-    const auto req_abort_set = command_interfaces_[request_abort_command_index_].set_value(request_abort_);
     // reset the command value (so the hardware interface will execute the command only once)
     acknowledge_error_ = 0.0;
-    request_abort_ = 0.0;
 
     return controller_interface::return_type::OK;
   }
@@ -288,10 +276,6 @@ namespace cobot_trajectory_controller
               if (request->acknowledge_error)
               {
                 acknowledge_error_ = 1.0;
-              }
-              else if (request->request_abort)
-              {
-                request_abort_ = 1.0;
               }
               response->success = true;
               response->message = "Commands accepted";

@@ -58,7 +58,6 @@ namespace cobot_rviz_plugins
 
   private:
     QCheckBox *acknowledge_error_checkbox_;
-    QCheckBox *request_abort_checkbox_;
     QCheckBox *single_point_checkbox_;
     QCheckBox *full_trajectory_checkbox_;
     QDoubleSpinBox *resampling_delta_spinbox_;
