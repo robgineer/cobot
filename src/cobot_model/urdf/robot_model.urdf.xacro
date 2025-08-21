@@ -16,17 +16,17 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/axis_visual.dae" scale="0.001 0.001 0.001" />
-                <material name="silver">
-                    <color rgba="1.0 1.0 1.0 1.0" />
-                </material>
+                <mesh filename="package://cobot_model/meshes/visual/axis_visual.stl"/>
             </geometry>
+            <material name="axis_material">
+                <color rgba="0.58 0.58 0.58 1.0"/>
+            </material>
         </visual>
         <collision>
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/axis_collision.dae" scale="0.001 0.001 0.001" />
+                   <mesh filename="package://cobot_model/meshes/collision/axis_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -46,17 +46,17 @@
         <visual>
              <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/carriage_real_visual.dae" scale="0.001 0.001 0.001" />
-                <material name="silver">
-                    <color rgba="1.0 1.0 1.0 1.0" />
-                </material>
+               <mesh filename="package://cobot_model/meshes/visual/carriage_visual.stl"/>
             </geometry>
+            <material name="axis_material">
+                <color rgba="0.58 0.58 0.58 1.0"/>
+            </material>
         </visual>
         <collision>
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
                 <geometry>
-                   <mesh filename="package://cobot_model/meshes/visual/carriage_real_visual.dae" scale="0.001 0.001 0.001" />
+                    <mesh filename="package://cobot_model/meshes/collision/carriage_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -76,7 +76,8 @@
         <visual>
              <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment_01_logo.dae" scale="0.001 0.001 0.001" />
+                <!-- using a DAE mesh to display logos -->
+               <mesh filename="package://cobot_model/meshes/visual/segment_01_logo.dae"/>
             </geometry>
             <material name="segment1_material">
                 <color rgba="0.89 0.133 0.098 1.0" />
@@ -86,7 +87,7 @@
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/segment01_collision.stl" scale="0.001 0.001 0.001" />
+                    <mesh filename="package://cobot_model/meshes/collision/segment01_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -106,7 +107,7 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment02_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment02_visual.stl"/>
             </geometry>
             <material name="segment2_material">
                 <color rgba="0 0.6 1.0 1.0" />
@@ -116,7 +117,7 @@
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/segment02_collision.stl" scale="0.001 0.001 0.001" />
+                   <mesh filename="package://cobot_model/meshes/collision/segment02_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -136,7 +137,7 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment03_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment03_visual.stl"/>
             </geometry>
             <material name="segment3_material">
                <color rgba="0.835 0.059 0.235 1.0" />
@@ -146,7 +147,7 @@
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/segment03_collision.stl" scale="0.001 0.001 0.001" />
+                    <mesh filename="package://cobot_model/meshes/collision/segment03_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -166,7 +167,7 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment04_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment04_visual.stl"/>
             </geometry>
             <material name="segment4_material">
                 <color rgba="0.004 0.176 0.353 1.0" />
@@ -176,7 +177,7 @@
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/segment04_collision.stl" scale="0.001 0.001 0.001" />
+                    <mesh filename="package://cobot_model/meshes/collision/segment04_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -196,7 +197,7 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment05_power_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment05_visual.stl"/> 
             </geometry>
             <material name="segment5_material">
                 <color rgba="0 0.6 1.0 1.0" />
@@ -206,7 +207,7 @@
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/segment05_power_collision.stl" scale="0.001 0.001 0.001" />
+                    <mesh filename="package://cobot_model/meshes/collision/segment05_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -226,7 +227,7 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment06_power_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/segment06_visual.stl"/>
             </geometry>
             <material name="segment6_material">
                 <color rgba="0.835 0.059 0.235 1.0" />
@@ -236,7 +237,7 @@
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/segment06_power_collision.stl" scale="0.001 0.001 0.001" />
+                    <mesh filename="package://cobot_model/meshes/collision/segment06_collision.stl"/>
                 </geometry>
              </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -259,14 +260,14 @@
                 <color rgba="1.0 1.0 1.0 1.0"/>
             </material>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/segment07_real_visual.stl" scale="0.001 0.001 0.001"/>
+                 <mesh filename="package://cobot_model/meshes/visual/segment07_visual.stl" />
             </geometry>
         </visual>
         <collision>
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/segment07_real_collision.stl" scale="0.001 0.001 0.001"/>
+                    <mesh filename="package://cobot_model/meshes/collision/segment07_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -281,23 +282,22 @@
             <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.09 0.04"/>
            <inertia ixx="0.02693367" iyy="0.01533367" izz="0.02185067" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
-  </link>
-    <link name="TCP"/>
+    </link>
     <link name="finger1">
         <visual>
-           <origin rpy="0.0 0.0 0.0" xyz="0.0 0.065 -0.065"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/finger01_real_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/finger01_visual.stl"/>
             </geometry>
         </visual>
         <collision>
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
-                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.065 -0.065"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/finger01_real_collision.stl" scale="0.001 0.001 0.001" />
+                        <mesh filename="package://cobot_model/meshes/collision/finger01_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -315,19 +315,19 @@
     </link>
     <link name="finger2">
         <visual>
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.065 -0.065"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <material name="silver">
                 <color rgba="0.629 0.629 0.625 1.0" />
             </material>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/finger02_real_visual.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://cobot_model/meshes/visual/finger02_visual.stl"/>
             </geometry>
         </visual>
         <collision>
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
-                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.065 -0.065"/>
+                <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
                 <geometry>
-                    <mesh filename="package://cobot_model/meshes/collision/finger02_real_collision.stl" scale="0.001 0.001 0.001" />
+                    <mesh filename="package://cobot_model/meshes/collision/finger02_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -345,19 +345,19 @@
     </link>
     <link name="vacuum_gripper_up">
     <visual>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.026 -0.103"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
       <material name="silver">
         <color rgba="0.629 0.629 0.625 1.0"/>
       </material>
       <geometry>
-        <mesh filename="package://cobot_model/meshes/visual/vacuum_gripper_up_visual.stl" scale="0.001 0.001 0.001"/>
+        <mesh filename="package://cobot_model/meshes/visual/vacuum_visual.stl"/>
       </geometry>
     </visual>
     <collision>
     <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.026 -0.103"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <geometry>
-            <mesh filename="package://cobot_model/meshes/collision/vacuum_gripper_up_collision.stl" scale="0.001 0.001 0.001"/>
+            <mesh filename="package://cobot_model/meshes/collision/vacuum_collision.stl"/>
         </geometry>
     </xacro:if>
     <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -375,19 +375,21 @@
   </link>
   <link name="vacuum_gripper_down">
     <visual>
-      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.026 -0.103"/>
+      <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
       <material name="silver">
         <color rgba="0.629 0.629 0.625 1.0"/>
       </material>
       <geometry>
-        <mesh filename="package://cobot_model/meshes/visual/vacuum_gripper_down_visual.stl" scale="0.001 0.001 0.001"/>
+        <!-- using the same mesh as for the upper vacuum gripper (they look the same in the model) -->
+        <mesh filename="package://cobot_model/meshes/visual/vacuum_visual.stl"/>
       </geometry>
     </visual>
     <collision>
         <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
-            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.026 -0.103"/>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
             <geometry>
-                <mesh filename="package://cobot_model/meshes/collision/vacuum_gripper_down_collision.stl" scale="0.001 0.001 0.001"/>
+                <!-- using the same mesh as for the upper vacuum gripper (they look the same in the model) -->
+                <mesh filename="package://cobot_model/meshes/collision/vacuum_collision.stl"/>
             </geometry>
         </xacro:if>
        <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
@@ -403,6 +405,23 @@
       <inertia ixx="3.46666667e-05" ixy="0.0" ixz="0.0" iyy="2.64166667e-05" iyz="0.0" izz="1.78833333e-05"/>
     </inertial>
   </link>
+
+    <!-- the virtual links (defined for readbility)
+    We follow the following structure:
+    link_0 -> ... -> link_n -> flange -> tool_base
+                                            -> gripper_tcp
+                                            -> vacuump_up_tcp
+                                            -> vacuum_down_tcp
+    This enables independent tool center points (one per tool)
+    -->
+
+    <link name="flange"/>
+    <link name="tool_base"/>
+
+    <link name="gripper_tcp"/>
+    <link name="vacuum_up_tcp"/>
+    <link name="vacuum_down_tcp"/>
+
     <!-- Joints -->
     <joint name="joint_0" type="prismatic">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
@@ -412,12 +431,12 @@
         <limit effort="300.0" velocity="3.141593" lower="-0.001" upper="0.894" />
     </joint>
     <joint name="mount_fixture" type="fixed">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.37 0.52" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.37 0.52" />
         <parent link="lin_axis_carriage" />
         <child link="segment1" />
     </joint>
     <joint name="joint_1" type="revolute">
-        <origin rpy="0.0 0.0 -3.14" xyz="0.0 0.0 0.0" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
         <parent link="segment1" />
         <child link="segment2" />
         <axis xyz="0 0 1" />
@@ -425,7 +444,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_2" type="revolute">
-        <origin rpy="1.5708 -1.5708 0.0" xyz="0.0 -0.111 0.118" />
+         <origin rpy="1.57 0.0 0.0" xyz="0.0 -0.111 0.118"/>
         <parent link="segment2" />
         <child link="segment3" />
         <axis xyz="0 0 1" />
@@ -433,7 +452,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_3" type="revolute">
-        <origin rpy="0.0 0.0 -1.57" xyz="0.254 0.0 0.06" />
+         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.254 0.06"/>
         <parent link="segment3" />
         <child link="segment4" />
         <axis xyz="0 0 1" />
@@ -441,7 +460,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_4" type="revolute">
-        <origin rpy="-1.5708 0.0 -1.5708" xyz="0.062 0.0 -0.168"/>
+        <origin rpy="0.0 1.570 0.0" xyz="0.062 0.0 -0.168"/>
         <parent link="segment4" />
         <child link="segment5" />
         <axis xyz="0 0 1" />
@@ -449,7 +468,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_5" type="revolute">
-        <origin rpy="-1.570 -1.570 0.0" xyz="0.0 0.042 0.183" />
+        <origin rpy="0.0 1.57 0.0" xyz="0.042 0.0 0.183"/>
         <parent link="segment5" />
         <child link="segment6" />
         <axis xyz="0 0 1" />
@@ -457,51 +476,74 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_6" type="revolute">
-        <origin rpy="0.0 1.57 0.0" xyz="0.156 0.0 -0.04"/>
+        <origin rpy="0.0 -1.570 0.0" xyz="-0.156 0.0 -0.04"/>
         <parent link="segment6"/>
         <child link="segment7"/>
         <axis xyz="0 0 1"/>
         <limit effort="20." lower="-2.37365" upper="2.37365" velocity="3.141593"/>
         <dynamics damping="0.0" friction="0.0"/>
     </joint>
-    <joint name="JFix_TCP" type="fixed">
-        <origin rpy="-0.785 0.0 0.0" xyz="0.0 -0.02 0.12"/>
-        <parent link="segment7"/>
-        <child link="TCP"/>
-    </joint>
    <joint name="JFix_Base" type="fixed">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
         <parent link="base_link" />
         <child link="lin_axis" />
     </joint>
+    <joint name="flange_fixed" type="fixed">
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <parent link="segment7"/>
+        <child link="flange"/>
+     </joint>
+    <joint name="tool_mount" type="fixed">
+        <!-- tilt tool base by 45 deg + move coordinate frame -->
+        <origin rpy="0.785 0.0 0.0" xyz="0.0 0.072 0.060"/>
+        <parent link="flange"/>
+        <child link="tool_base"/>
+    </joint>
+    <joint name="tool_base_gripper_tcp" type="fixed">
+        <!-- place gripper TCP in between the fingers (z-direction) -->
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.075"/>
+        <parent link="tool_base"/>
+        <child link="gripper_tcp"/>
+    </joint>
     <joint name="finger1_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="-0.02 -0.065 0.065"/>
-        <parent link="segment7" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <parent link="tool_base" />
         <child link="finger1" />
-        <axis xyz="1 0 0" />
+        <axis xyz="-1 0 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.029" />
     </joint>
     <joint name="finger2_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.02 -0.065 0.065"/>
-        <parent link="segment7" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        <parent link="tool_base" />
         <child link="finger2" />
-        <axis xyz="-1 0 0" />
+        <axis xyz="1 0 0" />
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.029" />
         <mimic joint="finger1_joint" />
     </joint>
     <joint name="vacuum_up_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
-        <parent link="segment7"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.035 0.0"/>
+        <parent link="tool_base"/>
         <child link="vacuum_gripper_up"/>
-        <!-- The head of the cobot is rotated by 45deg => joint moves in two directions -->
-        <axis xyz="0 1 1"/>
+        <axis xyz="0 0 1"/>
         <limit effort="30.0" lower="-0.01" upper="0.036" velocity="0.1"/>
     </joint>
+    <joint name="vacuum_up_to_tcp" type="fixed">
+        <!-- place TCP at the end of the tool (z-direction) -->
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.07"/>
+        <parent link="vacuum_gripper_up"/>
+        <child link="vacuum_up_tcp"/>
+    </joint>
     <joint name="vacuum_down_joint" type="prismatic">
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.065 0.065"/>
-        <parent link="segment7"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.035 0.0"/>
+        <parent link="tool_base"/>
         <child link="vacuum_gripper_down"/>
-        <axis xyz="0 1 1"/>
+        <axis xyz="0 0 1"/>
         <limit effort="30.0" lower="-0.01" upper="0.036" velocity="0.1"/>
+    </joint>
+    <joint name="vacuum_down_to_tcp" type="fixed">
+        <!-- place TCP at the end of the tool (z-direction) -->
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.07"/>
+        <parent link="vacuum_gripper_down"/>
+        <child link="vacuum_down_tcp"/>
     </joint>
 </robot>
