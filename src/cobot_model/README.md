@@ -29,6 +29,7 @@ Adjustments made:
 * added world link
 * added finger gripper
 * added vacuum grippers
+* added several TCP frames to avoid rotations in software modules
 * combined links (the original version contained several smaller links that made inertia calculations tricky)
 * re-modelled several links w.r.t. their dimensions
 * applied right hand rule for robot position
