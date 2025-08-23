@@ -410,21 +410,40 @@
     </inertial>
   </link>
 
-    <!-- the virtual links (defined for readbility)
-    We follow the following structure:
+    <!-- the virtual links
+    We follow the following structure to enable individual TCPs per tool:
     link_0 -> ... -> link_n -> flange -> tool_base
                                             -> gripper_tcp
+                                                -> gripper_tcp_world
+                                                    -> gripper_tcp_world_tilted_up
+                                                    -> gripper_tcp_world_tilted_down
                                             -> vacuump_up_tcp
                                             -> vacuum_down_tcp
-    This enables independent tool center points (one per tool)
+
+    The additional TCP frames are defined to ease up IK requests (omitting transformations in code):
+        * TCP in world frame: all rotations inverted
+            => cobot can move to any point in its neutral orientation
+        * TCP in world tilted z up: compensates the natural tilt in the physical model, Z+ is up
+            => cobot will approach any object with a neutral orientation from above
+        * TCP in world tilted z down: same as previous but Z+ pointing down
+            => cobot will approach objects from above that have an inverted orientation
     -->
 
     <link name="flange"/>
     <link name="tool_base"/>
 
     <link name="gripper_tcp"/>
+    <link name="gripper_tcp_world"/>
+    <link name="gripper_tcp_world_tilted_up"/>
+    <link name="gripper_tcp_world_tilted_down"/>
     <link name="vacuum_up_tcp"/>
+    <link name="vacuum_up_tcp_world"/>
+    <link name="vacuum_up_tcp_world_tilted_up"/>
+    <link name="vacuum_up_tcp_world_tilted_down"/>
     <link name="vacuum_down_tcp"/>
+    <link name="vacuum_down_tcp_world"/>
+    <link name="vacuum_down_tcp_world_tilted_up"/>
+    <link name="vacuum_down_tcp_world_tilted_down"/>
 
     <!-- Joints -->
     <joint name="joint_0" type="prismatic">
@@ -448,7 +467,7 @@
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_2" type="revolute">
-         <origin rpy="1.57 0.0 0.0" xyz="0.0 -0.111 0.118"/>
+        <origin rpy="1.57 0.0 0.0" xyz="0.0 -0.111 0.118"/>
         <parent link="segment2" />
         <child link="segment3" />
         <axis xyz="0 0 1" />
@@ -503,11 +522,30 @@
         <parent link="flange"/>
         <child link="tool_base"/>
     </joint>
-    <joint name="tool_base_gripper_tcp" type="fixed">
+
+    <joint name="gripper_tcp_mount" type="fixed">
         <!-- place gripper TCP in between the fingers (z-direction) -->
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.075"/>
         <parent link="tool_base"/>
         <child link="gripper_tcp"/>
+    </joint>
+    <joint name="gripper_tcp_world_mount" type="fixed">
+        <!-- reverse all previous rotations -->
+        <origin rpy="-3.14 -0.785 1.57" xyz="0.0 0.0 0.0"/>
+        <parent link="gripper_tcp"/>
+        <child link="gripper_tcp_world"/>
+    </joint>
+    <joint name="gripper_tcp_world_tilted_up_mount" type="fixed">
+        <!-- tilt gripper tcp in world frame by -45 deg to compensate for natural tilt --> 
+        <origin rpy="0.0 -0.785 0.0" xyz="0.0 0.0 0.0"/>
+        <parent link="gripper_tcp_world"/>
+        <child link="gripper_tcp_world_tilted_up"/>
+    </joint>
+    <joint name="gripper_tcp_world_tilted_down_mount" type="fixed">
+        <!-- tilt gripper tcp in world frame by 135 deg to compensate for natural tilt with z-axis looking down --> 
+        <origin rpy="0.0 2.35619 0.0" xyz="0.0 0.0 0.0"/>
+        <parent link="gripper_tcp_world"/>
+        <child link="gripper_tcp_world_tilted_down"/>
     </joint>
     <joint name="finger1_joint" type="prismatic">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
@@ -524,6 +562,7 @@
         <limit effort="30.0" velocity="0.1" lower="-0.01" upper="0.029" />
         <mimic joint="finger1_joint" />
     </joint>
+
     <joint name="vacuum_up_joint" type="prismatic">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.035 0.0"/>
         <parent link="tool_base"/>
@@ -531,11 +570,29 @@
         <axis xyz="0 0 1"/>
         <limit effort="30.0" lower="-0.01" upper="0.036" velocity="0.1"/>
     </joint>
-    <joint name="vacuum_up_to_tcp" type="fixed">
+    <joint name="vacuum_up_tcp_mount" type="fixed">
         <!-- place TCP at the end of the tool (z-direction) -->
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.07"/>
         <parent link="vacuum_gripper_up"/>
         <child link="vacuum_up_tcp"/>
+    </joint>
+    <joint name="vacuum_up_tcp_world_mount" type="fixed">
+        <!-- reverse all previous rotations -->
+        <origin rpy="-3.14 -0.785 1.57" xyz="0.0 0.0 0.0"/>
+        <parent link="vacuum_up_tcp"/>
+        <child link="vacuum_up_tcp_world"/>
+    </joint>
+    <joint name="vacuum_up_tcp_world_tilted_up_mount" type="fixed">
+        <!-- tilt gripper tcp in world frame by -45 deg to compensate for natural tilt --> 
+        <origin rpy="0.0 -0.785 0.0" xyz="0.0 0.0 0.0"/>
+        <parent link="vacuum_up_tcp_world"/>
+        <child link="vacuum_up_tcp_world_tilted_up"/>
+    </joint>
+    <joint name="vacuum_up_tcp_world_tilted_down_mount" type="fixed">
+        <!-- tilt gripper tcp in world frame by 135 deg to compensate for natural tilt with z-axis looking down --> 
+        <origin rpy="0.0 2.35619 0.0" xyz="0.0 0.0 0.0"/>
+        <parent link="vacuum_up_tcp_world"/>
+        <child link="vacuum_up_tcp_world_tilted_down"/>
     </joint>
     <joint name="vacuum_down_joint" type="prismatic">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.035 0.0"/>
@@ -544,10 +601,28 @@
         <axis xyz="0 0 1"/>
         <limit effort="30.0" lower="-0.01" upper="0.036" velocity="0.1"/>
     </joint>
-    <joint name="vacuum_down_to_tcp" type="fixed">
+    <joint name="vacuum_down_tcp_mount" type="fixed">
         <!-- place TCP at the end of the tool (z-direction) -->
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.07"/>
         <parent link="vacuum_gripper_down"/>
         <child link="vacuum_down_tcp"/>
+    </joint>
+    <joint name="vacuum_down_tcp_world_mount" type="fixed">
+        <!-- reverse all previous rotations -->
+        <origin rpy="-3.14 -0.785 1.57" xyz="0.0 0.0 0.0"/>
+        <parent link="vacuum_down_tcp"/>
+        <child link="vacuum_down_tcp_world"/>
+    </joint>
+    <joint name="vacuum_down_tcp_world_tilted_up_mount" type="fixed">
+        <!-- tilt gripper tcp in world frame by -45 deg to compensate for natural tilt --> 
+        <origin rpy="0.0 -0.785 0.0" xyz="0.0 0.0 0.0"/>
+        <parent link="vacuum_down_tcp_world"/>
+        <child link="vacuum_down_tcp_world_tilted_up"/>
+    </joint>
+    <joint name="vacuum_down_tcp_world_tilted_down_mount" type="fixed">
+        <!-- tilt gripper tcp in world frame by 135 deg to compensate for natural tilt with z-axis looking down --> 
+        <origin rpy="0.0 2.35619 0.0" xyz="0.0 0.0 0.0"/>
+        <parent link="vacuum_down_tcp_world"/>
+        <child link="vacuum_down_tcp_world_tilted_down"/>
     </joint>
 </robot>
