@@ -151,7 +151,7 @@
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
-                <origin rpy="1.57 0.0 0.0" xyz="0.0 0.126 0.06"/>
+                <origin rpy="1.5708 0.0 0.0" xyz="0.0 0.126 0.06"/>
                 <geometry>
                     <cylinder radius="0.06" length="0.372"/>
                 </geometry>
@@ -241,7 +241,7 @@
                 </geometry>
              </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
-                <origin rpy="0.0 1.57 0.0" xyz="-0.12 0.0 -0.04"/>
+                <origin rpy="0.0 1.5708 0.0" xyz="-0.12 0.0 -0.04"/>
                 <geometry>
                     <cylinder length="0.15" radius="0.04"/>
                 </geometry>
@@ -271,7 +271,7 @@
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
-                <origin rpy="-0.786 0.0 0.0" xyz="0.0 0.1 0.05"/>
+                <origin rpy="-0.785398 0.0 0.0" xyz="0.0 0.1 0.05"/>
                 <geometry>
                     <box size="0.124 0.135 0.14"/>
                 </geometry>
@@ -281,7 +281,7 @@
             <mass value="4.0"/>
             <!-- tilt the inertia tensor by 45 deg to match the actual mesh
                  => same tilt is applied in the tool_base link -->
-            <origin rpy="0.785 0.0 0.0" xyz="0.0 0.09 0.04"/>
+            <origin rpy="0.785398 0.0 0.0" xyz="0.0 0.09 0.04"/>
            <inertia ixx="0.01533367" iyy="0.02185067" izz="0.02693367" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
@@ -303,7 +303,8 @@
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
-                <origin rpy="0.0 -0.25 0.0" xyz="0.046 0.0 0.056"/>
+                <!-- tilt geometric object by 15 deg to match real gripper -->
+                <origin rpy="0.0 -0.261799 0.0" xyz="0.046 0.0 0.056"/>
                 <geometry>
                     <cylinder length="0.10" radius="0.01"/>
                 </geometry>
@@ -311,9 +312,7 @@
         </collision>
         <inertial>
             <mass value="0.05" />
-            <!-- <origin rpy="-0.785 0.0 0.0" xyz="0.02 0.03 0.03" / -->
-            <origin rpy="0.0 -0.25 0.0" xyz="0.046 0.0 0.056"/>
-            <!-- <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" /> -->
+            <origin rpy="0.0 -0.261799 0.0" xyz="0.046 0.0 0.056"/>
             <inertia ixx="3.46666667e-05" iyy="2.64166667e-05" izz="1.78833333e-05" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
@@ -335,7 +334,7 @@
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
-                <origin rpy="0.0 0.25 0.0" xyz="-0.046 0.0 0.056"/>
+                <origin rpy="0.0 0.261799 0.0" xyz="-0.046 0.0 0.056"/>
                 <geometry>
                     <cylinder length="0.10" radius="0.01"/>
                 </geometry>
@@ -343,7 +342,7 @@
         </collision>
         <inertial>
             <mass value="0.05" />
-            <origin rpy="0.0 0.25 0.0" xyz="-0.046 0.0 0.056"/>
+            <origin rpy="0.0 0.261799 0.0" xyz="-0.046 0.0 0.056"/>
             <inertia ixx="3.46666667e-05" iyy="2.64166667e-05" izz="1.78833333e-05" ixy="0.0" ixz="0.0" iyz="0.0" />
         </inertial>
     </link>
@@ -451,7 +450,7 @@
         <parent link="lin_axis" />
         <child link="lin_axis_carriage" />
         <axis xyz="0 0 1" />
-        <limit effort="300.0" velocity="3.141593" lower="-0.001" upper="0.894" />
+        <limit effort="300.0" velocity="3.14159" lower="-0.001" upper="0.894" />
     </joint>
     <joint name="mount_fixture" type="fixed">
         <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.37 0.52" />
@@ -463,15 +462,15 @@
         <parent link="segment1" />
         <child link="segment2" />
         <axis xyz="0 0 1" />
-        <limit effort="200.0" velocity="3.141593" lower="-2.37365" upper="2.37365" />
+        <limit effort="200.0" velocity="3.14159" lower="-2.37365" upper="2.37365" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_2" type="revolute">
-        <origin rpy="1.57 0.0 0.0" xyz="0.0 -0.111 0.118"/>
+        <origin rpy="1.5708 0.0 0.0" xyz="0.0 -0.111 0.118"/>
         <parent link="segment2" />
         <child link="segment3" />
         <axis xyz="0 0 1" />
-        <limit effort="150.0" velocity="3.141593" lower="-2.26893" upper="0.785398" />
+        <limit effort="150.0" velocity="3.14159" lower="-2.26893" upper="0.785398" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_3" type="revolute">
@@ -479,31 +478,31 @@
         <parent link="segment3" />
         <child link="segment4" />
         <axis xyz="0 0 1" />
-        <limit effort="100.0" velocity="3.141593" lower="-0.785398" upper="2.26893" />
+        <limit effort="100.0" velocity="3.14159" lower="-0.785398" upper="2.26893" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_4" type="revolute">
-        <origin rpy="0.0 1.570 0.0" xyz="0.062 0.0 -0.168"/>
+        <origin rpy="0.0 1.5708 0.0" xyz="0.062 0.0 -0.168"/>
         <parent link="segment4" />
         <child link="segment5" />
         <axis xyz="0 0 1" />
-        <limit effort="50.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
+        <limit effort="50.0" velocity="3.14159" lower="-1.5708" upper="1.5708" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_5" type="revolute">
-        <origin rpy="0.0 1.57 0.0" xyz="0.042 0.0 0.183"/>
+        <origin rpy="0.0 1.5708 0.0" xyz="0.042 0.0 0.183"/>
         <parent link="segment5" />
         <child link="segment6" />
         <axis xyz="0 0 1" />
-        <limit effort="50.0" velocity="3.141593" lower="-1.570796" upper="1.570796" />
+        <limit effort="50.0" velocity="3.14159" lower="-1.5708" upper="1.5708" />
         <dynamics damping="0.0" friction="0.0" />
     </joint>
     <joint name="joint_6" type="revolute">
-        <origin rpy="0.0 -1.570 0.0" xyz="-0.156 0.0 -0.04"/>
+        <origin rpy="0.0 -1.5708 0.0" xyz="-0.156 0.0 -0.04"/>
         <parent link="segment6"/>
         <child link="segment7"/>
         <axis xyz="0 0 1"/>
-        <limit effort="20." lower="-2.37365" upper="2.37365" velocity="3.141593"/>
+        <limit effort="20." lower="-2.37365" upper="2.37365" velocity="3.14159"/>
         <dynamics damping="0.0" friction="0.0"/>
     </joint>
    <joint name="JFix_Base" type="fixed">
@@ -518,7 +517,7 @@
      </joint>
     <joint name="tool_mount" type="fixed">
         <!-- tilt tool base by 45 deg + move coordinate frame -->
-        <origin rpy="0.785 0.0 0.0" xyz="0.0 0.072 0.060"/>
+        <origin rpy="0.785398 0.0 0.0" xyz="0.0 0.072 0.060"/>
         <parent link="flange"/>
         <child link="tool_base"/>
     </joint>
@@ -531,13 +530,13 @@
     </joint>
     <joint name="gripper_tcp_world_mount" type="fixed">
         <!-- reverse all previous rotations -->
-        <origin rpy="-3.14 -0.785 1.57" xyz="0.0 0.0 0.0"/>
+        <origin rpy="-3.14159 -0.785398 1.5708" xyz="0.0 0.0 0.0"/>
         <parent link="gripper_tcp"/>
         <child link="gripper_tcp_world"/>
     </joint>
     <joint name="gripper_tcp_world_tilted_up_mount" type="fixed">
         <!-- tilt gripper tcp in world frame by -45 deg to compensate for natural tilt --> 
-        <origin rpy="0.0 -0.785 0.0" xyz="0.0 0.0 0.0"/>
+        <origin rpy="0.0 -0.785398 0.0" xyz="0.0 0.0 0.0"/>
         <parent link="gripper_tcp_world"/>
         <child link="gripper_tcp_world_tilted_up"/>
     </joint>
@@ -578,13 +577,13 @@
     </joint>
     <joint name="vacuum_up_tcp_world_mount" type="fixed">
         <!-- reverse all previous rotations -->
-        <origin rpy="-3.14 -0.785 1.57" xyz="0.0 0.0 0.0"/>
+        <origin rpy="-3.14159 -0.785398 1.5708" xyz="0.0 0.0 0.0"/>
         <parent link="vacuum_up_tcp"/>
         <child link="vacuum_up_tcp_world"/>
     </joint>
     <joint name="vacuum_up_tcp_world_tilted_up_mount" type="fixed">
         <!-- tilt gripper tcp in world frame by -45 deg to compensate for natural tilt --> 
-        <origin rpy="0.0 -0.785 0.0" xyz="0.0 0.0 0.0"/>
+        <origin rpy="0.0 -0.785398 0.0" xyz="0.0 0.0 0.0"/>
         <parent link="vacuum_up_tcp_world"/>
         <child link="vacuum_up_tcp_world_tilted_up"/>
     </joint>
@@ -609,13 +608,13 @@
     </joint>
     <joint name="vacuum_down_tcp_world_mount" type="fixed">
         <!-- reverse all previous rotations -->
-        <origin rpy="-3.14 -0.785 1.57" xyz="0.0 0.0 0.0"/>
+        <origin rpy="-3.14159 -0.785398 1.5708" xyz="0.0 0.0 0.0"/>
         <parent link="vacuum_down_tcp"/>
         <child link="vacuum_down_tcp_world"/>
     </joint>
     <joint name="vacuum_down_tcp_world_tilted_up_mount" type="fixed">
         <!-- tilt gripper tcp in world frame by -45 deg to compensate for natural tilt --> 
-        <origin rpy="0.0 -0.785 0.0" xyz="0.0 0.0 0.0"/>
+        <origin rpy="0.0 -0.785398 0.0" xyz="0.0 0.0 0.0"/>
         <parent link="vacuum_down_tcp_world"/>
         <child link="vacuum_down_tcp_world_tilted_up"/>
     </joint>
