@@ -21,6 +21,9 @@ ros2 run rqt_joint_trajectory_controller rqt_joint_trajectory_controller
 
 ## Running the IK demo
 
+This demo serves as a reference for the usage of the MoveIt2 C++ API and the different TCP frames defined in the model.
+For the the Python pendant: check out the `py_demo` package.
+
 Launch the gazebo demo
 ```
 ros2 launch cobot_moveit_config gz_demo_launch.py
@@ -29,6 +32,7 @@ Run the demo (in a separate terminal)
 ```
 ros2 run demo simple_ik
 ```
+Note: the max. acceleration / velocity need to be reduced in order to run the entire demo in gazebo (the planning requests are too fast for the gazebo simulation).
 
 To run the demo with fake controls, use the following launch-file:
 ```
