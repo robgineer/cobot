@@ -107,8 +107,8 @@
       <joint name="vacuum_down_joint"/>
   </group>
   <group_state name="active" group="vacuum_gripper_group">
-    <joint name="vacuum_up_joint" value="0.035" />
-    <joint name="vacuum_down_joint" value="0.035" />
+    <joint name="vacuum_up_joint" value="0.055" />
+    <joint name="vacuum_down_joint" value="0.055" />
   </group_state>
   <group_state name="inactive" group="vacuum_gripper_group">
     <joint name="vacuum_up_joint" value="0.0" />
