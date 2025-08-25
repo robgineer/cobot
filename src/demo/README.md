@@ -58,4 +58,4 @@ ros2 launch demo pick_place_launch.py
 ros2 launch demo rviz_demo_launch.py enable_realsense_camera:=true
 ```
 
-![](img/realsense_setup.png)
+![](../offline_hand_eye/doc/robot_camera_2.png)

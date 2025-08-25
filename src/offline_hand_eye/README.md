@@ -148,14 +148,14 @@ to print the extrinsic calibration in the console, e.g.
 
 ```
 At time 0.0
-- Translation: [-0.659, -0.459, 1.551]
-- Rotation: in Quaternion [0.695, 0.604, -0.255, 0.295]
-- Rotation: in RPY (radian) [2.997, 0.789, 1.371]
-- Rotation: in RPY (degree) [171.701, 45.233, 78.552]
+- Translation: [0.659, 0.459, 1.550]
+- Rotation: in Quaternion [-0.604, 0.696, 0.293, 0.254]
+- Rotation: in RPY (radian) [2.999, 0.787, -1.771]
+- Rotation: in RPY (degree) [171.830, 45.092, -101.471]
 - Matrix:
-  0.140  0.990  0.002 -0.659
-  0.690 -0.096 -0.717 -0.459
- -0.710  0.102 -0.697  1.551
+ -0.140 -0.990  0.000  0.659
+ -0.692  0.098  0.715  0.459
+ -0.708  0.100 -0.699  1.550
   0.000  0.000  0.000  1.000
 ```
 
