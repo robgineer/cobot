@@ -15,17 +15,43 @@ from rclpy.logging import get_logger
 # moveit python library
 from moveit.planning import (
     MoveItPy,
-    MultiPipelinePlanRequestParameters,
+    MultiPipelinePlanRequestParameters,  # not used (enables running different requests in parallel)
     PlanRequestParameters,
 )
 
+from rclpy.node import Node
+from visualization_msgs.msg import Marker
 from moveit.core.robot_state import RobotState
 from moveit_configs_utils import MoveItConfigsBuilder
 from ament_index_python.packages import get_package_share_directory
 
-# messages
-from shape_msgs.msg import SolidPrimitive
-from moveit_msgs.msg import Constraints, PositionConstraint
+
+class FootballMarkerPublisher(Node):
+    """Marker publisher for displaying the target pose."""
+
+    def __init__(self, pose):
+        super().__init__("football_marker_publisher")
+        self.publisher_ = self.create_publisher(Marker, "/football_marker_topic", 10)
+        self.pose_ = pose
+
+    def update_pose(self, pose):
+        self.pose_ = pose
+
+    def publish_marker(self):
+        marker = Marker()
+        marker.id = 0
+        marker.header.frame_id = "base_link"
+        marker.ns = "football_marker"
+        marker.pose = self.pose_.pose
+        marker.action = Marker.ADD
+        marker.type = Marker.MESH_RESOURCE
+        marker.mesh_use_embedded_materials = True
+        marker.mesh_resource = "package://demo/meshes/football.dae"
+        marker.scale.x, marker.scale.y, marker.scale.z = 0.15, 0.15, 0.15
+        marker.color.a = 1.0
+        marker.lifetime = rclpy.duration.Duration(seconds=0).to_msg()
+
+        self.publisher_.publish(marker)
 
 
 def plan_and_execute(
@@ -113,6 +139,16 @@ def main():
         .to_dict()
     )
 
+    # wait until joint states are available
+    # otherwise we could get a "RuntimeError: Unable to configure planning scene monitor"
+    node = rclpy.create_node("wait_for_joint_states")
+    while True:
+        joint_states = node.get_parameter_or("joint_states", None)
+        if joint_states is not None:
+            break
+        rclpy.spin_once(node, timeout_sec=0.1)
+    node.destroy_node()
+
     cobot = MoveItPy(
         node_name="moveit_py",
         config_dict=moveit_config,
@@ -127,43 +163,77 @@ def main():
 
     # set plan start state to current state
     cobot_arm.set_start_state_to_current_state()
+    # define end effector: plan in world frame orientation
+    eef = "gripper_tcp_world"
+    """
+    Note: we define several TCP frames for the grippers to avoid rotations in code.
+          *_tcp: orientation in cobot frame (this frame is rotated around x and y)
+          *_tcp_world: all rotations are removed and orientation is aligned with the base_link
+          *_tcp_world_tilted_up: compensating the natural 45 deg tilt of Cobot's TCP
+                                 => this results in the Cobot approaching neutral oriented
+                                    objects from above
+          *_tcp_world_tilted_up: same as *_tcp_world_tilted_up but with z upside down (z+ down)
+                                 => this results in the Cobot approaching neutral oriented
+                                    objects from below
+
+        A neutral orientation is defined as x+: forward, y+: left, z+ up (representing the right hand rule).
+        => quaternion: xyzw = (0.0, 0.0, 0.0, 1.0)
+
+        In case the object placed does not have a neutral orientation but is oriented with z+ down
+        (=> x+: forward, y+: left, z+ down, quaternion xyzw = (0.0, 1.0, 0.0, 0.0))
+        we can use the gripper_tcp_world_tilted_down to compensate the rotation around y.
+    """
     # define goal pose
     from geometry_msgs.msg import PoseStamped
 
     pose_goal = PoseStamped()
     pose_goal.header.frame_id = "base_link"
-
-    pose_goal.pose.orientation.w = -1.0
-    pose_goal.pose.position.x = -0.6
-    pose_goal.pose.position.y = 0.3
+    pose_goal.pose.orientation.w = 1.0  # neutral orientation
+    pose_goal.pose.position.x = 0.6
+    pose_goal.pose.position.y = -0.3
     pose_goal.pose.position.z = 1.0
-
-    # set a tolerance for the goal
-    # this is required in order to relax the constraints on the planner
-    # if not set, there will be hardly a solution found
-    # this might be an issue with our cobot but could also be an issue
-    # resulting from the usage of std param values for the planner config
-    constraints = Constraints()
-    position_constraint = PositionConstraint()
-    position_constraint.header.frame_id = "base_link"
-    position_constraint.link_name = "TCP"
-    sphere = SolidPrimitive()
-    sphere.type = SolidPrimitive.SPHERE
-    sphere.dimensions = [0.05]  # 5 cm radius
-    position_constraint.constraint_region.primitives.append(sphere)
-    position_constraint.constraint_region.primitive_poses.append(pose_goal.pose)
-    position_constraint.weight = 0.8
-    constraints.position_constraints.append(position_constraint)
-
-    # set the goal state with tolerance of 5cm
-    cobot_arm.set_goal_state(motion_plan_constraints=[constraints])
-
+    # set up marker to display pose_goal
+    # => subscribe to /football_marker_topic in rviz to visualize the marker
+    football_marker = FootballMarkerPublisher(pose_goal)
+    football_marker.publish_marker()
+    # set goal with preferred TCP frame
+    cobot_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link=eef)
+    # reference parameters defined in config/moveit_cpp.yaml
     single_plan_request_parameters = PlanRequestParameters(cobot, "ompl_rrtc")
     # define preferred planner
     single_plan_request_parameters.planner_id = "APSConfigDefault"
     single_plan_request_parameters.planning_pipeline = "ompl"
+    # speed up simulation
+    single_plan_request_parameters.max_velocity_scaling_factor = 1.0
+    single_plan_request_parameters.max_acceleration_scaling_factor = 1.0
 
     # plan to goal
+    plan_and_execute(
+        cobot,
+        cobot_arm,
+        logger,
+        single_plan_parameters=single_plan_request_parameters,
+        sleep_time=3.0,
+    )
+    # change end effector: plan in tilted world frame
+    eef = "gripper_tcp_world_tilted_up"
+    cobot_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link=eef)
+    plan_and_execute(
+        cobot,
+        cobot_arm,
+        logger,
+        single_plan_parameters=single_plan_request_parameters,
+        sleep_time=3.0,
+    )
+
+    pose_goal.pose.orientation.w = 0.0
+    pose_goal.pose.orientation.y = 1.0  # rotate 180 deg around y => z+ is down
+    pose_goal.pose.position.y = -0.4  # move pose goal to the right to see change
+    football_marker.update_pose(pose_goal)
+    football_marker.publish_marker()
+    # use TCP for objects oriented with z+ down
+    eef = "gripper_tcp_world_tilted_down"
+    cobot_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link=eef)
     plan_and_execute(
         cobot,
         cobot_arm,

@@ -25,5 +25,5 @@ ompl_rrtc:  # Namespace for individual plan request
     planner_id: "APSConfigDefault"  # Name of the specific planner to be used by the pipeline
     max_velocity_scaling_factor: 1.0  # Velocity scaling parameter for the trajectory generation algorithm that is called (if configured) after the path planning
     max_acceleration_scaling_factor: 1.0  # Acceleration scaling parameter for the trajectory generation algorithm that is called (if configured) after the path planning
-    planning_time: 4.0  # Time budget for the motion plan request. If the planning problem cannot be solved within this time, an empty solution with error code is returned
+    planning_time: 0.5  # Time budget for the motion plan request. If the planning problem cannot be solved within this time, an empty solution with error code is returned
     start_state_max_bounds_error: 0.2
