@@ -567,7 +567,7 @@
         <parent link="tool_base"/>
         <child link="vacuum_gripper_up"/>
         <axis xyz="0 0 1"/>
-        <limit effort="30.0" lower="-0.01" upper="0.036" velocity="0.1"/>
+        <limit effort="30.0" lower="-0.01" upper="0.055" velocity="0.1"/>
     </joint>
     <joint name="vacuum_up_tcp_mount" type="fixed">
         <!-- place TCP at the end of the tool (z-direction) -->
@@ -598,7 +598,7 @@
         <parent link="tool_base"/>
         <child link="vacuum_gripper_down"/>
         <axis xyz="0 0 1"/>
-        <limit effort="30.0" lower="-0.01" upper="0.036" velocity="0.1"/>
+        <limit effort="30.0" lower="-0.01" upper="0.055" velocity="0.1"/>
     </joint>
     <joint name="vacuum_down_tcp_mount" type="fixed">
         <!-- place TCP at the end of the tool (z-direction) -->
