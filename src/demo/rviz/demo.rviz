@@ -6,9 +6,12 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /MarkerArray1
         - /MarkerArray1/Topic1
         - /Motion Planning Tasks1
         - /Image1
+        - /PointCloud21
+        - /Marker1
       Splitter Ratio: 0.5
     Tree Height: 74
   - Class: rviz_common/Selection
@@ -117,6 +120,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          gripper_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           lin_axis:
             Alpha: 1
             Show Axes: false
@@ -170,6 +185,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          vacuum_down_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           vacuum_gripper_down:
             Alpha: 1
             Show Axes: false
@@ -181,6 +208,18 @@ Visualization Manager:
             Show Trail: false
             Value: true
           vacuum_up_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_up:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -221,6 +260,18 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         gripper_tcp:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        gripper_tcp_world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        gripper_tcp_world_tilted_down:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        gripper_tcp_world_tilted_up:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -277,6 +328,18 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        vacuum_down_tcp_world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        vacuum_down_tcp_world_tilted_down:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        vacuum_down_tcp_world_tilted_up:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         vacuum_gripper_down:
           Alpha: 1
           Show Axes: false
@@ -288,6 +351,18 @@ Visualization Manager:
           Show Trail: false
           Value: true
         vacuum_up_tcp:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        vacuum_up_tcp_world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        vacuum_up_tcp_world_tilted_down:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        vacuum_up_tcp_world_tilted_up:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -361,6 +436,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          gripper_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           lin_axis:
             Alpha: 1
             Show Axes: false
@@ -414,6 +501,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          vacuum_down_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           vacuum_gripper_down:
             Alpha: 1
             Show Axes: false
@@ -425,6 +524,18 @@ Visualization Manager:
             Show Trail: false
             Value: true
           vacuum_up_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_up:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -500,6 +611,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          gripper_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           lin_axis:
             Alpha: 1
             Show Axes: false
@@ -553,6 +676,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          vacuum_down_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           vacuum_gripper_down:
             Alpha: 1
             Show Axes: false
@@ -564,6 +699,18 @@ Visualization Manager:
             Show Trail: false
             Value: true
           vacuum_up_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_up:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -792,6 +939,19 @@ Visualization Manager:
         Value: /camera/camera/depth/color/points
       Use Fixed Frame: true
       Use rainbow: true
+      Value: true
+    - Class: rviz_default_plugins/Marker
+      Enabled: true
+      Name: Marker
+      Namespaces:
+        football_marker: true
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /football_marker_topic
       Value: true
   Enabled: true
   Global Options:
