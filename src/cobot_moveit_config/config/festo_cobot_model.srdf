@@ -10,7 +10,7 @@
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="arm_group">
-        <chain base_link="base_link" tip_link="TCP"/>
+        <chain base_link="base_link" tip_link="gripper_tcp"/>
     </group>
     <group_state group="arm_group" name="home_pose">
       <joint name="joint_0" value="0.0"/>
@@ -65,16 +65,9 @@
   <disable_collisions link1="segment5" link2="segment6" reason="Adjacent"/>
   <disable_collisions link1="segment5" link2="segment7" reason="Never"/>
   <disable_collisions link1="segment6" link2="segment7" reason="Adjacent"/>
-  
-  <disable_collisions link1="TCP" link2="segment7" reason="Adjacent"/>
-  <disable_collisions link1="TCP" link2="segment6" reason="Never"/>
-  <disable_collisions link1="TCP" link2="segment5" reason="Never"/>
-  <disable_collisions link1="TCP" link2="segment4" reason="Never"/>
-  <disable_collisions link1="TCP" link2="segment3" reason="Never"/>
-  <disable_collisions link1="TCP" link2="segment2" reason="Never"/>
+
 
   <group name="gripper_group">
-      <!-- <link name="TCP"/> -->
       <link name="finger1"/>
       <link name="finger2"/>
       <joint name="finger1_joint"/>
@@ -89,9 +82,8 @@
     <joint name="finger2_joint" value="0.028" />
   </group_state>
   <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-  <end_effector name="end_effector_cobot" group="gripper_group" parent_group="arm_group" parent_link="TCP" />
+  <end_effector name="end_effector_cobot" group="gripper_group" parent_group="arm_group" parent_link="gripper_tcp" />
 
-  <disable_collisions link1="finger1" link2="TCP" reason="Adjacent"/>
   <disable_collisions link1="finger1" link2="finger2" reason="Adjacent"/>
   <disable_collisions link1="finger1" link2="segment7" reason="Adjacent"/>
   <disable_collisions link1="finger1" link2="segment2" reason="Never"/>
@@ -100,7 +92,6 @@
   <disable_collisions link1="finger1" link2="segment5" reason="Never"/>
   <disable_collisions link1="finger1" link2="segment6" reason="Never"/>
 
-  <disable_collisions link1="finger2" link2="TCP" reason="Adjacent"/>
   <disable_collisions link1="finger2" link2="segment7" reason="Adjacent"/>
   <disable_collisions link1="finger2" link2="segment2" reason="Never"/>
   <disable_collisions link1="finger2" link2="segment3" reason="Never"/>
@@ -116,8 +107,8 @@
       <joint name="vacuum_down_joint"/>
   </group>
   <group_state name="active" group="vacuum_gripper_group">
-    <joint name="vacuum_up_joint" value="0.035" />
-    <joint name="vacuum_down_joint" value="0.035" />
+    <joint name="vacuum_up_joint" value="0.055" />
+    <joint name="vacuum_down_joint" value="0.055" />
   </group_state>
   <group_state name="inactive" group="vacuum_gripper_group">
     <joint name="vacuum_up_joint" value="0.0" />
@@ -125,7 +116,6 @@
   </group_state>
 
   <disable_collisions link1="vacuum_gripper_up" link2="vacuum_gripper_down" reason="Adjacent"/>
-  <disable_collisions link1="vacuum_gripper_up" link2="TCP" reason="Adjacent"/>
   <disable_collisions link1="vacuum_gripper_up" link2="finger2" reason="Adjacent"/>
   <disable_collisions link1="vacuum_gripper_up" link2="segment7" reason="Adjacent"/>
   <disable_collisions link1="vacuum_gripper_up" link2="finger1" reason="Adjacent"/>
@@ -136,7 +126,6 @@
   <disable_collisions link1="vacuum_gripper_up" link2="segment5" reason="Never"/>
   <disable_collisions link1="vacuum_gripper_up" link2="segment6" reason="Never"/>
 
-  <disable_collisions link1="vacuum_gripper_down" link2="TCP" reason="Adjacent"/>
   <disable_collisions link1="vacuum_gripper_down" link2="segment7" reason="Adjacent"/>
   <disable_collisions link1="vacuum_gripper_down" link2="finger1" reason="Adjacent"/>
   <disable_collisions link1="vacuum_gripper_down" link2="finger2" reason="Adjacent"/>

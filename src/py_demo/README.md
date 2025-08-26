@@ -1,6 +1,7 @@
 # Simple IK / FK demo with Python
 
-This demo serves as a reference for the usage of the MoveIt2 Python API.
+This demo serves as a reference for the usage of the MoveIt2 Python API and the different TCP frames defined in the model.
+For the the C++ pendant: check out the `demo` package.
 
 ## Running the IK demo
 

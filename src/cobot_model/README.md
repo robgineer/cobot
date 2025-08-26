@@ -27,10 +27,12 @@ In its original form, the model does not contain any physics related information
 
 Adjustments made:
 * added world link
-* added functional gripper
-* added correct end effector model
+* added finger gripper
+* added vacuum grippers
+* added several TCP frames to avoid rotations in software modules
 * combined links (the original version contained several smaller links that made inertia calculations tricky)
 * re-modelled several links w.r.t. their dimensions
+* applied right hand rule for robot position
 * added collision meshes (with reduced faces)
 * added realistic physical attributes for simulation (inertia and mass)
 * cleaned up numerical values
