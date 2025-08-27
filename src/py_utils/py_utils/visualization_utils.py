@@ -5,6 +5,8 @@ Custom markers for rviz.
 import copy
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import ColorRGBA
+from geometry_msgs.msg import Point
 from visualization_msgs.msg import Marker, MarkerArray
 
 
@@ -37,7 +39,8 @@ class FootballMarkerPublisher(Node):
 
 
 class FootballMarkerArrayPublisher(Node):
-    """MarkerArray publisher for displaying multiple target poses."""
+    """MarkerArray publisher for displaying multiple target poses with footballs.
+    This implementation slows down rviz in case thousands of poses are displayed."""
 
     def __init__(self):
         super().__init__("football_marker_array_publisher")
@@ -47,10 +50,10 @@ class FootballMarkerArrayPublisher(Node):
         self.marker_array = MarkerArray()
         self.id_ = 0
 
-    def add_marker(self, pose, color=""):
+    def add_marker(self, pose_goal, color=""):
         """Add marker to the MarkerArray and publish it.
         Args:
-            pose: the pose of the marker
+            pose_goal: PoseStamped() of the marker
             color: empty string (r=g=b=0) or "red" (r=1)
         """
         marker = Marker()
@@ -58,7 +61,8 @@ class FootballMarkerArrayPublisher(Node):
         self.id_ = self.id_ + 1
         marker.header.frame_id = "base_link"
         marker.ns = "football_markers"
-        marker.pose = copy.deepcopy(pose.pose)  # this is required
+        # deep copy pose (otherwise only the last one will be published)
+        marker.pose = copy.deepcopy(pose_goal.pose)
         marker.color.a = 1.0
         marker.color.r, marker.color.g, marker.color.b = 0.0, 0.0, 0.0
         if color == "red":
@@ -77,3 +81,44 @@ class FootballMarkerArrayPublisher(Node):
     def publish_marker(self):
         """Publish MarkerArray explicitly."""
         self.publisher_.publish(self.marker_array)
+
+
+class PointsPublisher(Node):
+    """PointMarker publisher for displaying the multiple points.
+    This visualization comes handy in case thousands of points
+    are displayed (it will not slow down rviz).
+    """
+
+    def __init__(self):
+        super().__init__("points_marker_publisher")
+        self.publisher_ = self.create_publisher(Marker, "/points_marker_topic", 10)
+        self.marker = Marker()
+        self.marker.id = 0
+        self.marker.header.frame_id = "base_link"
+        self.marker.ns = "points_marker"
+        self.marker.scale.x, self.marker.scale.y, self.marker.scale.z = 0.01, 0.01, 0.01
+        self.marker.lifetime = rclpy.duration.Duration(seconds=0).to_msg()
+        self.marker.action = Marker.ADD
+        self.marker.type = Marker.POINTS
+
+    def add_point(self, pose_goal, color=""):
+        """Publish a simple point.
+        Args:
+            pose_goal: PoseStamped() of the marker
+            color: empty string (r=g=b=0) or "red" (r=1)
+        """
+        point = Point()
+        # deep copy pose (otherwise only the last one will be published)
+        point = copy.deepcopy(pose_goal.pose.position)
+        self.marker.points.append(point)
+        point_color = ColorRGBA()
+        point_color.a = 1.0
+        point_color.r, point_color.g, point_color.b = 0.0, 1.0, 0.0
+        if color == "red":
+            point_color.r, point_color.g = 1.0, 0.0
+        self.marker.colors.append(point_color)
+        self.publish_marker()
+
+    def publish_marker(self):
+        """Publish Marker explicitly."""
+        self.publisher_.publish(self.marker)

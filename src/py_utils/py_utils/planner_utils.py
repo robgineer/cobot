@@ -37,14 +37,16 @@ def plan_and_execute(
     else:
         plan_result = planning_component.plan()
 
+    if plan_result:
+        logger.info("Planning successful")
+    else:
+        logger.error("Planning failed")
     # execute the plan
     if plan_result and execute:
         logger.info("Executing plan")
         robot_trajectory = plan_result.trajectory
         robot.execute(robot_trajectory, controllers=[])
         time.sleep(sleep_time)
-    else:
-        logger.error("Planning failed")
 
     return plan_result
 
