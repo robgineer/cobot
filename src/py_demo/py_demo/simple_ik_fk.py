@@ -93,9 +93,8 @@ def main():
     cobot_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link=eef)
     # reference parameters defined in config/moveit_cpp.yaml
     single_plan_request_parameters = PlanRequestParameters(cobot, "ompl_rrtc")
-    # define preferred planner
-    single_plan_request_parameters.planner_id = "APSConfigDefault"
-    single_plan_request_parameters.planning_pipeline = "ompl"
+    # define preferred planner: default is SBLkConfigDefault
+    # single_plan_request_parameters.planner_id = "SBLkConfigDefault"
     # speed up simulation
     single_plan_request_parameters.max_velocity_scaling_factor = 1.0
     single_plan_request_parameters.max_acceleration_scaling_factor = 1.0
