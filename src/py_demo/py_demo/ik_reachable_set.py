@@ -47,8 +47,8 @@ kZMin, kZMax = 0.5, 1.0
 # define resolution
 kDelta = 0.05  # [cm]
 # store the results
-kStorePoints = True
-kVPointsFilenameSuffix = "baseline"
+kStorePoints = False
+kVPointsFilenameSuffix = "SBLkConfigDefault"
 
 
 def main():
@@ -78,9 +78,8 @@ def main():
 
     # reference parameters defined in config/moveit_cpp.yaml
     single_plan_request_parameters = PlanRequestParameters(cobot, "ompl_rrtc")
-    # define preferred planner
-    single_plan_request_parameters.planner_id = "APSConfigDefault"
-    single_plan_request_parameters.planning_pipeline = "ompl"
+    # define preferred planner: default is SBLkConfigDefault
+    # single_plan_request_parameters.planner_id = "SBLkConfigDefault"
     # speed up simulation
     single_plan_request_parameters.max_velocity_scaling_factor = 1.0
     single_plan_request_parameters.max_acceleration_scaling_factor = 1.0
