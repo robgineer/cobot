@@ -45,7 +45,7 @@ kXMin, kXMax = 0.3, 0.65
 kYMin, kYMax = -0.3, 0.1
 kZMin, kZMax = 0.5, 1.0
 # define resolution
-kDelta = 0.05  # [cm]
+kDelta = 0.05  # 5 [cm]
 # store the results
 kStorePoints = False
 kVPointsFilenameSuffix = "SBLkConfigDefault"
@@ -95,7 +95,7 @@ def main():
 
     ###########################################################################
     # Setup search
-    # We running the inverse kinematic solver for iteratively for points
+    # We running the inverse kinematic solver iteratively for points
     # within a bounding box (kXMin, kXMax, kYMin, kYMax, kZMin, kZMax)
     # with a resolution of "kDelta"
     ###########################################################################
@@ -108,8 +108,6 @@ def main():
     # => this is our search grid
     search_grid = np.array(list(product(x_points, y_points, z_points)))
     # shuffle the points randomly
-    # we want to make sure that the IK solutions are not
-    # only found because two points are close to each other
     # -> IK receives random points
     np.random.shuffle(search_grid)
     # store all points that have an IK solution
@@ -130,7 +128,6 @@ def main():
         pose_goal.pose.position.x = float(x)
         pose_goal.pose.position.y = float(y)
         pose_goal.pose.position.z = float(z)
-        # football_marker_array.add_marker(pose_goal)
         # display current pose (visu only)
         football_marker.publish_marker(pose_goal)
         # run IK
@@ -158,12 +155,12 @@ def main():
 
     if kStorePoints:
         valid_points_filename = "valid_points_" + kVPointsFilenameSuffix + ".pkl"
-        with open(valid_points_filename, "wb") as valid_file:
-            pickle.dump(np.asarray(valid_points), valid_file)
+        with open(valid_points_filename, "wb") as valid_points_file:
+            pickle.dump(np.asarray(valid_points), valid_points_file)
 
         invalid_points_filename = "invalid_points_" + kVPointsFilenameSuffix + ".pkl"
-        with open(invalid_points_filename, "wb") as valid_file:
-            pickle.dump(np.asarray(invalid_points), valid_file)
+        with open(invalid_points_filename, "wb") as invalid_points_file:
+            pickle.dump(np.asarray(invalid_points), invalid_points_file)
 
     rclpy.shutdown()
 
