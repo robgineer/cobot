@@ -7,7 +7,7 @@ RUN apt-get update
 # install required utilities
 RUN apt-get install -y apt-utils software-properties-common x11-apps wget vim curl
 # install dev. packages
-RUN apt-get install -y git build-essential python3.10 python-is-python3 python3-pip
+RUN apt-get install -y git build-essential python3.10 python-is-python3 python3-pip python3-tqdm python3-ipykernel
 # get zsh and zimfw
 RUN apt-get install -y zsh && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 

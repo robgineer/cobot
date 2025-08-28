@@ -8,9 +8,16 @@ Adapted from:
   https://github.com/moveit/moveit2_tutorials/blob/main/doc/examples/motion_planning_python_api/scripts/motion_planning_python_api_tutorial.py
 """
 
-import time
 import rclpy
 from rclpy.logging import get_logger
+
+from py_utils.planner_utils import (
+    plan_and_execute,
+    wait_for_joint_states,
+    generate_moveit_config,
+)
+from py_utils.visualization_utils import FootballMarkerPublisher
+
 
 # moveit python library
 from moveit.planning import (
@@ -19,72 +26,7 @@ from moveit.planning import (
     PlanRequestParameters,
 )
 
-from rclpy.node import Node
-from visualization_msgs.msg import Marker
 from moveit.core.robot_state import RobotState
-from moveit_configs_utils import MoveItConfigsBuilder
-from ament_index_python.packages import get_package_share_directory
-
-
-class FootballMarkerPublisher(Node):
-    """Marker publisher for displaying the target pose."""
-
-    def __init__(self, pose):
-        super().__init__("football_marker_publisher")
-        self.publisher_ = self.create_publisher(Marker, "/football_marker_topic", 10)
-        self.pose_ = pose
-
-    def update_pose(self, pose):
-        self.pose_ = pose
-
-    def publish_marker(self):
-        marker = Marker()
-        marker.id = 0
-        marker.header.frame_id = "base_link"
-        marker.ns = "football_marker"
-        marker.pose = self.pose_.pose
-        marker.action = Marker.ADD
-        marker.type = Marker.MESH_RESOURCE
-        marker.mesh_use_embedded_materials = True
-        marker.mesh_resource = "package://demo/meshes/football.dae"
-        marker.scale.x, marker.scale.y, marker.scale.z = 0.15, 0.15, 0.15
-        marker.color.a = 1.0
-        marker.lifetime = rclpy.duration.Duration(seconds=0).to_msg()
-
-        self.publisher_.publish(marker)
-
-
-def plan_and_execute(
-    robot,
-    planning_component,
-    logger,
-    single_plan_parameters=None,
-    multi_plan_parameters=None,
-    sleep_time=0.0,
-):
-    """Helper function to plan and execute a motion."""
-    # plan to goal
-    logger.info("Planning trajectory")
-    if multi_plan_parameters is not None:
-        plan_result = planning_component.plan(
-            multi_plan_parameters=multi_plan_parameters
-        )
-    elif single_plan_parameters is not None:
-        plan_result = planning_component.plan(
-            single_plan_parameters=single_plan_parameters
-        )
-    else:
-        plan_result = planning_component.plan()
-
-    # execute the plan
-    if plan_result:
-        logger.info("Executing plan")
-        robot_trajectory = plan_result.trajectory
-        robot.execute(robot_trajectory, controllers=[])
-    else:
-        logger.error("Planning failed")
-
-    time.sleep(sleep_time)
 
 
 def main():
@@ -94,60 +36,10 @@ def main():
     ###################################################################
     rclpy.init()
     logger = get_logger("moveit_py.pose_goal")
-
     # the Python MoveIt2 API requires configuration
-    # we basically need most of the config files required to start the move group here again
-    # it is also close to impossible to create a config that is accepted by MoveItPy
-    # without the MoveItConfigsBuilder (hence, the config creation differs from the launch files)
-    # TODO @rharbach: we need to pass the "real" controller param here somewhere for the urdf
-    moveit_config = (
-        MoveItConfigsBuilder(robot_name="cobot")
-        .robot_description(
-            file_path=get_package_share_directory("cobot_model")
-            + "/urdf/festo_cobot_model.urdf.xacro"
-        )
-        .robot_description_semantic(
-            file_path=get_package_share_directory("cobot_moveit_config")
-            + "/config/festo_cobot_model.srdf"
-        )
-        .robot_description_kinematics(
-            file_path=get_package_share_directory("cobot_moveit_config")
-            + "/config/kinematics.yaml"
-        )
-        .joint_limits(
-            file_path=get_package_share_directory("cobot_moveit_config")
-            + "/config/joint_limits.yaml"
-        )
-        .trajectory_execution(
-            file_path=get_package_share_directory("cobot_moveit_config")
-            + "/config/moveit_controllers.yaml"
-        )
-        # apparently this file is read based on convention
-        # in <robot_name>_moveit_config
-        # .planning_pipelines(
-        #    file_path=get_package_share_directory("cobot_moveit_config")
-        #    + "/config/ompl_planning.yaml"
-        # )
-        .pilz_cartesian_limits(
-            file_path=get_package_share_directory("py_demo")
-            + "/config/pilz_cartesian_limits.yaml"
-        )
-        .moveit_cpp(
-            file_path=get_package_share_directory("py_demo") + "/config/moveit_cpp.yaml"
-        )
-        .to_moveit_configs()
-        .to_dict()
-    )
-
-    # wait until joint states are available
-    # otherwise we could get a "RuntimeError: Unable to configure planning scene monitor"
-    node = rclpy.create_node("wait_for_joint_states")
-    while True:
-        joint_states = node.get_parameter_or("joint_states", None)
-        if joint_states is not None:
-            break
-        rclpy.spin_once(node, timeout_sec=0.1)
-    node.destroy_node()
+    moveit_config = generate_moveit_config()
+    # wait until the joint states are published
+    wait_for_joint_states(logger)
 
     cobot = MoveItPy(
         node_name="moveit_py",
@@ -163,6 +55,7 @@ def main():
 
     # set plan start state to current state
     cobot_arm.set_start_state_to_current_state()
+
     # define end effector: plan in world frame orientation
     eef = "gripper_tcp_world"
     """
@@ -194,15 +87,14 @@ def main():
     pose_goal.pose.position.z = 1.0
     # set up marker to display pose_goal
     # => subscribe to /football_marker_topic in rviz to visualize the marker
-    football_marker = FootballMarkerPublisher(pose_goal)
-    football_marker.publish_marker()
+    football_marker = FootballMarkerPublisher()
+    football_marker.publish_marker(pose_goal)
     # set goal with preferred TCP frame
     cobot_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link=eef)
     # reference parameters defined in config/moveit_cpp.yaml
     single_plan_request_parameters = PlanRequestParameters(cobot, "ompl_rrtc")
-    # define preferred planner
-    single_plan_request_parameters.planner_id = "APSConfigDefault"
-    single_plan_request_parameters.planning_pipeline = "ompl"
+    # define preferred planner: default is SBLkConfigDefault
+    # single_plan_request_parameters.planner_id = "SBLkConfigDefault"
     # speed up simulation
     single_plan_request_parameters.max_velocity_scaling_factor = 1.0
     single_plan_request_parameters.max_acceleration_scaling_factor = 1.0
@@ -215,6 +107,7 @@ def main():
         single_plan_parameters=single_plan_request_parameters,
         sleep_time=3.0,
     )
+
     # change end effector: plan in tilted world frame
     eef = "gripper_tcp_world_tilted_up"
     cobot_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link=eef)
@@ -229,8 +122,7 @@ def main():
     pose_goal.pose.orientation.w = 0.0
     pose_goal.pose.orientation.y = 1.0  # rotate 180 deg around y => z+ is down
     pose_goal.pose.position.y = -0.4  # move pose goal to the right to see change
-    football_marker.update_pose(pose_goal)
-    football_marker.publish_marker()
+    football_marker.publish_marker(pose_goal)
     # use TCP for objects oriented with z+ down
     eef = "gripper_tcp_world_tilted_down"
     cobot_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link=eef)

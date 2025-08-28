@@ -47,7 +47,7 @@ void planAndExecute(std::shared_ptr<rclcpp::Node> node, geometry_msgs::msg::Pose
   // get move group
   const auto kArmGroup = "arm_group";
   moveit::planning_interface::MoveGroupInterface move_group(node, kArmGroup);
-  move_group.setPlannerId("APSConfigDefault");
+  move_group.setPlannerId("SBLkConfigDefault");
 
   // set up visual tools and publish marker
   moveit_visual_tools::MoveItVisualTools visual_tools(node, "world", "visual_tools_topic",

@@ -16,9 +16,12 @@ setup(
     zip_safe=True,
     maintainer="Robert Harbach",
     maintainer_email="robgineer@gmail.com",
-    description="Simple IK / FK demo using the MoveIt2 Python API",
+    description="IK / FK demos using the MoveIt2 Python API",
     license="BSD-3-Clause",
     entry_points={
-        "console_scripts": ["simple_ik_fk = py_demo.simple_ik_fk:main"],
+        "console_scripts": [
+            "simple_ik_fk = py_demo.simple_ik_fk:main",
+            "ik_reachable_set = py_demo.ik_reachable_set:main",
+        ],
     },
 )
