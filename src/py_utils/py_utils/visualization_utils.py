@@ -54,7 +54,7 @@ class FootballMarkerArrayPublisher(Node):
         """Add marker to the MarkerArray and publish it.
         Args:
             pose_goal: PoseStamped() of the marker
-            color: empty string (r=g=b=0) or "red" (r=1)
+            color: empty string (g=1, r=b=0) or "red" (r=1, b=g=0)
         """
         marker = Marker()
         marker.id = self.id_
@@ -64,9 +64,9 @@ class FootballMarkerArrayPublisher(Node):
         # deep copy pose (otherwise only the last one will be published)
         marker.pose = copy.deepcopy(pose_goal.pose)
         marker.color.a = 1.0
-        marker.color.r, marker.color.g, marker.color.b = 0.0, 0.0, 0.0
+        marker.color.r, marker.color.g, marker.color.b = 0.0, 1.0, 0.0
         if color == "red":
-            marker.color.r = 1.0
+            marker.color.r, marker.color.g = 1.0, 0.0
         marker.action = Marker.ADD
         marker.type = Marker.MESH_RESOURCE
         marker.mesh_use_embedded_materials = True
@@ -105,7 +105,7 @@ class PointsPublisher(Node):
         """Publish a simple point.
         Args:
             pose_goal: PoseStamped() of the marker
-            color: empty string (r=g=b=0) or "red" (r=1)
+            color: empty string (g=1, r=b=0) or "red" (r=1, b=g=0)
         """
         point = Point()
         # deep copy pose (otherwise only the last one will be published)
