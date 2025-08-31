@@ -1,19 +1,22 @@
-# Devcontainer
+# VNC
 
 This folder allows opening the cobot docker in a vscode devcontainer and display graphics in your browser via VNC.
 
 ## Preparation
 
 You need the following installed:
-- docker (as described in the [README](../README.md) of the parent directory)
+
+- docker (as described in the [Quickstart guide](quickstart.md))
+
 - [Visual Studio Code](https://code.visualstudio.com/)
+
 - Install the [Dev Containers Extension](vscode:extension/ms-vscode-remote.remote-containers) in Visual Studio Code.
 
 ## Install Devcontainer
 
 Clone the cobot repo:
 ```
-git clone --recurse-submodules https://github.com/robgineer/cobot.git .
+git clone https://github.com/robgineer/cobot.git .
 cd cobot
 ```
 

@@ -1,4 +1,4 @@
-# Running xpra sessions from from docker container
+# Xpra
 
 The docker container will enable X11 forwarding to client machines using xpra. This is particularly useful if the container runs on a remote server.<br/>
 Note: although SSH access and X11 forwarding within docker container is (sometimes) referred to as an "anti-pattern" (apparently this implies treating the docker container like a VM), we believe that this solution is the way-to-go for containers hosted on remote servers that contains all required dependencies for the development of this project.
