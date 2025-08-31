@@ -2,7 +2,7 @@
 
 This is a package for hand-eye calibration of a manipulator arm with a static camera. It has been tested with ROS2 jazzy on our robot at the University of Applied Sciences in Esslingen.
 
-![our setup](doc/robot_camera_2.png)
+![our setup](img/robot_camera_2.png)
 
 Although there are very nice packages for hand-eye calibration available (notably easy_handeye2, see link below), we have decided to compile a new package for two reasons:
 
@@ -42,7 +42,7 @@ ros2 run tf2_ros tf2_echo base_link camera_color_optical_frame
 ```
 
 In our case, the excerpt of our camera transformations (i.e. the objectives of our calibration) are structured as follows:
-![tf_tree](doc/tf_tree.png)
+![tf_tree](img/tf_tree.png)
 The coordinate frames of the Realsense camera in ROS are described here: [realsense-ros](https://github.com/IntelRealSense/realsense-ros).
 
 Please note that in our setup, the root of the camera node (which also defines its global pose) is the TF ``camera_bottom_screw_frame``. The perspective projection of the camera is computed wrt ``camera_color_optical_frame``. This may be different for your setup, of course.
@@ -51,9 +51,9 @@ Please note that in our setup, the root of the camera node (which also defines i
 
 For calibration, we rigidly attach an Apriltag to our robot's endeffector and record sample images and corresponding TFs.
 
-![tf_tree](doc/apriltag1.png)
+![tf_tree](img/apriltag1.png)
 
-The tag can be printed from this pdf: [doc/tag36h11_0_140mm.pdf](doc/tag36h11_0_140mm.pdf) or generated with this [online generator](https://shiqiliu-67.github.io/apriltag-generator). Make sure to print with actual size and note the size of the marker (for the tag in this repo, it is 0.14 meters).
+The tag can be printed from this pdf: [img/tag36h11_0_140mm.pdf](img/tag36h11_0_140mm.pdf) or generated with this [online generator](https://shiqiliu-67.github.io/apriltag-generator). Make sure to print with actual size and note the size of the marker (for the tag in this repo, it is 0.14 meters).
 
 Next, start the robot and camera
 
@@ -69,7 +69,7 @@ ros2 run offline_hand_eye record_calib_data
 
 This will open the following GUI where parameters have been adapted from [easy_handeye2](https://github.com/marcoesposito1988/easy_handeye2):
 
-![record_calib_data](doc/record_calib_data.png)
+![record_calib_data](img/record_calib_data.png)
 
 - ``Calibration Type``: ``eye_on_base`` for a static camera, ``eye_in_hand`` when camera is attached to the robot arm
 - ``Camera Image Topic``: ROS topic with the color image of your camera
@@ -83,7 +83,7 @@ This will open the following GUI where parameters have been adapted from [easy_h
 Once you have set or loaded these parametes, you can start to move the robot arm around and record some frames. Recording can be done continuously (not recommended at the moment, see issue below) or in single shots.
 
 Rule of thumb is to record 12 frames or more. Make sure that the calibration target is moved across a large part of the camera image, shows variation in distance to the camera and significant variations in orientation, as e.g. here:
-![calibration frames](doc/all_frames.png)
+![calibration frames](img/all_frames.png)
 
 Make sure to save your configuration parameters! Default location for this file is in the root of your repo with filename ``handeye_calibration_params.json``.
 
@@ -122,7 +122,7 @@ cd scripts
 ./offline_hand_eye_calibration_gui.py --data_path ../doc/sample_data/calibration/calibdata_2025_08_11-11_51_22 --config ../../../handeye_calibration_params.json --output ../../../handeye_calibration.json
 ```
 
-![offline_hand_eye_calibration_gui](doc/offline_hand_eye_calibration_gui.png)
+![offline_hand_eye_calibration_gui](img/offline_hand_eye_calibration_gui.png)
 
 ## Publish results
 
