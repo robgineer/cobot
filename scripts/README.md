@@ -28,3 +28,6 @@ The container within the same network as the host and in `--priviledged` mode (r
 
 Porting the current user to the docker container is unfortunately essential to enable a seamless xpra integration. Using this setup, you will be able to authenticate in your xpra session with the same user and password as on your host.
 
+## ```build_doc.sh```
+
+Creates a `venv`, downloads the required python packages and creates an `mkdocs` documentation page (on http://127.0.0.1:8000/).
