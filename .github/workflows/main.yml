@@ -1,0 +1,27 @@
+name: Deploy Cobot Documentation
+
+on:
+  push:
+    branches:
+      - 54-create-documentation  # or master, depending on your default branch
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install mkdocs mkdocs-material mkdocs-jupyter
+
+      - name: Deploy
+        run: mkdocs gh-deploy --config-file doc/mkdocs.yml --force
