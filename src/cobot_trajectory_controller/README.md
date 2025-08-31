@@ -193,8 +193,8 @@ number of initial traj. points: 68
 resampling_delta: 0.3
 =>  number of resampled traj. points: 5
 ```
+![resampling_joint_5](img/resampling_joint_5.png)
 
-<img width="759" height="379" alt="resampling_joint_5" src="img/resampling_joint_5.png" />
 
 
 ### CobotApiSrv
