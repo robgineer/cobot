@@ -62,11 +62,11 @@ A simplified graphical interpretation of the configuration is provided in the fo
 Defines the plugin for Inverse Kinematics (IK). We have selected the default plugin but reduced the timeout and added `solve_type: Speed` in order to speed up IK.
 
 **Note** often `TRAC_IK` is mentioned as a more "performant" IK solver. In our setup this did not seem to apply. In order to use it install `trac-ik` 
-```
+```bash
 sudo apt-get install ros-jazzy-trac-ik
-``` 
-and set change the plugin in `kinematics.yaml`
 ```
+and set change the plugin in `kinematics.yaml`
+```bash
 kinematics_solver: trac_ik_kinematics_plugin/TRAC_IKKinematicsPlugin
 ```
 

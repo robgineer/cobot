@@ -6,14 +6,14 @@ Follow the instructions below to plan and execute trajectories in simulation or 
 
 ### 1. Clone this Repo
 
-```
+```bash
 git clone https://github.com/robgineer/cobot.git cobot
 cd ~/cobot
 ```
 
 ### 2. Install docker
 The entire dev. environment is based on a docker container. If you running Ubuntu and you don't have docker installed, run the following script.
-```
+```bash
 ./scripts/docker_installation.sh
 ```
 
@@ -31,7 +31,7 @@ Once you have configured your preferred GUI type, proceed with either the simula
 
 ### 1. Build the project
 
-```
+```bash
 source /opt/ros/jazzy/setup.{bash/zsh}
 cd ~/cobot
 colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release" --packages-select cobot_model cobot_moveit_config demo py_demo
@@ -54,7 +54,7 @@ source install/setup.{bash/zsh}
 #### Option A: Fake Controls
 This is an rviz only setup that enables to visualize Cobot motions based on fake controls; omitting any physics.
 
-```
+```bash
 ros2 launch demo rviz_demo_launch.py
 ```
 
@@ -62,7 +62,7 @@ ros2 launch demo rviz_demo_launch.py
 #### Option B: Gazebo Controls
 This setup enables to visualize requested trajectories in rviz and in Gazebo. The Gazebo part will consider physical characteristics of the model such as mass and inertia. 
 
-```
+```bash
 ros2 launch cobot_moveit_config gz_demo_launch.py
 ```
 
@@ -70,11 +70,11 @@ ros2 launch cobot_moveit_config gz_demo_launch.py
 
 You can either drag the Cobot's end effector in rviz to a preferred position via the MoveIt2 motion planning plugin and execute the resulting trajectory or run a demo.
 Example:
-```
+```bash
 ros2 run demo simple_ik
 ```
 or (fake controllers only)
-```
+```bash
 ros2 run py_demo simple_ik_fk
 ```
 
@@ -89,7 +89,7 @@ Setup overview:
 
 
 In order to manipulate the Cobot in ROS2, connect to HS-Esslingen VPN, log in into the dedicated workstation for the Cobot and run
-```
+```bash
 source /opt/ros/jazzy/setup.{bash/zsh}
 cd ~/cobot
 git submodule init src/cobot_hardware src/realsense-ros
@@ -99,13 +99,13 @@ to pull the submodules.
 
 Build with:
 
-```
+```bash
 colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release" --packages-skip moveit_task_constructor
 ```
 => build everything except of the `moveit_task_constructor` (not required for the basic tasks).
 
 Don't forget to source
-```
+```bash
 source install/setup.{bash/zsh}
 ```
 
@@ -114,7 +114,7 @@ source install/setup.{bash/zsh}
 ### 2. Launch Moveit2 and ROS2 Control
 
 Launch `rviz_demo_launch.py` with `controller_type:=real` and `enable_realsense_camera:=true`
-```
+```bash
 ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
 ```
 
@@ -122,7 +122,7 @@ ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_came
 
 Same as in simulation, you can either drag the Cobot's end effector in rviz to a preferred position via the MoveIt2 motion planning plugin and execute the resulting trajectory or run a demo.
 Example:
-```
+```bash
 ros2 run demo simple_ik
 ```
 
@@ -130,6 +130,6 @@ ros2 run demo simple_ik
 
 Once activated, the vacuum system remains active; even if the cobot is shut down physically (the red emergency button on the cobot table).
 In order to deactivate the vacuum system, run
-```
+```bash
 ros2 run cobot_hardware gripper_off
 ```

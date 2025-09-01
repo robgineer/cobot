@@ -146,7 +146,7 @@ ros2 run tf2_ros tf2_echo base_link camera_bottom_screw_frame
 
 to print the extrinsic calibration in the console, e.g.
 
-```
+```text
 At time 0.0
 - Translation: [0.659, 0.459, 1.550]
 - Rotation: in Quaternion [-0.604, 0.696, 0.293, 0.254]

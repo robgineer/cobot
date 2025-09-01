@@ -8,7 +8,7 @@ Note: although SSH access and X11 forwarding within docker container is (sometim
 
 In order for xpra to forward X11 sessions from the container, you need to have xpra installed on your host system (where your docker container will be running). If your host system is Ubuntu, simply use the following code snippet to download and install xpra. If not, download it from [https://github.com/Xpra-org/xpra/](https://github.com/Xpra-org/xpra/).
 
-```
+```bash
 sudo wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc && \
     sudo wget -P /etc/apt/sources.list.d/ https://raw.githubusercontent.com/Xpra-org/xpra/master/packaging/repos/$(lsb_release -sc)/xpra.sources && \
     sudo apt-get update && \
@@ -20,7 +20,7 @@ Dont forget to install xpra on your local client machine as well.
 ## 2. Build the docker image
 
 After successfully having cloned this repo, run the `docker_configuration` script.
-```
+```bash
 cd ~/cobot/scripts
 ./docker_configuration.sh
 ```
@@ -36,7 +36,7 @@ Porting the current user to the docker container is unfortunately essential to e
 ### Troubleshooting
 If building the docker container fails due to the following error:
 
-```
+```text
 0.276 groupadd: GID '1000' already exists
 ```
 
@@ -45,13 +45,13 @@ then you are probably running on a host that has only one user (your user) and t
 ## 3. Run X11 sessions from your terminal
 
 In the docker container run:
-```
+```bash
 export DISPLAY=:100 # or any display number you prefer that is not used
 xpra start :100
 ```
 
 On client run:
-```
+```bash
 xpra attach ssh://<user>@<server>:22/100
 ```
 Where \<server\> represents the address of your remote host that runs the docker container. X11 will be forwarded from the docker container via the host to your client.

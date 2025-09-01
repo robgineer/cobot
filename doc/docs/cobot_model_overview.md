@@ -33,7 +33,7 @@ The URDF is implemented as a `xacro` to enable variation handling. We define thr
 
 
 To generate the URDF locally run
-```
+```bash
 xacro src/cobot_model/urdf/festo_cobot_model.urdf.xacro -o cobot.urdf
 ```
 

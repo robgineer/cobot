@@ -13,7 +13,7 @@ Our Cobot is not able to follow a full trajectory. It instead accepts the final 
 
 
 ### Communication Flow
-```
+```text
 cobot_controller_manager (this package)
         ↓ (send last trajectory point)
 ros2_control controller
@@ -26,13 +26,13 @@ cobot_hardware (real hardware interface)
 This controller manager works only in combination with the `cobot_hardware` package (branch: `adapt-hw-interface-to-custom-controller-manager`) and aims to control the real Cobot.
 
 In order to manipulate the Cobot in ROS2, connect to HS-Esslingen VPN and run
-```
+```bash
 git clone https://github.com/robgineer/cobot.git .
 git submodule init src/cobot_hardware
 git submodule update src/cobot_hardware
 ```
 Then build this project and run
-```
+```bash
 ros2 launch demo rviz_demo_launch.py controller_type:=real
 ```
 
