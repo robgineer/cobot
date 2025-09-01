@@ -1,6 +1,6 @@
 # Cobot Model Overview
 
-The following paragraphs serve as an overview to the basic Cobot Model characteristics. The actual specifics of the model including our approach on the modelling of the physical attributes is provide in the [Cobot Modelling Jupyter Notebook](cobot_model/cobot_modelling.ipynb).
+The following paragraphs serve as an overview to the basic Cobot Model characteristics. The actual specifics of the model including our approach on the modelling of the physical attributes is provide in the [Cobot Modelling Jupyter Notebook](https://github.com/robgineer/cobot/blob/main/src/cobot_model/doc/cobot_modelling.ipynb).
 
 ## Robot Overview
 
@@ -13,7 +13,7 @@ The cobot model defines
 * four TCP elements for each gripper
 
 
-![cobot_full](cobot_model/cobot_modelling/img/overview/cobot_full.png)
+![cobot_full](img/cobot_full.png)
 
 
 ## Grippers
@@ -47,4 +47,4 @@ Example for the gripper_tcp:
 | gripper_tcp | gripper_tcp_world | gripper_tcp_world_tilted_up |  gripper_tcp_world_tilted_down |
 |-----------------------|-----------------------|-----------------------|-----------------------|
 | The TCP with all rotations | TCP in world frame. <br/> All rotations are inverted. | TCP in world frame tilted by -45 deg. <br/> Compensates the natural tilt <br/> in the physical model, Z+ is up | TCP in world frame tilted by +135 deg. <br/> Compensates the natural tilt <br/> in the physical model, Z+ is down |
-| ![gripper_tcp](cobot_model/cobot_modelling/img/rotations/gripper_tcp.png) | ![gripper_tcp_world](cobot_model/cobot_modelling/img/rotations/gripper_tcp_world.png) | ![gripper_tcp_world_tilted_up](cobot_model/cobot_modelling/img/rotations/gripper_tcp_world_tilted_up.png) | ![gripper_tcp_world_tilted_down](cobot_model/cobot_modelling/img/rotations/gripper_tcp_world_tilted_down.png) |
+| ![gripper_tcp](img/gripper_tcp.png) | ![gripper_tcp_world](img/gripper_tcp_world.png) | ![gripper_tcp_world_tilted_up](img/gripper_tcp_world_tilted_up.png) | ![gripper_tcp_world_tilted_down](img/gripper_tcp_world_tilted_down.png) |

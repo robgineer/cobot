@@ -15,7 +15,6 @@ nav:
   #- Trajectory Controller: cobot_trajectory_controller.md
   - Hardware Interface: cobot_hardware.md
   - Planner Evaluation: planner_evaluation.md
-  - Robot ModelLing: cobot_model/cobot_modelling.ipynb
   #- Hand-eye-calibration: offline_hand_eye.md
   #- Controller Manager: controller_manager.md
 
