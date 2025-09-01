@@ -2,6 +2,8 @@
 
 This page serves as a reference for the integration of a pneumatic Cobot (provided by [**Festo SE & Co. KG**](https://www.festo.com/)) into MoveIt2 and ROS2 Control.
 
+![cobot_logo_small](img/cobot_logo_small.png)
+
 In oder to get a deep insight into this project and to use the Cobot Model in simulation or physically for your custom tasks, follow the steps below.
 
 1. Check out the [Quickstart Guide](quickstart.md) to get the Cobot running in Simulation or on its real hardware.
