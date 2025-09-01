@@ -4,7 +4,7 @@ We plan trajectories and gripper actions with MoveIt2 and execute them using ROS
 
 
 MoveIt2 and ROS2 control contain several configuration files. These are located in the `cobot_moveit_config` directory. We will focus on the following files:
-```
+```text
 moveit_controllers.yaml / moveit_custom_controllers.yaml
 ros2_controllers.yaml
 kinematics.yaml
@@ -31,7 +31,7 @@ Since we have a custom controller for the real Cobot, we reference the `cobot_ar
 
 Defines the `update_rate` (execution frequency of the controllers) and each controller type in detail. In our configuration we have the following controllers
 
-```
+```yaml
 arm_group_controller:
     type: joint_trajectory_controller/JointTrajectoryController
 

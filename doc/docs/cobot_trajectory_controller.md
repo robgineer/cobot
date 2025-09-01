@@ -34,7 +34,7 @@ In previous implementations, we simply sent the final trajectory point to the Co
 In order to overcome this limitation we use the instruction list mechanism, where we pass a list of points to the Cobot and since the standard implementation of the ROS2 trajectory controller does not allow to send full trajectories (or lists of points), we are using this custom ROS2 controller, that send out either the last point of a trajectory or the entire trajectory to this interface.
 Note: ROS2 control implies using single joint commands (declared as double) and since a full trajectory was therefore difficult to be passed, we introduced another communication feature: a singleton realtime buffer.
 
-```
+```text
 MoveIt Planning (OMPL) → Generates a collision free path
         ↓
 Time Parameterization Plugin (Iterative / TOTG) → Adds time (making it an actual trajectory)

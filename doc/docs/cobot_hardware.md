@@ -8,7 +8,7 @@ The package is hosted on the GitLab server of the Esslingen University [repo](ht
 Background: the package contains Festo proprietary implementations and binaries for the communication with the Cobot that were not released to the public. Therefore, this code is hosted on the Esslingen University GitLab while the remaining project is hosted on a public GitHub repository.
 
 ## Package Contents
-```
+```text
 ├── boost_1_65_0
 |
 ├── config
@@ -38,7 +38,7 @@ Background: the package contains Festo proprietary implementations and binaries 
 We have two options to pass commands to the Cobot: single point (the final point of a trajectory, via ```SetRobotWaypoint```) or a list of points (via ```ExecuteInstructionList```, representing a path). We cannot send actual trajectories or fine grained position commands as the SPS of the Cobot takes care of the trajectory (and we cannot by-pass the SPS).
 
 This, unfortunately, does not align with the ROS2 control principles. A basic overview of the trajectory generation and control is provided in the following:
-```
+```text
 MoveIt Planning (OMPL) → Generates a collision free path
                 ↓
 Time Parameterization Plugin (Iterative / TOTG) → Adds time (making it an actual trajectory)
@@ -71,10 +71,9 @@ The following paragraphs serve as a reference on the major implementation detail
 
 ... a rather special one. It includes an `ExternalProject`: an older boost library version, that is required for `libopc_ua.so`. Hence, we extract the archive of the boost library, build it and link it to `libopc_ua.so`. This way the lib is satisfied with the older boost version and the remaining project references the system-wide boost version.
 
-```
+```cmake
 ExternalProject_Add(boost165
   URL file://${BOOST_ARCHIVE}
-  URL_HASH SHA256=8a142d33ab4b4ed0de3abea3280ae3b2ce91c48c09478518c73e5dd2ba8f20aa
   CONFIGURE_COMMAND ./bootstrap.sh --with-libraries=system,filesystem --prefix=${BOOST_INSTALL_DIR}
   BUILD_COMMAND ./b2 link=shared install -j4
   BUILD_IN_SOURCE 1
