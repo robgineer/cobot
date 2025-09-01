@@ -51,15 +51,15 @@ source install/setup.{bash/zsh}
 
 ### 2. Launch Moveit2 and ROS2 Control
 
-#### Option A: Fake Controllers
-This is an rviz only setup that enables to visualize Cobot motions based on fake controllers; omitting any physics.
+#### Option A: Fake Controls
+This is an rviz only setup that enables to visualize Cobot motions based on fake controls; omitting any physics.
 
 ```
 ros2 launch demo rviz_demo_launch.py
 ```
 
 
-#### Option B: Gazebo Controllers
+#### Option B: Gazebo Controls
 This setup enables to visualize requested trajectories in rviz and in Gazebo. The Gazebo part will consider physical characteristics of the model such as mass and inertia. 
 
 ```

@@ -160,7 +160,7 @@ The ROS2 Control Manager calls this function periodically. The implementation ch
 
 Spatial trajectory resampling for the reduction of points.
 
-In case full trajectory forwarding is active (`execution_mode == full_trajectory"`), we forward the entire trajectory to the hardware interface.
+In case full trajectory forwarding is active (`execution_mode == full_trajectory`), we forward the entire trajectory to the hardware interface.
 
 Since the Cobot does not accept timing based commands but a path and since dense trajectory points imply jerky movements, we resample the trajectory based on a minimum distance between two subsequent trajectory points. This can be adjusted using the parameter: `resampling_delta`.
 
