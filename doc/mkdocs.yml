@@ -1,6 +1,6 @@
 site_name: Cobot Documentation
 theme:
-  name: material
+  name: readthedocs
 
 nav:
   - Overview: index.md
