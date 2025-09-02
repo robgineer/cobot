@@ -132,6 +132,13 @@ def _setup_nodes(context, *args, **kwargs):
         "ros2_controllers.yaml",
     )
 
+    # load config for occupancy map
+    sensors_yaml = (
+        load_file(moveit_config_package, path.join("config", "sensor_3d.yaml"))
+        if enable_realsense_camera
+        else {"sensors": []}  # create empty config if camera is not running
+    )
+
     # configure trajectory execution
     trajectory_execution = {
         "allow_trajectory_execution": True,
@@ -187,6 +194,7 @@ def _setup_nodes(context, *args, **kwargs):
                 moveit_controllers_yaml,
                 {"use_sim_time": use_sim_time},
                 move_group_capabilities,
+                sensors_yaml,
             ],
         ),
         # rviz2
