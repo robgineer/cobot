@@ -5,7 +5,7 @@ This controller works only in combination with the `cobot_hardware` package and 
 
 In order to manipulate the Cobot in ROS2, make sure you have pulled the `cobot_hardware` submodule. Run this controller with
 
-```
+```bash
 ros2 launch demo rviz_demo_launch.py controller_type:=real
 ```
 
@@ -14,7 +14,7 @@ ros2 launch demo rviz_demo_launch.py controller_type:=real
 We have two options to pass commands to the Cobot API: single point (the final point of a trajectory, via ```SetRobotWaypoint```) or a list of points (via ```ExecuteInstructionList```, representing a path). We cannot send actual trajectories or fine grained position commands as the SPS of the Cobot takes care of the trajectory (and we cannot by-pass the SPS).
 
 This, unfortunately, does not align with the ROS2 control principles. A basic overview of the trajectory generation and control is provided in the following:
-```
+```text
 MoveIt Planning (OMPL) → Generates a collision free path
                 ↓
 Time Parameterization Plugin (Iterative / TOTG) → Adds time (making it an actual trajectory)
@@ -34,7 +34,7 @@ In previous implementations, we simply sent the final trajectory point to the Co
 In order to overcome this limitation we use the instruction list mechanism, where we pass a list of points to the Cobot and since the standard implementation of the ROS2 trajectory controller does not allow to send full trajectories (or lists of points), we are using this custom ROS2 controller, that send out either the last point of a trajectory or the entire trajectory to this interface.
 Note: ROS2 control implies using single joint commands (declared as double) and since a full trajectory was therefore difficult to be passed, we introduced another communication feature: a singleton realtime buffer.
 
-```
+```text
 MoveIt Planning (OMPL) → Generates a collision free path
         ↓
 Time Parameterization Plugin (Iterative / TOTG) → Adds time (making it an actual trajectory)
@@ -103,7 +103,7 @@ List of the major functions implemented:
     setup_service_for_rviz_panel()
 ```
 
-Graphical overview.
+Graphical overview of function interactions:
 
 ![cobot_traj_controller_internal](img/cobot_traj_controller_internal.png)
 
@@ -160,12 +160,12 @@ The ROS2 Control Manager calls this function periodically. The implementation ch
 
 Spatial trajectory resampling for the reduction of points.
 
-In case full trajectory forwarding is active (`execution_mode == full_trajectory"`), we forward the entire trajectory to the hardware interface.
+In case full trajectory forwarding is active (`execution_mode == full_trajectory`), we forward the entire trajectory to the hardware interface.
 
 Since the Cobot does not accept timing based commands but a path and since dense trajectory points imply jerky movements, we resample the trajectory based on a minimum distance between two subsequent trajectory points. This can be adjusted using the parameter: `resampling_delta`.
 
 
-```
+```text
 Example with resampling_delta = 0.5
 
 Trajectory point:     0     1     2     3     4     5     6     7     8
@@ -188,7 +188,7 @@ Note: in practice all joints move with the same velocity
 ```
 
 Graphical interpretation of  trajectory resampling on real data (joint 5):
-```
+```text
 number of initial traj. points: 68
 resampling_delta: 0.3
 =>  number of resampled traj. points: 5
@@ -200,7 +200,7 @@ resampling_delta: 0.3
 ### CobotApiSrv
 
 `execution_mode` and `resampling_delta` are defined as parameters that can be updated on demand using:
-```
+```bash
 ros2 param set /cobot_arm_group_controller execution_mode full_trajectory
 ros2 param set /cobot_arm_group_controller resampling_delta 0.3
 ```

@@ -1,0 +1,38 @@
+site_name: Cobot Documentation
+site_author: Robert Harbach / Thao Dang
+repo_url: https://github.com/robgineer/cobot
+copyright: Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a>
+theme:
+  name: readthedocs
+
+
+nav:
+  - Overview: index.md
+  - Quickstart: quickstart.md
+  - Graphical User Interfaces:
+    - gui_overview.md
+    - howToVNC.md
+    - howToXpra.md
+  - Configuration:
+    - cobot_model_overview.md
+    - cobot_configuration.md
+    - launch_files.md
+  - Controls:
+    - Trajectory Controller: cobot_trajectory_controller.md
+    - Hardware Interface: cobot_hardware.md
+    - Controller Manager: controller_manager.md
+  - Evaluation and Calibration:
+    - Planner Evaluation: planner_evaluation.md
+    - Hand-eye-calibration: offline_hand_eye.md
+
+
+plugins:
+  - mkdocs-jupyter:
+      execute: false   # don't re-run notebooks on build
+
+markdown_extensions:
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
