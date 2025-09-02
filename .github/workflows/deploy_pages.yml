@@ -1,9 +1,7 @@
 name: Deploy Cobot Documentation
 
 on:
-  push:
-    branches:
-      - 54-create-documentation  # or master, depending on your default branch
+ workflow_dispatch:
 
 permissions:
   contents: write
