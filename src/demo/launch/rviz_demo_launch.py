@@ -133,11 +133,13 @@ def _setup_nodes(context, *args, **kwargs):
     )
 
     # load config for occupancy map
-    sensors_yaml = (
+    """ deactivated by default; requires testing on real Cobot """
+    """ sensors_yaml = (
         load_file(moveit_config_package, path.join("config", "sensor_3d.yaml"))
         if enable_realsense_camera
         else {"sensors": []}  # create empty config if camera is not running
-    )
+    ) """
+    sensors_yaml = {"sensors": {}}
 
     # configure trajectory execution
     trajectory_execution = {
