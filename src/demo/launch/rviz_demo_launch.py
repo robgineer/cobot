@@ -337,6 +337,7 @@ def _setup_nodes(context, *args, **kwargs):
             ),
             launch_arguments={
                 "pointcloud.enable": "true",
+                "clip_distance": "1.3",
             }.items(),
             condition=(
                 IfCondition(
