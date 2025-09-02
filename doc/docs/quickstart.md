@@ -85,7 +85,7 @@ Setup overview:
 
 ![cobot_workstation_setup](img/cobot_workstation.png)
 
-### 1. Clone submodules
+### 1. Pull submodules
 
 
 In order to manipulate the Cobot in ROS2, connect to HS-Esslingen VPN, log in into the dedicated workstation for the Cobot and run

@@ -10,13 +10,13 @@ We have evaluated several planners for their applicability with the Cobot.
 
 
 
-Although `AnyPathShortening` seems like a good approach it is slower than a single planner and although we defined 6 different planners, observations revealed that in most cases only `SBL`, `LBKPIECE` or `RRTConnect` were used by `AnyPathShortening`.
+Although `AnyPathShortening` seems like a good approach, it is slower than a single planner and although we defined 6 different planners, observations revealed that in most cases only `SBL`, `LBKPIECE` or `RRTConnect` were used by `AnyPathShortening`.
 
 
 A comparison further revealed that `SBL` yields the best results in our operation domain (the small table attached to the Cobot in direction x+).
 
 ## Evaluation Setup
-We have defined a bounding box (representing the operation domain) around the work bench and points with a resolution of `kDelta = 0.05  # 5 [cm]`.
+We have defined a bounding box (representing the operation domain) around the work bench and filled the bound box with points; using a resolution of `kDelta = 0.05  # 5 [cm]`.
 ```
 kXMin, kXMax = 0.3, 0.65
 kYMin, kYMax = -0.3, 0.1
@@ -30,7 +30,7 @@ Point Cloud image of workbench:
 For each (randomly selected) point in the bounding box, we ran the  `SBL`, `LIBPIECE` and `RRTConnect` planner using the `ik_reachable_set` script; that plans a path with inverse kinematic (IK) and displays successful and failed runs.
 Each planner had a timeout of `0.5` seconds. 
 
-Goal was to identify on how many points can be approach by the Cobot from above (for a pick and place task for example). We made sure that an IK solution was not just successful because point were located next to each other implying a small spacial delta by selecting points from the bounding box randomly. 
+Goal was to identify on how many points can be approach by the Cobot from above (for a pick and place task for example). We made sure that an IK solution was not just successful because point were located next to each other by selecting points from the bounding box randomly.
 
 Example (green: successful IK runs, red: failed IK runs)
 
@@ -39,7 +39,7 @@ Example (green: successful IK runs, red: failed IK runs)
 
 ## Results
 
-The final "point cloud" (in form of footballs) for the `SBL` planner is shown in the following.
+The final "point cloud" for the `SBL` planner is shown in the following.
 
 ![ik_point_cloud](img/ik_point_cloud.png)
 
@@ -54,9 +54,9 @@ Projecting the points on the workbench shows that the reach is acceptable.
 ![ik_point_cloud_workbench](img/ik_point_cloud_workbench.png)
 
 
-While all three planners yield similar results and although `RRTConnect` servers as the default planner, it seemed to have found less solutions compared to `SBL`.
+While all three planners yield similar results, `SBL` seemed to have found more solutions overall.
 
-A (visual) comparison of successful and failed IK runs for `SBL` and `RRTConnect` is shown in the following.
+A (visual) comparison of successful and failed IK runs for `SBL` and `RRTConnect` (representing the default planner) is shown in the following.
 ![rrtconnect_vs_sbl](img/rrtconnect_vs_sbl.png)
 
 

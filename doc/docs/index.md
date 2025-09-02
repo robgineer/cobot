@@ -1,10 +1,10 @@
 # Cobot Documentation
 
-This page serves as a reference for the integration of a pneumatic Cobot (provided by [**Festo SE & Co. KG**](https://www.festo.com/)) into MoveIt2 and ROS2 Control.
+This page serves as a reference for the integration of a pneumatic Cobot (provided by [**Festo SE & Co. KG**](https://www.festo.com/)) into MoveIt2 and ROS2 Control: [https://github.com/robgineer/cobot](https://github.com/robgineer/cobot).
 
 ![cobot_logo_small](img/cobot_logo_small.png)
 
-In oder to get a deep insight into this project and to use the Cobot Model in simulation or physically for your custom tasks, follow the steps below.
+In oder to get a deep insight into this project and to use the Cobot for your custom tasks, follow the steps below.
 
 1. Check out the [Quickstart Guide](quickstart.md) to get the Cobot running in Simulation or on its real hardware.
 2. Run some demos using the C++ / Python API or the MoveIt Task Constructor from the [demo package](https://github.com/robgineer/cobot/tree/main/src/demo).

@@ -103,7 +103,7 @@ List of the major functions implemented:
     setup_service_for_rviz_panel()
 ```
 
-Graphical overview.
+Graphical overview of function interactions:
 
 ![cobot_traj_controller_internal](img/cobot_traj_controller_internal.png)
 
