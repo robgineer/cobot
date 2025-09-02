@@ -24,7 +24,7 @@ RUN apt-get install -y ros-jazzy-ros2-control ros-jazzy-ros2-controllers
 RUN apt-get install -y ros-jazzy-gz-ros2-control
 # install Moveit2
 RUN apt-get install -y ros-jazzy-moveit ros-jazzy-moveit-py ros-jazzy-moveit-ros-control-interface ros-jazzy-control-msgs
-RUN apt-get install -y ros-jazzy-moveit-visual-tools
+RUN apt-get install -y ros-jazzy-moveit-visual-tools ros-jazzy-moveit-ros-perception
 # install panda config (for reference purposes)
 RUN apt-get install -y ros-jazzy-moveit-resources-panda-moveit-config
 # install joint manipulator
