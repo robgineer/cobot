@@ -1,6 +1,10 @@
 site_name: Cobot Documentation
+site_author: Robert Harbach / Thao Dang
+repo_url: https://github.com/robgineer/cobot
+copyright: Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a>
 theme:
   name: readthedocs
+
 
 nav:
   - Overview: index.md
@@ -20,6 +24,7 @@ nav:
   - Evaluation and Calibration:
     - Planner Evaluation: planner_evaluation.md
     - Hand-eye-calibration: offline_hand_eye.md
+
 
 plugins:
   - mkdocs-jupyter:
