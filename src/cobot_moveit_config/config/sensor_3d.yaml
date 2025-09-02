@@ -1,13 +1,13 @@
-octomap_resolution: 0.05
+octomap_resolution: 0.01
 sensors:
   - camera_depth_image
 camera_depth_image:
     sensor_plugin: occupancy_map_monitor/DepthImageOctomapUpdater
     image_topic: /camera/camera/depth/image_rect_raw
     queue_size: 5
-    near_clipping_plane_distance: 0.1
-    far_clipping_plane_distance: 0.2
-    shadow_threshold: 0.9
+    near_clipping_plane_distance: 0.3
+    far_clipping_plane_distance: 1.5
+    shadow_threshold: 0.2
     padding_scale: 1.0
     max_update_rate: 1.0
     filtered_cloud_topic: /depth_camera/filtered_depth
