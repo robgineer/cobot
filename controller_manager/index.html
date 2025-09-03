@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Robert Harbach / Thao Dang" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Controller Manager - Cobot Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Controller Manager";
+        var mkdocs_page_input_path = "controller_manager.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Cobot Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Graphical User Interfaces</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../gui_overview/">VNC vs Xpra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToVNC/">VNC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToXpra/">Xpra</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_model_overview/">Cobot Model Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_configuration/">MoveIt2 and ROS2 Control Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../launch_files/">Launch Files Explained</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Controls</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_trajectory_controller/">Trajectory Controller</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_hardware/">Hardware Interface</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Controller Manager</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#discontinued">Discontinued</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#reason">Reason</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#implementation-overview">Implementation Overview</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#communication-flow">Communication Flow</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting started</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Evaluation and Calibration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../planner_evaluation/">Planner Evaluation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../offline_hand_eye/">Hand-eye-calibration</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Cobot Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Controls</li>
+      <li class="breadcrumb-item active">Controller Manager</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/robgineer/cobot/edit/master/docs/controller_manager.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cobot-controller-manager">Cobot Controller Manager<a class="headerlink" href="#cobot-controller-manager" title="Permanent link">&para;</a></h1>
+<h2 id="discontinued">Discontinued<a class="headerlink" href="#discontinued" title="Permanent link">&para;</a></h2>
+<p>This solution is currently not active in the Cobot project. It has been replaced by a custom trajectory controller. To reactivate this solution, revert commit: 9a403d50ed45b9cc583237b94f2c068a97f4bd74 and use the following branch for the <code>cobot_hardware</code>: <code>adapt-hw-interface-to-custom-controller-manager</code>.</p>
+<h3 id="reason">Reason<a class="headerlink" href="#reason" title="Permanent link">&para;</a></h3>
+<p>Although this solution results in smooth movements of the Cobot arm, the resulting trajectory is calculated by the SPS of the Cobot. We therefore have no influence on the trajectory and collisions that were considered within trajectory planning are obsolete. Hence, even with a camera attached, the Cobot will be blind with this solution.</p>
+<h2 id="implementation-overview">Implementation Overview<a class="headerlink" href="#implementation-overview" title="Permanent link">&para;</a></h2>
+<p>Our Cobot is not able to follow a full trajectory. It instead accepts the final trajectory point or a list of points (in form of a path). MoveIt2 and ROS2 control, however are designed to generate a trajectory and send out single position / velocity / effort commands to the hardware in realtime. Since we cannot use these single points, we use the last trajectory point and forward it to the Cobot hardware interface. </p>
+<h3 id="communication-flow">Communication Flow<a class="headerlink" href="#communication-flow" title="Permanent link">&para;</a></h3>
+<pre><code class="language-text">cobot_controller_manager (this package)
+        ↓ (send last trajectory point)
+ros2_control controller
+        ↓ (forward one single point to hardware interface)
+cobot_hardware (real hardware interface)
+</code></pre>
+<h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
+<p>This controller manager works only in combination with the <code>cobot_hardware</code> package (branch: <code>adapt-hw-interface-to-custom-controller-manager</code>) and aims to control the real Cobot.</p>
+<p>In order to manipulate the Cobot in ROS2, connect to HS-Esslingen VPN and run</p>
+<pre><code class="language-bash">git clone https://github.com/robgineer/cobot.git .
+git submodule init src/cobot_hardware
+git submodule update src/cobot_hardware
+</code></pre>
+<p>Then build this project and run</p>
+<pre><code class="language-bash">ros2 launch demo rviz_demo_launch.py controller_type:=real
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../cobot_hardware/" class="btn btn-neutral float-left" title="Hardware Interface"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../planner_evaluation/" class="btn btn-neutral float-right" title="Planner Evaluation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/robgineer/cobot" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../cobot_hardware/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../planner_evaluation/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

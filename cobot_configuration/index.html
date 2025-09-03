@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Robert Harbach / Thao Dang" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>MoveIt2 and ROS2 Control Configuration - Cobot Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "MoveIt2 and ROS2 Control Configuration";
+        var mkdocs_page_input_path = "cobot_configuration.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Cobot Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Graphical User Interfaces</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../gui_overview/">VNC vs Xpra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToVNC/">VNC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToXpra/">Xpra</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_model_overview/">Cobot Model Overview</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">MoveIt2 and ROS2 Control Configuration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#moveit-controller">MoveIt Controller</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ros2-controllers-ros2_controllersyaml">ROS2 Controllers: ros2_controllers.yaml</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#inverse-kinematics-solver-kinematicsyaml">Inverse Kinematics Solver: kinematics.yaml</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#robot-semantics-festo_cobot_modelsrdf">Robot Semantics: festo_cobot_model.srdf</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../launch_files/">Launch Files Explained</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Controls</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_trajectory_controller/">Trajectory Controller</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_hardware/">Hardware Interface</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../controller_manager/">Controller Manager</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Evaluation and Calibration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../planner_evaluation/">Planner Evaluation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../offline_hand_eye/">Hand-eye-calibration</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Cobot Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Configuration</li>
+      <li class="breadcrumb-item active">MoveIt2 and ROS2 Control Configuration</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/robgineer/cobot/edit/master/docs/cobot_configuration.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="moveit2-and-ros2-control-configuration">MoveIt2 and ROS2 Control Configuration<a class="headerlink" href="#moveit2-and-ros2-control-configuration" title="Permanent link">&para;</a></h1>
+<p>We plan trajectories and gripper actions with MoveIt2 and execute them using ROS2 control.</p>
+<p>MoveIt2 and ROS2 control contain several configuration files. These are located in the <code>cobot_moveit_config</code> directory. We will focus on the following files:</p>
+<pre><code class="language-text">moveit_controllers.yaml / moveit_custom_controllers.yaml
+ros2_controllers.yaml
+kinematics.yaml
+ompl_planning.yaml
+festo_cobot_model.sdf
+</code></pre>
+<h2 id="moveit-controller">MoveIt Controller<a class="headerlink" href="#moveit-controller" title="Permanent link">&para;</a></h2>
+<p>Files <code>moveit_controllers.yaml</code> as well as <code>moveit_custom_controllers.yaml</code>.</p>
+<ol>
+<li>Defines which controller manager is used. By default the <code>moveit_simple_controller_manager/MoveItSimpleControllerManager</code> is selected.</li>
+<li>Lists all ROS2 controllers that will communicate with MoveIt2 and their corresponding joints</li>
+</ol>
+<p>We are using the default <code>MoveItSimpleControllerManager</code> for our configuration. For an example of a custom MoveIt Controller Manager (that is not active in our project and serves only for reference purposes) refer <a href="../controller_manager/">Cobot Controller Manager</a>.</p>
+<p>For the controllers we define the <code>arm_group_controller</code> of type <code>FollowJointTrajectory</code> and <code>gripper_group_controller</code> as well as <code>vacuum_upper_joint_controller</code> / <code>vacuum_lower_joint_controller</code> of type <code>GripperCommand</code>.</p>
+<p>Since we have a custom controller for the real Cobot, we reference the <code>cobot_arm_group_controller</code> in the  <code>moveit_custom_controllers.yaml</code>. </p>
+<h2 id="ros2-controllers-ros2_controllersyaml">ROS2 Controllers: <code>ros2_controllers.yaml</code><a class="headerlink" href="#ros2-controllers-ros2_controllersyaml" title="Permanent link">&para;</a></h2>
+<p>Defines the <code>update_rate</code> (execution frequency of the controllers) and each controller type in detail. In our configuration we have the following controllers</p>
+<pre><code class="language-yaml">arm_group_controller:
+    type: joint_trajectory_controller/JointTrajectoryController
+
+cobot_arm_group_controller:
+    type: cobot_trajectory_controller/CobotTrajectoryController
+
+gripper_group_controller:
+    type: position_controllers/GripperActionController
+
+vacuum_upper_joint_controller:
+    type: position_controllers/GripperActionController
+
+vacuum_lower_joint_controller:
+    type: position_controllers/GripperActionController
+
+joint_state_broadcaster:
+    type: joint_state_broadcaster/JointStateBroadcaster
+</code></pre>
+<p>While <code>arm_group_controller</code> us used for <code>fake controls</code> and <code>gazebo</code>, <code>cobot_arm_group_controller</code> is used for real Cobot control.</p>
+<p>A simplified graphical interpretation of the configuration is provided in the following.
+<img alt="config_overview" src="../img/config_overview.png" /></p>
+<h2 id="inverse-kinematics-solver-kinematicsyaml">Inverse Kinematics Solver: <code>kinematics.yaml</code><a class="headerlink" href="#inverse-kinematics-solver-kinematicsyaml" title="Permanent link">&para;</a></h2>
+<p>Defines the plugin for Inverse Kinematics (IK). We have selected the default plugin but reduced the timeout and added <code>solve_type: Speed</code> in order to speed up IK.</p>
+<p><strong>Note</strong> often <code>TRAC_IK</code> is mentioned as a more "performant" IK solver. In our setup this did not seem to apply. In order to use it install <code>trac-ik</code>, run</p>
+<pre><code class="language-bash">sudo apt-get install ros-jazzy-trac-ik
+</code></pre>
+<p>and set the <code>kinematics_solver</code> in <code>kinematics.yaml</code> to</p>
+<pre><code class="language-bash">kinematics_solver: trac_ik_kinematics_plugin/TRAC_IKKinematicsPlugin
+</code></pre>
+<h2 id="robot-semantics-festo_cobot_modelsrdf">Robot Semantics: <code>festo_cobot_model.srdf</code><a class="headerlink" href="#robot-semantics-festo_cobot_modelsrdf" title="Permanent link">&para;</a></h2>
+<p>Defines additional attributes to the URDF model (located in <code>cobot_model/urdf</code>) such as the end effector and joint groups and enables deactivating collisions between joints.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../cobot_model_overview/" class="btn btn-neutral float-left" title="Cobot Model Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../launch_files/" class="btn btn-neutral float-right" title="Launch Files Explained">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/robgineer/cobot" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../cobot_model_overview/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../launch_files/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

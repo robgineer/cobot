@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Robert Harbach / Thao Dang" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Quickstart - Cobot Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Quickstart";
+        var mkdocs_page_input_path = "quickstart.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Cobot Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Quickstart</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#common-steps">Common Steps</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-clone-this-repo">1. Clone this Repo</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-install-docker">2. Install docker</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-choose-your-gui">3. Choose your GUI</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#simulation">Simulation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-build-the-project">1. Build the project</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#colcon-build-options-explained">Colcon build options explained</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-launch-moveit2-and-ros2-control">2. Launch Moveit2 and ROS2 Control</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#option-a-fake-controls">Option A: Fake Controls</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#option-b-gazebo-controls">Option B: Gazebo Controls</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-control-the-cobot-in-simulation">3. Control the Cobot in Simulation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#real-cobot-control">Real Cobot Control</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-pull-submodules">1. Pull submodules</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-launch-moveit2-and-ros2-control_1">2. Launch Moveit2 and ROS2 Control</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-control-the-cobot">3. Control the Cobot</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-to-handle-rogue-grippers">How to handle rogue grippers</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Graphical User Interfaces</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../gui_overview/">VNC vs Xpra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToVNC/">VNC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToXpra/">Xpra</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_model_overview/">Cobot Model Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_configuration/">MoveIt2 and ROS2 Control Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../launch_files/">Launch Files Explained</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Controls</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_trajectory_controller/">Trajectory Controller</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_hardware/">Hardware Interface</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../controller_manager/">Controller Manager</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Evaluation and Calibration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../planner_evaluation/">Planner Evaluation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../offline_hand_eye/">Hand-eye-calibration</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Cobot Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Quickstart</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/robgineer/cobot/edit/master/docs/quickstart.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="quickstart-guide">Quickstart Guide<a class="headerlink" href="#quickstart-guide" title="Permanent link">&para;</a></h1>
+<p>Follow the instructions below to plan and execute trajectories in simulation or on the real Cobot.</p>
+<h2 id="common-steps">Common Steps<a class="headerlink" href="#common-steps" title="Permanent link">&para;</a></h2>
+<h3 id="1-clone-this-repo">1. Clone this Repo<a class="headerlink" href="#1-clone-this-repo" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">git clone https://github.com/robgineer/cobot.git cobot
+cd ~/cobot
+</code></pre>
+<h3 id="2-install-docker">2. Install docker<a class="headerlink" href="#2-install-docker" title="Permanent link">&para;</a></h3>
+<p>The entire dev. environment is based on a docker container. If you running Ubuntu and you don't have docker installed, run the following script.</p>
+<pre><code class="language-bash">./scripts/docker_installation.sh
+</code></pre>
+<h3 id="3-choose-your-gui">3. Choose your GUI<a class="headerlink" href="#3-choose-your-gui" title="Permanent link">&para;</a></h3>
+<p>We offer two different options for displaying the graphical user interface: xpra or VNC. Both are different and have their specific use cases.</p>
+<ul>
+<li>The VNC option enables viewing an entire Ubuntu Desktop within your browser. Useful in case you are running this project on a local machine. Refer <a href="../howToVNC/">VCN setup</a> for details and configuration.</li>
+<li>The xpra option enables forwarding single X11 windows from your terminal. Its a bit more lightweight and useful if you are running this project on a remote machine. It requires your user to be ported into the docker container, however. This might not work on all configurations. Refer <a href="../howToXpra/">Xpra setup</a> for details and configuration.</li>
+</ul>
+<p>Once you have configured your preferred GUI type, proceed with either the simulation or real control steps.</p>
+<h2 id="simulation">Simulation<a class="headerlink" href="#simulation" title="Permanent link">&para;</a></h2>
+<h3 id="1-build-the-project">1. Build the project<a class="headerlink" href="#1-build-the-project" title="Permanent link">&para;</a></h3>
+<pre><code class="language-bash">source /opt/ros/jazzy/setup.{bash/zsh}
+cd ~/cobot
+colcon build --merge-install --symlink-install --cmake-args &quot;-DCMAKE_BUILD_TYPE=Release&quot; --packages-select cobot_model cobot_moveit_config demo py_demo
+source install/setup.{bash/zsh}
+</code></pre>
+<h4 id="colcon-build-options-explained">Colcon build options explained<a class="headerlink" href="#colcon-build-options-explained" title="Permanent link">&para;</a></h4>
+<p><code>merge-install:</code> Do not create separate <code>install</code> folders for each package bur merge everything into one.</p>
+<p><code>symlink-install:</code> Do not copy built files into the install folders but create a symlink. Changes in Python files, for example, take effect immediately (no re-building required).</p>
+<p><code>cmake-args "-DCMAKE_BUILD_TYPE=Release":</code> Optimize build for speed</p>
+<p><code>--packages-select cobot_model cobot_moveit_config demo py_demo:</code> We only need these packages for a simulation.</p>
+<h3 id="2-launch-moveit2-and-ros2-control">2. Launch Moveit2 and ROS2 Control<a class="headerlink" href="#2-launch-moveit2-and-ros2-control" title="Permanent link">&para;</a></h3>
+<h4 id="option-a-fake-controls">Option A: Fake Controls<a class="headerlink" href="#option-a-fake-controls" title="Permanent link">&para;</a></h4>
+<p>This is an rviz only setup that enables to visualize Cobot motions based on fake controls; omitting any physics.</p>
+<pre><code class="language-bash">ros2 launch demo rviz_demo_launch.py
+</code></pre>
+<h4 id="option-b-gazebo-controls">Option B: Gazebo Controls<a class="headerlink" href="#option-b-gazebo-controls" title="Permanent link">&para;</a></h4>
+<p>This setup enables to visualize requested trajectories in rviz and in Gazebo. The Gazebo part will consider physical characteristics of the model such as mass and inertia. </p>
+<pre><code class="language-bash">ros2 launch cobot_moveit_config gz_demo_launch.py
+</code></pre>
+<h3 id="3-control-the-cobot-in-simulation">3. Control the Cobot in Simulation<a class="headerlink" href="#3-control-the-cobot-in-simulation" title="Permanent link">&para;</a></h3>
+<p>You can either drag the Cobot's end effector in rviz to a preferred position via the MoveIt2 motion planning plugin and execute the resulting trajectory or run a demo.
+Example:</p>
+<pre><code class="language-bash">ros2 run demo simple_ik
+</code></pre>
+<p>or (fake controllers only)</p>
+<pre><code class="language-bash">ros2 run py_demo simple_ik_fk
+</code></pre>
+<h2 id="real-cobot-control">Real Cobot Control<a class="headerlink" href="#real-cobot-control" title="Permanent link">&para;</a></h2>
+<p>Setup overview:</p>
+<p><img alt="cobot_workstation_setup" src="../img/cobot_workstation.png" /></p>
+<h3 id="1-pull-submodules">1. Pull submodules<a class="headerlink" href="#1-pull-submodules" title="Permanent link">&para;</a></h3>
+<p>In order to manipulate the Cobot in ROS2, connect to HS-Esslingen VPN, log in into the dedicated workstation for the Cobot and run</p>
+<pre><code class="language-bash">source /opt/ros/jazzy/setup.{bash/zsh}
+cd ~/cobot
+git submodule init src/cobot_hardware src/realsense-ros
+git submodule update src/cobot_hardware src/realsense-ros
+</code></pre>
+<p>to pull the submodules.</p>
+<p>Build with:</p>
+<pre><code class="language-bash">colcon build --merge-install --symlink-install --cmake-args &quot;-DCMAKE_BUILD_TYPE=Release&quot; --packages-skip moveit_task_constructor
+</code></pre>
+<p>=&gt; build everything except of the <code>moveit_task_constructor</code> (not required for the basic tasks).</p>
+<p>Don't forget to source</p>
+<pre><code class="language-bash">source install/setup.{bash/zsh}
+</code></pre>
+<p><strong>Note</strong> if you are not connected to the HS-Esslingen VPN, the <code>cobot_hardware</code> submodule will not be cloned and you will not be able to control the Cobot via MoveIt2 / ROS2. </p>
+<h3 id="2-launch-moveit2-and-ros2-control_1">2. Launch Moveit2 and ROS2 Control<a class="headerlink" href="#2-launch-moveit2-and-ros2-control_1" title="Permanent link">&para;</a></h3>
+<p>Launch <code>rviz_demo_launch.py</code> with <code>controller_type:=real</code> and <code>enable_realsense_camera:=true</code></p>
+<pre><code class="language-bash">ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
+</code></pre>
+<h3 id="3-control-the-cobot">3. Control the Cobot<a class="headerlink" href="#3-control-the-cobot" title="Permanent link">&para;</a></h3>
+<p>Same as in simulation, you can either drag the Cobot's end effector in rviz to a preferred position via the MoveIt2 motion planning plugin and execute the resulting trajectory or run a demo.
+Example:</p>
+<pre><code class="language-bash">ros2 run demo simple_ik
+</code></pre>
+<h3 id="how-to-handle-rogue-grippers">How to handle rogue grippers<a class="headerlink" href="#how-to-handle-rogue-grippers" title="Permanent link">&para;</a></h3>
+<p>Once activated, the vacuum system remains active; even if the cobot is shut down physically (the red emergency button on the cobot table).
+In order to deactivate the vacuum system, run</p>
+<pre><code class="language-bash">ros2 run cobot_hardware gripper_off
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../gui_overview/" class="btn btn-neutral float-right" title="VNC vs Xpra">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/robgineer/cobot" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../gui_overview/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

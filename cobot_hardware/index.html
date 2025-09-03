@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Robert Harbach / Thao Dang" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Hardware Interface - Cobot Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Hardware Interface";
+        var mkdocs_page_input_path = "cobot_hardware.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Cobot Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Graphical User Interfaces</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../gui_overview/">VNC vs Xpra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToVNC/">VNC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToXpra/">Xpra</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_model_overview/">Cobot Model Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_configuration/">MoveIt2 and ROS2 Control Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../launch_files/">Launch Files Explained</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Controls</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_trajectory_controller/">Trajectory Controller</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Hardware Interface</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#package-contents">Package Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#implementation-overview">Implementation overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#implementation-details">Implementation details</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#cmakeliststxt">CMakeLists.txt</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#shared-trajectory-buffer">Shared Trajectory Buffer</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cobot_hardwarecpp">cobot_hardware.cpp</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#read">read(...)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#write">write(...)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#limitation">Limitation</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../controller_manager/">Controller Manager</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Evaluation and Calibration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../planner_evaluation/">Planner Evaluation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../offline_hand_eye/">Hand-eye-calibration</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Cobot Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Controls</li>
+      <li class="breadcrumb-item active">Hardware Interface</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/robgineer/cobot/edit/master/docs/cobot_hardware.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cobot-hardware-interface">Cobot Hardware Interface<a class="headerlink" href="#cobot-hardware-interface" title="Permanent link">&para;</a></h1>
+<p>Manipulation of the Cobot with MoveIt2 and ROS2. This package encapsulates the Festo Cobot API into a ROS2 control hardware interface. The Cobot is controlled physically with this module.</p>
+<p>The package is hosted on the GitLab server of the Esslingen University <a href="https://gitlab.hs-esslingen.de/rharbach/cobot_hardware">repo</a>. Hence, in order to control the Cobot, you need to be connected to the HS Esslingen VPN. </p>
+<p>Background: the package contains Festo proprietary implementations and binaries for the communication with the Cobot that were not released to the public. Therefore, this code is hosted on the Esslingen University GitLab while the remaining project is hosted on a public GitHub repository.</p>
+<h2 id="package-contents">Package Contents<a class="headerlink" href="#package-contents" title="Permanent link">&para;</a></h2>
+<pre><code class="language-text">├── boost_1_65_0
+|
+├── config
+│   └── festo_node_config.ini
+...
+├── lib
+│   └── libopc_ua.so
+|
+├── open62541
+|
+└── src
+
+</code></pre>
+<ul>
+<li>
+<p><code>boost_1_65_0</code> contains an archive of the Boost version required for the build of <code>libopc_ua.so</code></p>
+</li>
+<li>
+<p><code>lib</code> contains a proprietary (by Festo) library extending the OPC-UA implementation</p>
+</li>
+<li>
+<p><code>open62541</code> an open source OPC-UA implementation</p>
+</li>
+<li>
+<p><code>src</code> contains the implementation of the ROS2 controller <code>cobot_hardware.cpp</code> and the Cobot API <code>robot_controller_comm.cpp</code></p>
+</li>
+</ul>
+<h2 id="implementation-overview">Implementation overview<a class="headerlink" href="#implementation-overview" title="Permanent link">&para;</a></h2>
+<p>We have two options to pass commands to the Cobot: single point (the final point of a trajectory, via <code>SetRobotWaypoint</code>) or a list of points (via <code>ExecuteInstructionList</code>, representing a path). We cannot send actual trajectories or fine grained position commands as the SPS of the Cobot takes care of the trajectory (and we cannot by-pass the SPS).</p>
+<p>This, unfortunately, does not align with the ROS2 control principles. A basic overview of the trajectory generation and control is provided in the following:</p>
+<pre><code class="language-text">MoveIt Planning (OMPL) → Generates a collision free path
+                ↓
+Time Parameterization Plugin (Iterative / TOTG) → Adds time (making it an actual trajectory)
+                ↓
+Final RobotTrajectory message
+                ↓
+MoveIt Simple Controller Manager
+                ↓
+ros2_control controller
+                ↓
+HardwareInterface (this package)
+</code></pre>
+<p>Now, the ROS2 controller is designed to send position commands to the hardware in real time; which is not suitable for the Cobot. In theory, we could execute <code>SetRobotWaypoint</code> for each position. This, however is not feasible as the resulting movement of the Cobot becomes jerky. The Cobot will interpret each point as a trajectory and will pause in between.
+In previous implementations, we simply sent the final trajectory point to the Cobot (using a custom MoveItControllerManager, <em>the CobotControllerManager</em>). Although this resulted in smooth movements of the Cobot arm, the resulting trajectory was calculated by the SPS. We therefore had no influence on the trajectory and collisions that were considered within trajectory planning were obsolete. Hence, even with a camera attached, the Cobot would have been blind.</p>
+<p>In order to overcome this limitation we use the instruction list mechanism, where we pass a list of points to the Cobot (<code>ExecuteInstructionList</code>). The benefits of this mechanism is an underlying smoothing of the points. Details on the smoothing implementation are provided in chapter 2.19 of the Festo Robotics Manual (refer <a href="https://gitlab.hs-esslingen.de/rharbach/cobot_hardware">GitLab repo</a>).</p>
+<p>Note: the list is nothing other than a path as we do not have an influence on the timing (controlled by the SPS).</p>
+<p>Since more than just one point is now send to this hardware interface, we have implemented a custom ROS2 controller (CobotTrajectoryController), that send out either the last point of a trajectory or the entire trajectory to this interface.
+Note: ROS2 control implies using single joint commands (declared as double) and since a full trajectory was therefore difficult to be passed, we introduced another communication feature: a singleton realtime buffer.</p>
+<h2 id="implementation-details">Implementation details<a class="headerlink" href="#implementation-details" title="Permanent link">&para;</a></h2>
+<p>The following paragraphs serve as a reference on the major implementation details of the hardware interface.</p>
+<h3 id="cmakeliststxt">CMakeLists.txt<a class="headerlink" href="#cmakeliststxt" title="Permanent link">&para;</a></h3>
+<p>... a rather special one. It includes an <code>ExternalProject</code>: an older boost library version, that is required for <code>libopc_ua.so</code>. Hence, we extract the archive of the boost library, build it and link it to <code>libopc_ua.so</code>. This way the lib is satisfied with the older boost version and the remaining project references the system-wide boost version.</p>
+<pre><code class="language-cmake">ExternalProject_Add(boost165
+  URL file://${BOOST_ARCHIVE}
+  CONFIGURE_COMMAND ./bootstrap.sh --with-libraries=system,filesystem --prefix=${BOOST_INSTALL_DIR}
+  BUILD_COMMAND ./b2 link=shared install -j4
+  BUILD_IN_SOURCE 1
+  INSTALL_COMMAND ./b2 install
+)
+#...
+
+set(Boost_INCLUDE_DIRS ${BOOST_INCLUDE_DIR})
+set(Boost_LIBRARIES_165
+  ${BOOST_LIBRARY_DIR}/libboost_system.so
+  ${BOOST_LIBRARY_DIR}/libboost_filesystem.so
+)
+set_target_properties(opc-ua-api PROPERTIES
+  IMPORTED_LOCATION &quot;${CMAKE_SOURCE_DIR}/lib/libopc_ua.so&quot;
+  INTERFACE_INCLUDE_DIRECTORIES &quot;${CMAKE_SOURCE_DIR}/include&quot;
+  INTERFACE_LINK_LIBRARIES &quot;${Boost_LIBRARIES_165}&quot;
+)
+</code></pre>
+<h3 id="shared-trajectory-buffer">Shared Trajectory Buffer<a class="headerlink" href="#shared-trajectory-buffer" title="Permanent link">&para;</a></h3>
+<p>Implemented as a singleton real-time  buffer =&gt; accessible from different sources in real-time (enabling thread-safety). It is required to pass full trajectories from the custom ROS2 controller (<code>cobot_trajectory_controller</code>) to the hardware interface. Using this data structure, we by-pass the hardware commands for the <code>arm_group</code> that are filled by the standard ROS2 controllers and use the full trajectory instead.</p>
+<h3 id="cobot_hardwarecpp">cobot_hardware.cpp<a class="headerlink" href="#cobot_hardwarecpp" title="Permanent link">&para;</a></h3>
+<p>Implements the following methods</p>
+<pre><code class="language-cpp">    // initialize size of internal arrays
+    on_init(...);
+    // initiate communication with the Cobot
+    on_activate(...);
+    // send out a list of readable states for the controllers
+    export_state_interfaces();
+    // send out a list of commands for the controllers
+    export_command_interfaces();
+    // read states of Cobot joints
+    read(...);
+    // write commands to Cobot joints
+    write(...);
+
+</code></pre>
+<h4 id="read">read(...)<a class="headerlink" href="#read" title="Permanent link">&para;</a></h4>
+<p>For each joint, we read its current state using the Cobot API's function <code>GetRobotWaypoint</code>. We then convert the values for the controller and store it in the <code>hw_positions_</code> array. The ROS2 controller manager publishes this array and MoveIt2 can display the state of each joint in rviz / Gazebo.</p>
+<p>A graphical overview of the <code>read</code> implementation is provided in the following.</p>
+<p><img alt="hw_read_implementation_overview" src="../img/hw_read.png" /></p>
+<h4 id="write">write(...)<a class="headerlink" href="#write" title="Permanent link">&para;</a></h4>
+<p>For the <code>arm_group</code> (joint_0, ..., joint_6), we use the real-time singleton buffer implemented in <code>shared_trajectory_buffer.hpp</code>. It is filled by the <code>cobot_trajectory_controller</code>. Once a new buffer is received, we extract the values of the trajectory, convert these for the Cobot and call <code>ExecuteInstructionList</code>. </p>
+<p>For the grippers we read the commands directly (<code>hw_commands_[Joint::FINGER_1]</code>), convert them into Cobot format and call <code>SetRobotWaypoint</code> for each joint.</p>
+<p>The vacuum grippers are controlled independently. Moreover the API enables to can control the extension as well as the vacuum system.</p>
+<p>A graphical overview of the <code>write</code> implementation is provided in the following.</p>
+<p><img alt="hw_write_implementation_overview" src="../img/hw_write.png" /></p>
+<h4 id="limitation">Limitation<a class="headerlink" href="#limitation" title="Permanent link">&para;</a></h4>
+<p>Joint_0 (the prismatic joint, moving around the linear axis) is executed separately from joint_1, ... joint_6. We first execute the motion of join_0 and subsequently the trajectory of joints 1, ..., 6. This represents a limitation that is required for smooth trajectories (executing a trajectory for all joints would omit smoothing in the Cobot SPS and the motion becomes jerky). For joint_0, we also use only the last point of the trajectory =&gt; we drop all intermediate points (also due to otherwise jerky movements). This implies that  trajectories for motions around obstacle which include joint_0 are not feasible on the real Cobot. We can run these only in simulation. An example of an infeasible trajectory is shown in the following: the Cobot avoids getting in contact with the pole by using joint_0. </p>
+<p><img alt="hw_write_limitation" src="../img/hw_limitation.gif" /></p>
+<p>On the real Cobot, we would execute the last point of joint_0 first (resulting in no motion in joint_0 since its start position is equivalent to its end position) followed by the trajectory of joints 1, ..., 6.</p>
+<p>We believe that this limitation is acceptable for our use case as our goal is to execute pick and place tasks in uncluttered environments.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../cobot_trajectory_controller/" class="btn btn-neutral float-left" title="Trajectory Controller"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../controller_manager/" class="btn btn-neutral float-right" title="Controller Manager">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/robgineer/cobot" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../cobot_trajectory_controller/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../controller_manager/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Robert Harbach / Thao Dang" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Cobot Model Overview - Cobot Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Cobot Model Overview";
+        var mkdocs_page_input_path = "cobot_model_overview.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Cobot Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Graphical User Interfaces</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../gui_overview/">VNC vs Xpra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToVNC/">VNC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToXpra/">Xpra</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Cobot Model Overview</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#robot-overview">Robot Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#grippers">Grippers</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#urdf">URDF</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tcps">TCPs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#modelling-physical-attributes">Modelling Physical Attributes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#result">Result</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#modelling-collisions">Modelling Collisions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#collision-meshes">Collision Meshes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#simple-geometric-shapes">Simple Geometric Shapes</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_configuration/">MoveIt2 and ROS2 Control Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../launch_files/">Launch Files Explained</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Controls</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_trajectory_controller/">Trajectory Controller</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_hardware/">Hardware Interface</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../controller_manager/">Controller Manager</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Evaluation and Calibration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../planner_evaluation/">Planner Evaluation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../offline_hand_eye/">Hand-eye-calibration</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Cobot Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Configuration</li>
+      <li class="breadcrumb-item active">Cobot Model Overview</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/robgineer/cobot/edit/master/docs/cobot_model_overview.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cobot-model-overview">Cobot Model Overview<a class="headerlink" href="#cobot-model-overview" title="Permanent link">&para;</a></h1>
+<p>The following paragraphs serve as an overview to the basic Cobot Model characteristics. The actual specifics of the model, including our approach on the modelling of the physical attributes, is provided in the <a href="https://github.com/robgineer/cobot/blob/main/src/cobot_model/doc/cobot_modelling.ipynb">Cobot Modelling Jupyter Notebook</a>.</p>
+<h2 id="robot-overview">Robot Overview<a class="headerlink" href="#robot-overview" title="Permanent link">&para;</a></h2>
+<p>The cobot model defines</p>
+<ul>
+<li>an axis element and a corresponding mount,</li>
+<li>7 segments (the links of the robot),</li>
+<li>2 fingers (representing the gripper),</li>
+<li>two vacuum grippers,</li>
+<li>four TCP elements for each gripper</li>
+</ul>
+<p><img alt="cobot_full" src="../img/cobot_full.png" /></p>
+<h2 id="grippers">Grippers<a class="headerlink" href="#grippers" title="Permanent link">&para;</a></h2>
+<p>We have two types of grippers: a finger gripper and a vacuum gripper system. The vacuum grippers can be controlled independently.</p>
+<p>Each gripper defines its own axis.</p>
+<h2 id="urdf">URDF<a class="headerlink" href="#urdf" title="Permanent link">&para;</a></h2>
+<p>The URDF is implemented as a <code>xacro</code> to enable variation handling. We define three variations:</p>
+<ol>
+<li><code>enable_realsense_camera</code>: to activate the real-sense camera model (deactivated by default)</li>
+<li><code>ros2_controls_plugin</code>, to select the control type (fake by default) and</li>
+<li><code>use_collision_meshes</code>, to select between simple and mesh based collisions (mesh by default).</li>
+</ol>
+<p>To generate the URDF locally run</p>
+<pre><code class="language-bash">xacro src/cobot_model/urdf/festo_cobot_model.urdf.xacro -o cobot.urdf
+</code></pre>
+<h2 id="tcps">TCPs<a class="headerlink" href="#tcps" title="Permanent link">&para;</a></h2>
+<p>Since we define all rotations around the <code>Z</code> axis, our TCPs do not have a neutral orientation. This implies the following "obstacle": for a pick and place task, for example, we would position an object into the world that by default would have a neutral orientation. Since our TCP is does not have a neutral orientation, grasping the object would always imply a rotation of the TCP. Hence, for each task, we would need to transform the Cobot's TCP orientation into the object's (neutral) orientation (in the corresponding code).</p>
+<p>Since this could be tedious, we have created three additional TCP frames: one TCP aligned to the world frame, and two slightly tilted TCP frames (w.r.t. the world frame) that compensate for the Cobot's natural tilt at the tool base.</p>
+<p>Example for the gripper_tcp:</p>
+<table>
+<thead>
+<tr>
+<th>gripper_tcp</th>
+<th>gripper_tcp_world</th>
+<th>gripper_tcp_world_tilted_up</th>
+<th>gripper_tcp_world_tilted_down</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The TCP with all rotations</td>
+<td>TCP in world frame. <br/> All rotations are inverted.</td>
+<td>TCP in world frame tilted by -45 deg. <br/> Compensates the natural tilt <br/> in the physical model, Z+ is up</td>
+<td>TCP in world frame tilted by +135 deg. <br/> Compensates the natural tilt <br/> in the physical model, Z+ is down</td>
+</tr>
+<tr>
+<td><img alt="gripper_tcp" src="../img/gripper_tcp.png" /></td>
+<td><img alt="gripper_tcp_world" src="../img/gripper_tcp_world.png" /></td>
+<td><img alt="gripper_tcp_world_tilted_up" src="../img/gripper_tcp_world_tilted_up.png" /></td>
+<td><img alt="gripper_tcp_world_tilted_down" src="../img/gripper_tcp_world_tilted_down.png" /></td>
+</tr>
+</tbody>
+</table>
+<h2 id="modelling-physical-attributes">Modelling Physical Attributes<a class="headerlink" href="#modelling-physical-attributes" title="Permanent link">&para;</a></h2>
+<p>Neither the mass nor the inertia values were present within the original URDF. We used the following attempts to derive the mass and the inertia values.</p>
+<ul>
+<li>
+<p><code>mass</code>: we used the volume of each element and expected it to be filled with water (this resulted in an estimated mass value for each element).</p>
+</li>
+<li>
+<p><code>inertia</code>: we approximated the elements with basic shapes (cuboid / cylinder) and applied inertia tensors using their dimension values.</p>
+</li>
+</ul>
+<h3 id="result">Result<a class="headerlink" href="#result" title="Permanent link">&para;</a></h3>
+<p>Visual display of inertia and mass values of the Cobot:</p>
+<table>
+<thead>
+<tr>
+<th>Inertia</th>
+<th>Mass</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="robot_inertia" src="../img/robot_inertia.png" /></td>
+<td><img alt="robot_center_of_mass" src="../img/robot_center_of_mass.png" /></td>
+</tr>
+</tbody>
+</table>
+<h2 id="modelling-collisions">Modelling Collisions<a class="headerlink" href="#modelling-collisions" title="Permanent link">&para;</a></h2>
+<p>Collisions define boundaries of robot elements. They allow to identify physical collisions of the robot with itself or with its environment and can be either defined with simple geometric shapes or with meshes.</p>
+<h3 id="collision-meshes">Collision Meshes<a class="headerlink" href="#collision-meshes" title="Permanent link">&para;</a></h3>
+<p>We used the same meshes for collisions and visuals but reduced the number of faces for the collision meshes (to ease up planning and simulation).</p>
+<h3 id="simple-geometric-shapes">Simple Geometric Shapes<a class="headerlink" href="#simple-geometric-shapes" title="Permanent link">&para;</a></h3>
+<p>In order to simplify collision checking even further (for specific corner cases, for example) we have created collisions from geometric shapes. Refer <code>use_collision_meshes</code> parameter in <code>xacro</code>.</p>
+<p><img alt="simple_collisions" src="../img/simple_collisions.png" /></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../howToXpra/" class="btn btn-neutral float-left" title="Xpra"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../cobot_configuration/" class="btn btn-neutral float-right" title="MoveIt2 and ROS2 Control Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/robgineer/cobot" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../howToXpra/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../cobot_configuration/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

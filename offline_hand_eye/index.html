@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Robert Harbach / Thao Dang" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Hand-eye-calibration - Cobot Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Hand-eye-calibration";
+        var mkdocs_page_input_path = "offline_hand_eye.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Cobot Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Graphical User Interfaces</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../gui_overview/">VNC vs Xpra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToVNC/">VNC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToXpra/">Xpra</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_model_overview/">Cobot Model Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_configuration/">MoveIt2 and ROS2 Control Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../launch_files/">Launch Files Explained</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Controls</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_trajectory_controller/">Trajectory Controller</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_hardware/">Hardware Interface</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../controller_manager/">Controller Manager</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Evaluation and Calibration</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../planner_evaluation/">Planner Evaluation</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Hand-eye-calibration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#ros2-tf-preliminaries">ROS2 TF preliminaries</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#extract-frames">Extract frames</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#calibrate">Calibrate</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#publish-results">Publish results</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#for-future-use-running-tag-detectors-online">For future use: running tag detectors online</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Cobot Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Evaluation and Calibration</li>
+      <li class="breadcrumb-item active">Hand-eye-calibration</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/robgineer/cobot/edit/master/docs/offline_hand_eye.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="offline-hand-eye-calibration">Offline Hand-Eye Calibration<a class="headerlink" href="#offline-hand-eye-calibration" title="Permanent link">&para;</a></h1>
+<p>This is a package for hand-eye calibration of a manipulator arm with a static camera. It has been tested with ROS2 jazzy on our robot at the University of Applied Sciences in Esslingen.</p>
+<p><img alt="our setup" src="../img/robot_camera_2.png" /></p>
+<p>Although there are very nice packages for hand-eye calibration available (notably easy_handeye2, see link below), we have decided to compile a new package for two reasons:</p>
+<ul>
+<li>
+<p>Several times in the past, we have encountered difficulties due to incompatibilities with different ROS versions and libraries such as OpenCV - what is working now may not work anymore in the next major ROS version. Thus, we want a solution that is rather independent of ROS.</p>
+</li>
+<li>
+<p>We want some introspection of the calibration process, e.g. inspect individual data frames and potentially remove them from the calibration process or other manual debugging. A python version is well suited for this.</p>
+</li>
+</ul>
+<p>The calibration process consists of three major steps (detailed further below):</p>
+<ol>
+<li><strong>Extract frames</strong>: obtain camera information, camera images and robot coordinate transformations (using tf2_ros) for selected calibration frames.</li>
+<li><strong>Calibrate</strong>: Detect markers in the image (using apriltags) and recover the extrinsic parameters of the camera (using OpenCV).</li>
+<li><strong>Publish results</strong>: Publish the calibration results in our ros2 environment.</li>
+</ol>
+<p>In this process, only the first and last step should include ROS to keep dependencies at bare minimum.</p>
+<p>The package is a compilation and adaptation of other work. Here are some important links:</p>
+<ul>
+<li><a href="https://github.com/marcoesposito1988/easy_handeye2">https://github.com/marcoesposito1988/easy_handeye2</a></li>
+<li><a href="https://github.com/AprilRobotics/apriltag">https://github.com/AprilRobotics/apriltag</a> (with Python bindings)</li>
+</ul>
+<h2 id="ros2-tf-preliminaries">ROS2 TF preliminaries<a class="headerlink" href="#ros2-tf-preliminaries" title="Permanent link">&para;</a></h2>
+<p>Running the calibration requires awareness of existing coordinate frames in our environment. This is done via <a href="https://docs.ros.org/en/jazzy/Tutorials/Intermediate/Tf2/Introduction-To-Tf2.html">tf2_ros</a>.</p>
+<p>To get an overview of the tree of coordinate transformations in your environment, you can create a pdf of all frames with</p>
+<pre><code class="language-bash">ros2 run tf2_tools view_frames
+</code></pre>
+<p>And to check the current transformations between two frames via command line, use</p>
+<pre><code class="language-bash">#Usage: tf2_echo source_frame target_frame
+ros2 run tf2_ros tf2_echo base_link camera_color_frame
+ros2 run tf2_ros tf2_echo base_link camera_color_optical_frame
+</code></pre>
+<p>In our case, the excerpt of our camera transformations (i.e. the objectives of our calibration) are structured as follows:
+<img alt="tf_tree" src="../img/tf_tree.png" />
+The coordinate frames of the Realsense camera in ROS are described here: <a href="https://github.com/IntelRealSense/realsense-ros">realsense-ros</a>.</p>
+<p>Please note that in our setup, the root of the camera node (which also defines its global pose) is the TF <code>camera_bottom_screw_frame</code>. The perspective projection of the camera is computed wrt <code>camera_color_optical_frame</code>. This may be different for your setup, of course.</p>
+<h2 id="extract-frames">Extract frames<a class="headerlink" href="#extract-frames" title="Permanent link">&para;</a></h2>
+<p>For calibration, we rigidly attach an Apriltag to our robot's endeffector and record sample images and corresponding TFs.</p>
+<p><img alt="tf_tree" src="../img/apriltag1.png" /></p>
+<p>The tag can be printed from this pdf: <a href="../img/tag36h11_0_140mm.pdf">img/tag36h11_0_140mm.pdf</a> or generated with this <a href="https://shiqiliu-67.github.io/apriltag-generator">online generator</a>. Make sure to print with actual size and note the size of the marker (for the tag in this repo, it is 0.14 meters).</p>
+<p>Next, start the robot and camera</p>
+<pre><code class="language-bash">ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
+</code></pre>
+<p>and record sample frames:</p>
+<pre><code class="language-bash">ros2 run offline_hand_eye record_calib_data
+</code></pre>
+<p>This will open the following GUI where parameters have been adapted from <a href="https://github.com/marcoesposito1988/easy_handeye2">easy_handeye2</a>:</p>
+<p><img alt="record_calib_data" src="../img/record_calib_data.png" /></p>
+<ul>
+<li><code>Calibration Type</code>: <code>eye_on_base</code> for a static camera, <code>eye_in_hand</code> when camera is attached to the robot arm</li>
+<li><code>Camera Image Topic</code>: ROS topic with the color image of your camera</li>
+<li><code>Camera Info Topic</code>: ROS topic with intrinsic parameters of your camera</li>
+<li><code>Robot Base Frame</code>: the base or world frame of your environment</li>
+<li><code>Robot Effector Frame</code>: the TF frame of the robot's end effector</li>
+<li><code>Tracking Base Frame</code>: the TF frame of the camera, markers are reconstructed wrt to this</li>
+<li><code>Tracking Marker Frame</code>: optional, the TF of detected markers if these markers are detected online while extracting.</li>
+<li><code>Recording Directory</code>: all extracted frames will be stored here in pickle format.</li>
+</ul>
+<p>Once you have set or loaded these parametes, you can start to move the robot arm around and record some frames. Recording can be done continuously (not recommended at the moment, see issue below) or in single shots.</p>
+<p>Rule of thumb is to record 12 frames or more. Make sure that the calibration target is moved across a large part of the camera image, shows variation in distance to the camera and significant variations in orientation, as e.g. here:
+<img alt="calibration frames" src="../img/all_frames.png" /></p>
+<p>Make sure to save your configuration parameters! Default location for this file is in the root of your repo with filename <code>handeye_calibration_params.json</code>.</p>
+<p>You may also use a recording and run <code>record_calib_data</code> from the replay (but make sure that the TFs are all received properly):</p>
+<pre><code class="language-bash">ros2 bag record --all
+ros2 bag play &lt;your_recording&gt;
+</code></pre>
+<blockquote>
+<p><strong>Timing Issue</strong>: When querying TFs for the time stamp of the current image, we often do not receive valid results in our current environment. As a workaround for this problem, we acquire frames only after the robot is standing completely still, i.e. move the robot to a new position, wait shortly and make sure that rviz shows the correct setup, record sample frame, repeat. That way, we can safely utilize the latest TFs, cf. <code>record_calib_data.py</code>. This should be fixed!</p>
+</blockquote>
+<h2 id="calibrate">Calibrate<a class="headerlink" href="#calibrate" title="Permanent link">&para;</a></h2>
+<p>The calibration process itself does not need ROS! So we can focus on the actual computation (almost any version of opencv and numpy) and debugging.</p>
+<p>To install a virtual environment and a jupyter kernel, use:</p>
+<pre><code class="language-bash">conda create --name offline-hand-eye python=3.12 ipython jupyter conda-forge::matplotlib 
+conda activate offline-hand-eye
+pip3 install opencv-python
+conda install conda-forge::apriltag
+python -m ipykernel install --user --name=offline-hand-eye
+</code></pre>
+<p>This has been tested with miniconda, but should also work with venv.</p>
+<p>A good starting point for understanding the calibration process is the Jupyter notebook in <scripts/offline_hand_eye_calibration.ipynb>.</p>
+<p>A more comfortable version of the calibration is using a GUI where you can check, select, and exclude different frames for calibration:</p>
+<pre><code class="language-bash">conda activate offline-hand-eye
+cd scripts
+./offline_hand_eye_calibration_gui.py --data_path ../doc/sample_data/calibration/calibdata_2025_08_11-11_51_22 --config ../../../handeye_calibration_params.json --output ../../../handeye_calibration.json
+</code></pre>
+<p><img alt="offline_hand_eye_calibration_gui" src="../img/offline_hand_eye_calibration_gui.png" /></p>
+<h2 id="publish-results">Publish results<a class="headerlink" href="#publish-results" title="Permanent link">&para;</a></h2>
+<p>After the calibration has been computed, you can publish the resulting TFs. Start the environment:</p>
+<pre><code class="language-bash">ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
+</code></pre>
+<p>and publish the calibrated TFs:</p>
+<pre><code class="language-bash">ros2 run offline_hand_eye calib_publisher --ros-args -p calibration_file:=handeye_calibration.json
+</code></pre>
+<p>Now, run</p>
+<pre><code class="language-bash">ros2 run tf2_ros tf2_echo base_link camera_bottom_screw_frame
+</code></pre>
+<p>to print the extrinsic calibration in the console, e.g.</p>
+<pre><code class="language-text">At time 0.0
+- Translation: [0.659, 0.459, 1.550]
+- Rotation: in Quaternion [-0.604, 0.696, 0.293, 0.254]
+- Rotation: in RPY (radian) [2.999, 0.787, -1.771]
+- Rotation: in RPY (degree) [171.830, 45.092, -101.471]
+- Matrix:
+ -0.140 -0.990  0.000  0.659
+ -0.692  0.098  0.715  0.459
+ -0.708  0.100 -0.699  1.550
+  0.000  0.000  0.000  1.000
+</code></pre>
+<p>You may also use this translation and rotation in RPY (radian) to adjust the camera transform in <cobot_model/urdf/festo_cobot_model.urdf.xacro>.</p>
+<h3 id="for-future-use-running-tag-detectors-online">For future use: running tag detectors online<a class="headerlink" href="#for-future-use-running-tag-detectors-online" title="Permanent link">&para;</a></h3>
+<p>To run the apriltag detector online, use:</p>
+<pre><code class="language-bash">sudo apt install ros-jazzy-apriltag-ros
+ros2 run apriltag_ros apriltag_node --ros-args \
+    -r image_rect:=/camera/camera/color/image_raw \
+    -r camera_info:=/camera/camera/color/camera_info \
+    --params-file /workspace/src/offline_hand_eye/doc/tags_36h11.yaml
+</code></pre>
+<p>Or for the aruco marker:</p>
+<pre><code class="language-bash">sudo apt install ros-jazzy-aruco-ros
+ros2 run aruco_ros single --ros-args -p image_is_rectified:=true -p marker_size:=0.1 -p marker_id:=1 -p reference_frame:=camera_link -p camera_frame:=/camera/camera/color/image_raw -p marker_frame:=camera_marker -p corner_refinement:=LINES
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../planner_evaluation/" class="btn btn-neutral float-left" title="Planner Evaluation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/robgineer/cobot" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../planner_evaluation/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

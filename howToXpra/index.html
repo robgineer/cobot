@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Robert Harbach / Thao Dang" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Xpra - Cobot Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Xpra";
+        var mkdocs_page_input_path = "howToXpra.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Cobot Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Graphical User Interfaces</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../gui_overview/">VNC vs Xpra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToVNC/">VNC</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Xpra</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-install-xpra-on-host-and-client-system">1. Install xpra on host and client system</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-build-the-docker-image">2. Build the docker image</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-run-x11-sessions-from-your-terminal">3. Run X11 sessions from your terminal</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_model_overview/">Cobot Model Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_configuration/">MoveIt2 and ROS2 Control Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../launch_files/">Launch Files Explained</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Controls</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_trajectory_controller/">Trajectory Controller</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_hardware/">Hardware Interface</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../controller_manager/">Controller Manager</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Evaluation and Calibration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../planner_evaluation/">Planner Evaluation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../offline_hand_eye/">Hand-eye-calibration</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Cobot Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Graphical User Interfaces</li>
+      <li class="breadcrumb-item active">Xpra</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/robgineer/cobot/edit/master/docs/howToXpra.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="xpra">Xpra<a class="headerlink" href="#xpra" title="Permanent link">&para;</a></h1>
+<p>The docker container will enable X11 forwarding to client machines using xpra. This is particularly useful if the container runs on a remote server.<br/>
+Note: although SSH access and X11 forwarding within docker container is (sometimes) referred to as an "anti-pattern" (apparently this implies treating the docker container like a VM), we believe that this solution is the way-to-go for containers hosted on remote servers that contains all required dependencies for the development of this project.</p>
+<h2 id="1-install-xpra-on-host-and-client-system">1. Install xpra on host and client system<a class="headerlink" href="#1-install-xpra-on-host-and-client-system" title="Permanent link">&para;</a></h2>
+<p>In order for xpra to forward X11 sessions from the container, you need to have xpra installed on your host system (where your docker container will be running). If your host system is Ubuntu, simply use the following code snippet to download and install xpra. If not, download it from <a href="https://github.com/Xpra-org/xpra/">https://github.com/Xpra-org/xpra/</a>.</p>
+<pre><code class="language-bash">sudo wget -O &quot;/usr/share/keyrings/xpra.asc&quot; https://xpra.org/xpra.asc &amp;&amp; \
+    sudo wget -P /etc/apt/sources.list.d/ https://raw.githubusercontent.com/Xpra-org/xpra/master/packaging/repos/$(lsb_release -sc)/xpra.sources &amp;&amp; \
+    sudo apt-get update &amp;&amp; \
+    sudo apt-get install -y xpra
+</code></pre>
+<p>Dont forget to install xpra on your local client machine as well.</p>
+<h2 id="2-build-the-docker-image">2. Build the docker image<a class="headerlink" href="#2-build-the-docker-image" title="Permanent link">&para;</a></h2>
+<p>After successfully having cloned this repo, run the <code>docker_configuration</code> script.</p>
+<pre><code class="language-bash">cd ~/cobot/scripts
+./docker_configuration.sh
+</code></pre>
+<p>The configuration script contains the following steps:
+1. Builds the docker container and creates a user with the same username, user id and the group id as the user executing the script. This means your current user will be present in the docker container.
+2. Mounts your home directory, exposes <code>/etc/shadows</code> (for authentication), <code>/run/dbus/system_bus_socket</code> (for xpra communication) and the usb ports.</p>
+<p>The container within the same network as the host and in <code>--priviledged</code> mode (required for USB access).<br/></p>
+<p>Porting the current user to the docker container is unfortunately essential to enable a seamless xpra integration. Using this setup, you will be able to authenticate in your xpra session with the same user and password as on your host.</p>
+<h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h3>
+<p>If building the docker container fails due to the following error:</p>
+<pre><code class="language-text">0.276 groupadd: GID '1000' already exists
+</code></pre>
+<p>then you are probably running on a host that has only one user (your user) and the user id is the same as the <code>ubuntu</code> user (uid=1000) created within the docker build. Unfortunately we could not find elegant solutions for this issue. Some options are creating a different user (<code>uid!=1000</code>) and re-running the <code>docker_configuration</code> script or deleting the <code>ubuntu</code> user within the dockerfile. As mentioned above, it is absolutely necessary to port your current user into the docker container (otherwise xpra authentications will fail). If you cannot create a new user on your machine, kindly check out the <a href="../howToVNC/">VNC option</a>.</p>
+<h2 id="3-run-x11-sessions-from-your-terminal">3. Run X11 sessions from your terminal<a class="headerlink" href="#3-run-x11-sessions-from-your-terminal" title="Permanent link">&para;</a></h2>
+<p>In the docker container run:</p>
+<pre><code class="language-bash">export DISPLAY=:100 # or any display number you prefer that is not used
+xpra start :100
+</code></pre>
+<p>On client run:</p>
+<pre><code class="language-bash">xpra attach ssh://&lt;user&gt;@&lt;server&gt;:22/100
+</code></pre>
+<p>Where \&lt;server&gt; represents the address of your remote host that runs the docker container. X11 will be forwarded from the docker container via the host to your client.</p>
+<p>All graphical user interfaces started from the terminal of the docker container will be forwarded to the client machine. <br/></p>
+<p>You can run multiple xpra sessions from the same container but different terminals. Simply change the DISPLAY number for different sessions.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../howToVNC/" class="btn btn-neutral float-left" title="VNC"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../cobot_model_overview/" class="btn btn-neutral float-right" title="Cobot Model Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/robgineer/cobot" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../howToVNC/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../cobot_model_overview/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

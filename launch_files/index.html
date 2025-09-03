@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Robert Harbach / Thao Dang" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Launch Files Explained - Cobot Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Launch Files Explained";
+        var mkdocs_page_input_path = "launch_files.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Cobot Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Graphical User Interfaces</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../gui_overview/">VNC vs Xpra</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToVNC/">VNC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../howToXpra/">Xpra</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Configuration</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_model_overview/">Cobot Model Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_configuration/">MoveIt2 and ROS2 Control Configuration</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Launch Files Explained</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-load-the-configuration-files">1. Load the Configuration Files</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-start-the-ros2-nodes">2. Start the ROS2 Nodes</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Controls</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_trajectory_controller/">Trajectory Controller</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../cobot_hardware/">Hardware Interface</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../controller_manager/">Controller Manager</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Evaluation and Calibration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../planner_evaluation/">Planner Evaluation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../offline_hand_eye/">Hand-eye-calibration</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Cobot Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Configuration</li>
+      <li class="breadcrumb-item active">Launch Files Explained</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/robgineer/cobot/edit/master/docs/launch_files.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="launch-files-explained">Launch Files Explained<a class="headerlink" href="#launch-files-explained" title="Permanent link">&para;</a></h1>
+<p>Since launch files can be a bit tricky to implement and understand, the following paragraphs focus on their basics.</p>
+<p>The project contains two major launch files:</p>
+<ul>
+<li><code>src/cobot_moveit_config/launch/gz_demo_launch.py</code></li>
+<li><code>src/demo/launch/rviz_demo_launch.py</code></li>
+</ul>
+<p>Both have the same basic structure; which is explained in the following.</p>
+<h2 id="1-load-the-configuration-files">1. Load the Configuration Files<a class="headerlink" href="#1-load-the-configuration-files" title="Permanent link">&para;</a></h2>
+<p>We need to load and parse the configuration for the</p>
+<ul>
+<li>robot model (<code>festo_cobot_model.urdf.xacro</code>),</li>
+<li>robot sematics (<code>festo_cobot_model.srdf</code>),</li>
+<li>IK config (<code>kinematics.yaml</code>),</li>
+<li>joint limits (<code>joint_limits.yaml</code>) and </li>
+<li>the moveit / ros2_control configuration (<code>moveit_controllers.yaml</code>/ <code>ros2_controllers.yaml</code>).</li>
+</ul>
+<p>We additionally define parameters that are not included in the yaml files (for the planning scene monitor and the ompl planner pipeline). All of these are default parameters and have been taken over from other ros2_control project examples.</p>
+<h2 id="2-start-the-ros2-nodes">2. Start the ROS2 Nodes<a class="headerlink" href="#2-start-the-ros2-nodes" title="Permanent link">&para;</a></h2>
+<p>We start the following nodes: </p>
+<ul>
+<li>ros2_control controllers (defined in <code>ros2_controllers.yaml</code>), </li>
+<li>the <code>joint_state_broadcaster</code> to broadcast the current joint states,</li>
+<li>the robot state publisher (that publishes the URDF as well as the joint states from the <code>joint_state_broadcaster</code>),</li>
+<li>rviz and</li>
+<li>the <code>move_group</code> (the MoveIt2 node).</li>
+</ul>
+<p>The <code>move_group</code> communicates with the user interfaces (C++ API / Python API / rviz) as well as with the sensors and the ROS2 controllers. An overview of the <code>move_group</code> node is provided in the following:</p>
+<p><img alt="move_group" src="../img/move_group.png" />
+Source: https://moveit.picknik.ai</p>
+<p>For gazebo (<code>src/cobot_moveit_config/launch/gz_demo_launch.py</code>) we also start the gazebo node and in the demo (<code>src/demo/launch/rviz_demo_launch.py</code>) we start the real-sense camera node.</p>
+<p>Note that we define several parameters in <code>src/demo/launch/rviz_demo_launch.py</code>:</p>
+<ul>
+<li><code>enable_realsense_camera</code> to start real sense camera; <code>false</code> by default.</li>
+<li><code>use_collision_meshes</code> select to either either use actual collision meshes (<code>true</code>) or simple geometric objects (<code>false</code>); <code>true</code> by default.</li>
+<li><code>controller_type</code> using rviz only (<code>fake</code>) or the Cobot Trajectory Controller (<code>real</code>); <code>fake</code> by default.</li>
+</ul>
+<p>(Opaque function: we need to know the parameters during execution for the <code>xacro</code>.)</p>
+<p>The additional launch file for the pick and place example (<code>src/demo/launch/pick_place_launch.py</code>) is required only due to the fact that the <code>moveit_task_constructor_demo</code> expects several launch arguments (such as the URDF model and the SRDF configuration).</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../cobot_configuration/" class="btn btn-neutral float-left" title="MoveIt2 and ROS2 Control Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../cobot_trajectory_controller/" class="btn btn-neutral float-right" title="Trajectory Controller">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Authors <a href="https://github.com/robgineer"> Robert Harbach </a> / <a href="https://github.com/td-code"> Thao Dang </a></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/robgineer/cobot" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../cobot_configuration/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../cobot_trajectory_controller/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
