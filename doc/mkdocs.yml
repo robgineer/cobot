@@ -27,6 +27,7 @@ nav:
 
 
 plugins:
+  - search
   - mkdocs-jupyter:
       execute: false   # don't re-run notebooks on build
 
