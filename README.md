@@ -7,7 +7,7 @@ Development of simulation and control for a pneumatic cobot (provided by [**Fest
 
 ## How To Get Started
 
-Have a look at the [documentation](https://robgineer.github.io/cobot/) or start straight with the [quickstart guide](https://robgineer.github.io/cobot/quickstart/).
+Have a look at the [documentation overview](https://robgineer.github.io/cobot/) or jump straight to the [quickstart guide](https://robgineer.github.io/cobot/quickstart/).
 
 ## License
 SPDX-License-Identifier: BSD 3-Clause AND Apache-2.0
