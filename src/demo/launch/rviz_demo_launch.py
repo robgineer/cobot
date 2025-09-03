@@ -132,6 +132,12 @@ def _setup_nodes(context, *args, **kwargs):
         "ros2_controllers.yaml",
     )
 
+    # load config for occupancy grid
+    """ no used; requires testing on real Cobot """
+    sensors_yaml = load_file(
+        moveit_config_package, path.join("config", "sensor_3d.yaml")
+    )
+
     # configure trajectory execution
     trajectory_execution = {
         "allow_trajectory_execution": True,
@@ -187,6 +193,7 @@ def _setup_nodes(context, *args, **kwargs):
                 moveit_controllers_yaml,
                 {"use_sim_time": use_sim_time},
                 move_group_capabilities,
+                # sensors_yaml, # inactive (occupancy grid requires testing)
             ],
         ),
         # rviz2
@@ -329,6 +336,7 @@ def _setup_nodes(context, *args, **kwargs):
             ),
             launch_arguments={
                 "pointcloud.enable": "true",
+                "clip_distance": "1.3",
             }.items(),
             condition=(
                 IfCondition(

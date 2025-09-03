@@ -34,9 +34,9 @@ RUN apt-get install -y ros-jazzy-rqt-joint-trajectory-controller
 RUN apt-get install -y ros-jazzy-py-binding-tools
 # colcon utils
 RUN apt-get install -y python3-colcon-clean python3-colcon-mixin
-# realsense drivers
+# realsense drivers and Moveit2 perception
 RUN apt-get update
-RUN apt-get install -y ros-jazzy-librealsense2*
+RUN apt-get install -y ros-jazzy-librealsense2* ros-jazzy-moveit-ros-perception
 # pyaudio
 RUN apt-get install -y python3-pyaudio
 # marker detection
