@@ -167,6 +167,26 @@ def _setup_nodes(context, *args, **kwargs):
             ],
             parameters=[{"use_sim_time": use_sim_time}],
         ),
+        # publish the TF of the camera explicitly
+        # this is required for the point cloud
+        # reason: Gazebo publishes the point cloud
+        # 1. with a different topic structure than defined in the ros_gz_bridge and
+        # 2. based on a different frame than world (swapping roll and yaw is required)
+        Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            name="depth_camera_tf_pub",
+            arguments=[
+                "0.659",
+                "0.459",
+                "1.550",
+                "-1.771",
+                "0.787",
+                "2.999",
+                "world",
+                "depth_camera/camera_link/depth_camera_sensor",
+            ],
+        ),
         # robot_state_publisher
         Node(
             package="robot_state_publisher",
