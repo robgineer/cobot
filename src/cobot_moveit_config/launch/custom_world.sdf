@@ -81,6 +81,30 @@
       </link>
     </model>
 
+  <!-- The football -->
+    <model name="my_mesh">
+    <pose>0.6 -0.4 0.6 0 0 0</pose>
+    <static>true</static>
+    <link name="body">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+              <uri>model://demo/meshes/football.dae</uri>
+              <scale>0.1 0.1 0.1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision">
+          <geometry>
+              <mesh>
+                  <uri>model://demo/meshes/football.dae</uri>
+                  <scale>0.1 0.1 0.1</scale>
+              </mesh>
+          </geometry>
+      </collision>
+      </link>
+    </model>
+
     <!-- Load required plugins -->
     <plugin
       filename="gz-sim-physics-system"
