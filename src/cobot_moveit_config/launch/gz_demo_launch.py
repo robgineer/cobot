@@ -151,11 +151,41 @@ def _setup_nodes(context, *args, **kwargs):
             output="log",
             arguments=[
                 "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+                # RGB image
+                "/world/default/model/depth_camera/link/camera_link/sensor/depth_camera_sensor/image@sensor_msgs/msg/Image@gz.msgs.Image",
+                # depth image
+                "/world/default/model/depth_camera/link/camera_link/sensor/depth_camera_sensor/depth_image@sensor_msgs/msg/Image@gz.msgs.Image",
+                # point cloud
+                "/world/default/model/depth_camera/link/camera_link/sensor/depth_camera_sensor/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked",
+                # RGB camera info
+                "/world/default/model/depth_camera/link/camera_link/sensor/depth_camera_sensor/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
+                # depth camera info
+                "/world/default/model/depth_camera/link/camera_link/sensor/depth_camera_sensor/depth_camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
                 "--ros-args",
                 "--log-level",
                 log_level,
             ],
             parameters=[{"use_sim_time": use_sim_time}],
+        ),
+        # publish the TF of the camera explicitly
+        # this is required for the point cloud
+        # reason: Gazebo publishes the point cloud
+        # 1. with a different topic structure than defined in the ros_gz_bridge and
+        # 2. based on a different frame than world (swapping roll and yaw is required)
+        Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            name="depth_camera_tf_pub",
+            arguments=[
+                "0.659",
+                "0.459",
+                "1.550",
+                "-1.771",
+                "0.787",
+                "2.999",
+                "world",
+                "depth_camera/camera_link/depth_camera_sensor",
+            ],
         ),
         # robot_state_publisher
         Node(
@@ -257,7 +287,11 @@ def _generate_declared_arguments() -> List[DeclareLaunchArgument]:
     return [
         DeclareLaunchArgument(
             "world",
-            default_value="default.sdf",
+            default_value=path.join(
+                get_package_share_directory("cobot_moveit_config"),
+                "launch",
+                "custom_world.sdf",
+            ),
             description="Name or filepath of world to load.",
         ),
         DeclareLaunchArgument(

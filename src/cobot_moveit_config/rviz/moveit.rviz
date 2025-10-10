@@ -10,8 +10,9 @@ Panels:
         - /MotionPlanning1/Planning Request1
         - /MotionPlanning1/Planning Metrics1
         - /MotionPlanning1/Planned Path1
+        - /Image1/Topic1
       Splitter Ratio: 0.5
-    Tree Height: 258
+    Tree Height: 355
   - Class: rviz_common/Help
     Name: Help
   - Class: rviz_common/Views
@@ -93,6 +94,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          gripper_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           lin_axis:
             Alpha: 1
             Show Axes: false
@@ -146,6 +159,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          vacuum_down_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           vacuum_gripper_down:
             Alpha: 1
             Show Axes: false
@@ -157,6 +182,18 @@ Visualization Manager:
             Show Trail: false
             Value: true
           vacuum_up_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_up:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -232,6 +269,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          gripper_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           lin_axis:
             Alpha: 1
             Show Axes: false
@@ -285,6 +334,18 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          vacuum_down_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_down_tcp_world_tilted_up:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           vacuum_gripper_down:
             Alpha: 1
             Show Axes: false
@@ -296,6 +357,18 @@ Visualization Manager:
             Show Trail: false
             Value: true
           vacuum_up_tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_down:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          vacuum_up_tcp_world_tilted_up:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -319,6 +392,34 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /visual_tools_topic
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /world/default/model/depth_camera/link/camera_link/sensor/depth_camera_sensor/image
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 2
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: false
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /world/default/model/depth_camera/link/camera_link/sensor/depth_camera_sensor/depth_image
       Value: true
   Enabled: true
   Global Options:
@@ -366,13 +467,15 @@ Window Geometry:
     collapsed: false
   Hide Left Dock: false
   Hide Right Dock: false
+  Image:
+    collapsed: false
   MotionPlanning:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000001d300000387fc0200000005fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000003500fffffffb000000100044006900730070006c006100790073010000002f000001690000009a00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000019c0000015c0000013700fffffffb0000000800480065006c0070000000029a0000006e0000005500fffffffb0000000a0056006900650077007301000002fc000000ba0000008400ffffff000003c90000038700000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000002000000000000016d00000387fc0200000005fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000003500fffffffb000000100044006900730070006c006100790073010000002f000001ca0000009a00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001fd000001b90000013700fffffffb0000000800480065006c0070000000029a0000006e0000005500fffffffb0000000a0056006900650077007300000002fc000000ba0000008400ffffff000000010000011300000387fc0200000002fb0000000a0049006d006100670065010000002f000001ab0000001600fffffffb0000000a0049006d00610067006501000001de000001d80000001600ffffff000003180000038700000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Views:
     collapsed: false
   Width: 1440
-  X: 0
-  Y: 25
+  X: 763
+  Y: 100
