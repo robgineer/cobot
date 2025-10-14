@@ -83,7 +83,7 @@
 
   <!-- The football -->
     <model name="my_mesh">
-    <pose>0.6 -0.4 0.6 0 0 0</pose>
+    <pose>0.45 -0.2 0.8 0 0 0</pose>
     <static>true</static>
     <link name="body">
       <visual name="visual">

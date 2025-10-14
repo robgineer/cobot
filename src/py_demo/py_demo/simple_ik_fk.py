@@ -82,7 +82,7 @@ def main():
     pose_goal = PoseStamped()
     pose_goal.header.frame_id = "base_link"
     pose_goal.pose.orientation.w = 1.0  # neutral orientation
-    pose_goal.pose.position.x = 0.6
+    pose_goal.pose.position.x = 0.45
     pose_goal.pose.position.y = -0.3
     pose_goal.pose.position.z = 1.0
     # set up marker to display pose_goal
@@ -108,6 +108,9 @@ def main():
         sleep_time=3.0,
     )
 
+    pose_goal.pose.position.y = -0.2
+    pose_goal.pose.position.z = 0.8
+    football_marker.publish_marker(pose_goal)
     # change end effector: plan in tilted world frame
     eef = "gripper_tcp_world_tilted_up"
     cobot_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link=eef)

@@ -97,6 +97,7 @@ int main(int argc, char **argv)
   football_pose.position.x = 0.6;
   football_pose.position.y = -0.3;
   football_pose.position.z = 1.0;
+
   /*
   Note: we define several TCP frames for the grippers to avoid rotations in code.
         *_tcp: orientation in cobot frame (this frame is rotated around x and y)
@@ -115,8 +116,14 @@ int main(int argc, char **argv)
       (=> x+: forward, y+: left, z+ down, quaternion xyzw = (0.0, 1.0, 0.0, 0.0))
       we can use the gripper_tcp_world_tilted_down to compensate the rotation around y.
   */
+
   // plan for TCP in world frame
   planAndExecute(simple_ik_node, football_pose, "gripper_tcp_world");
+
+  // move pose goal lower to see change
+  football_pose.position.x = 0.45;
+  football_pose.position.y = -0.2;
+  football_pose.position.z = 0.8;
   // plan for TCP in world frame tilted with z+ up
   planAndExecute(simple_ik_node, football_pose, "gripper_tcp_world_tilted_up");
   // rotate 180 deg around y => z+ is down
