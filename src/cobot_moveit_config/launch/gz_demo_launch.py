@@ -118,6 +118,11 @@ def _setup_nodes(context, *args, **kwargs):
         moveit_config_package, path.join("config", "moveit_controllers.yaml")
     )
 
+    # load config for occupancy grid
+    sensors_yaml = load_file(
+        moveit_config_package, path.join("config", "sensor_3d_gazebo.yaml")
+    )
+
     # configure trajectory execution
     trajectory_execution = {
         "allow_trajectory_execution": True,
@@ -218,6 +223,7 @@ def _setup_nodes(context, *args, **kwargs):
                 planning_scene_monitor_parameters,
                 moveit_controllers_yaml,
                 {"use_sim_time": use_sim_time},
+                sensors_yaml,
             ],
         ),
         # rviz2
