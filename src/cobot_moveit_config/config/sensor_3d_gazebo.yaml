@@ -4,12 +4,12 @@ sensors:
 camera_depth_image:
     sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
     point_cloud_topic: /world/default/model/depth_camera/link/camera_link/sensor/depth_camera_sensor/points
-    max_range: 1.5
+    max_range: 1.3
     max_update_rate: 2.0
     point_subsample: 1
     near_clipping_plane_distance: 0.1
     far_clipping_plane_distance: 1.3
-    padding_offset: 0.1
+    padding_offset: 0.01
     padding_scale: 1.0
     filtered_cloud_topic: /camera/filtered_cloud
     self_filter:
