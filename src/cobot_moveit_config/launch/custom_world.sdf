@@ -51,7 +51,7 @@
     <!-- Depth Camera Model -->
     <model name="depth_camera">
       <!-- Place camera at same pose as RealSense -->
-      <pose>0.659 0.459 1.550 2.999 0.787 -1.771</pose>
+      <pose>0.45 -0.12 1.70 0.0 1.5708 -1.5708</pose>
       <static>true</static>
       <link name="camera_link">
         <visual name="visual">
