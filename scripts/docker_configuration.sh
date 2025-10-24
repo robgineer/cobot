@@ -74,4 +74,4 @@ echo ""
 # TODO @rharbach: commit image in local registry
 
 echo "============== Connect to container =============="
-docker exec -it cobot_container /bin/bash
+docker exec -it "$CONTAINER_NAME" /bin/bash
