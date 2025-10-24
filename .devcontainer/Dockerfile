@@ -7,7 +7,7 @@ RUN apt-get update
 # install required utilities
 RUN apt-get install -y apt-utils software-properties-common x11-apps wget vim curl
 # install dev. packages
-RUN apt-get install -y git build-essential python3.10 python-is-python3 python3-pip python3-tqdm python3-ipykernel
+RUN apt-get install -y git build-essential python3.10 python-is-python3 python3-pip python3-tqdm python3-ipykernel python3-venv
 # get zsh and zimfw
 RUN apt-get install -y zsh && curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh
 
@@ -49,6 +49,10 @@ RUN wget -O "/usr/share/keyrings/xpra.asc" https://xpra.org/xpra.asc \
     && wget -P /etc/apt/sources.list.d/ https://raw.githubusercontent.com/Xpra-org/xpra/master/packaging/repos/noble/xpra.sources \
     && apt-get update \
     && apt-get install -y xpra
+
+## setup venv
+RUN python3 -m venv --system-site-packages /opt/ros_venv
+RUN /opt/ros_venv/bin/pip install --upgrade pip setuptools wheel colcon-common-extensions scipy scikit-learn
 
 #################################################
 ## port current user to container if required ##
