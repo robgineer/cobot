@@ -12,6 +12,10 @@ export ROS_DISTRO=jazzy  # change to 'iron' or 'humble' if needed
 # Source ROS 2
 source /opt/ros/$ROS_DISTRO/setup.bash
 
+# activate venv
+source /opt/ros_venv/bin/activate
+export PYTHONPATH=/opt/ros_venv/lib/python3.12/site-packages
+
 # Colcon workspace setup (optional)
 if [ -f /workspace/install/setup.bash ]; then
     source /workspace/install/setup.bash
