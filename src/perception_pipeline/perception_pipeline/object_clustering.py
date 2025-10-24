@@ -113,7 +113,7 @@ class WorkbenchObjectDetector(Node):
             min_point = cluster_points.min(axis=0)
             max_point = cluster_points.max(axis=0)
             center_point_coordinates = (min_point + max_point) / 2.0
-            object_size = min_point - max_point
+            object_size = max_point - min_point
 
             # create MoveIt obstacle
             obstacle = CollisionObject()
