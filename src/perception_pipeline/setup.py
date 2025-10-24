@@ -18,6 +18,8 @@ setup(
     description="Python based object detection and recognition pipeline using a (simulated) RGBD camera.",
     license="BSD-3-Clause",
     entry_points={
-        'console_scripts': [],
+        'console_scripts': [
+            'object_clustering = perception_pipeline.object_clustering:main'
+        ],
     },
 )
