@@ -100,7 +100,6 @@ class WorkbenchObjectDetector(Node):
         """
 
         scene = PlanningScene()
-        scene.is_diff = True  # TODO @rharbach: change this so we get constant updates
 
         # iterate trough all clusters
         for cluster_id in unique_cluster_ids:
