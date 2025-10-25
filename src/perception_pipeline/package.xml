@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>perception_pipeline</name>
+  <version>1.0.0</version>
+  <description>Python based object detection and recognition pipeline using a (simulated) RGBD camera.</description>
+  <maintainer email="robgineer@gmail.com">Robert Harbach</maintainer>
+  <maintainer email="Robert.Harbach@hs-esslingen.de">Robert Harbach</maintainer>
+
+  <license>BSD-3-Clause</license>
+
+  <depend>sklearn</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
