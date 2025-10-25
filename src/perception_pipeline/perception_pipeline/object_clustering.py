@@ -49,9 +49,9 @@ class WorkbenchObjectDetector(Node):
         self.y_min, self.y_max = -0.5, 0.0
         self.z_min, self.z_max = 0.75, 0.85
 
-        #TODO @rharbach: use these values below
-        self.min_cluster_size = 30  # min #points per object
-        self.max_cluster_size = 20000
+        # the expected object size
+        self.min_cluster_size = 100
+        self.max_cluster_size = 1000
 
         self.R = None
         self.t = None
@@ -108,6 +108,12 @@ class WorkbenchObjectDetector(Node):
                 continue
             # get all points of the current cluster
             cluster_points = cloud[cluster_ids == cluster_id]
+            # filter clusters that are too small (noise) or too big (links of cobot)
+            if (
+                cluster_points.shape[0] < self.min_cluster_size
+                or cluster_points.shape[0] > self.max_cluster_size
+            ):
+                continue
 
             # get the cluster dimensions
             min_point = cluster_points.min(axis=0)
