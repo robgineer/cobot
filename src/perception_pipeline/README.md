@@ -110,13 +110,17 @@ source install/setup.{bash/zsh}
 next, launch the Cobot via
 
 ```bash
-ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
-```
-for real controls and RealSense or
-```bash
 ros2 launch cobot_moveit_config gz_demo_launch.py
 ```
-for Gazebo controls and a simulated RGBD sensor.
+for Gazebo controls and a simulated RGBD sensor or
+```bash
+ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
+```
+for real controls and RealSense. Note: for the RealSense, you need to set the `pointcloud_topic` in `src/perception_pipeline/perception_pipeline/object_clustering.py` to
+```python
+self.pointcloud_topic = "/camera/camera/color/points"
+```
+
 
 Once the camera is running, open a new terminal, source ros, the venv and your workspace and execute
 
