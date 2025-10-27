@@ -25,16 +25,13 @@ RealSense → /camera/depth/image_rect_raw → MoveIt2 → Planning Scene → oc
 
 Starting the RealSense camera on the Cobot with real controls requires to pull and build the `cobot_hardware` and the `realsense-ros` package. 
 
-To build, run
+To build, source ros2, pull the required submodules, build the project and source your workspace
 
 ```bash
+source /opt/ros/jazzy/setup.zsh
 git submodule init src/cobot_hardware src/realsense-ros
 git submodule update src/cobot_hardware src/realsense-ros
-colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release" 
-```
-
-Then source your workspace
-```bash
+colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release"
 source install/setup.{bash/zsh}
 ```
 
@@ -42,7 +39,6 @@ To run the Cobot with real controls and an active camera, run
 ```bash
 ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
 ```
-
 
 ## Using Gazebo's RGBD sensor
 
@@ -65,54 +61,45 @@ Gazebo RGBD sensor → ROS bridge → point cloud topic → MoveIt2 → Planning
 
 ```
 
-Running the Gazebo RGDB camera, you need to build the following packages
-```bash
-colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release" --packages-select cobot_model py_utils cobot_moveit_config demo
-```
+Running the Gazebo RGDB camera, you need source ros2, build the packages `cobot_model`, `py_utils`, `cobot_moveit_config`, `demo` and source your workspace.
 
-Then source your workspace
 ```bash
+source /opt/ros/jazzy/setup.zsh
+colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release" --packages-select cobot_model py_utils cobot_moveit_config demo
 source install/setup.{bash/zsh}
 ```
 
-and run 
+Next, run
 ```bash
 ros2 launch cobot_moveit_config gz_demo_launch.py
 ```
 
-This will start Gazebo and rviz.
+this will start Gazebo and rviz.
 
 
 ## Running Object Recognition
 
-At the moment we have implemented one perception feature: a simple object detection based on DBSCAN clusters from the RGBD camera. In order to run it, you need to activate a venv containing required python libraries:
+At the moment we have implemented one perception feature: a simple object detection based on DBSCAN clusters from the RGBD camera. In order to run it, you need to activate a venv containing required python libraries and update your PYTHONPATH
 
 ```bash
 source /opt/ros_venv/bin/activate 
-```
-
-then update your PYTHONPATH
-
-```bash
 export PYTHONPATH=$PYTHONPATH:/opt/ros_venv/lib/python3.12/site-packages
 ```
 
-and build the perception pipeline
+next, build the `perception_pipeline` and source your workspace
+
 ```bash
 colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release" --packages-select perception_pipeline
-```
-
-Source your workspace with
-```bash
 source install/setup.{bash/zsh}
 ```
 
-next, launch the Cobot via
+Launch the Cobot via
 
 ```bash
 ros2 launch cobot_moveit_config gz_demo_launch.py
 ```
 for Gazebo controls and a simulated RGBD sensor or
+
 ```bash
 ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
 ```
