@@ -100,6 +100,7 @@ class WorkbenchObjectDetector(Node):
         """
 
         scene = PlanningScene()
+        scene.is_diff = True
 
         # iterate trough all clusters
         for cluster_id in unique_cluster_ids:
