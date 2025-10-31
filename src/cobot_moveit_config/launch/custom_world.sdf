@@ -66,7 +66,7 @@
           <always_on>true</always_on>
           <update_rate>10</update_rate>
           <camera>
-            <horizontal_fov>1.3</horizontal_fov>
+            <horizontal_fov>1.399</horizontal_fov>
             <image>
               <width>640</width>
               <height>480</height>
@@ -78,6 +78,7 @@
             </clip>
           </camera>
         </sensor>
+
       </link>
     </model>
 
