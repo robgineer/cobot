@@ -34,7 +34,16 @@ import glob
 import sys
 import json
 import argparse
-from apriltag import apriltag
+
+# The apriltag package is required for AprilTag detection.
+# Install it with e.g.: conda install conda-forge::apriltag
+try:
+    from dt_apriltags import Detector
+except ImportError as e:
+    print("Error: The 'dt_apriltags' package is required but not installed.")
+    print("Install it with: pip3 install dt-apriltags")
+    sys.exit(1)
+
 
 # Add the offline_hand_eye directory to the path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../offline_hand_eye")))
@@ -78,7 +87,13 @@ class FrameViewer:
         # Initialize AprilTag detector
         self.current_family_index = 2
         self.apriltag_family = self.apriltag_families[self.current_family_index]
-        self.detector = apriltag(self.apriltag_family)
+        self.detector = Detector(families=self.apriltag_family,
+                            nthreads=1,
+                            quad_decimate=1.0,
+                            quad_sigma=0.0,
+                            refine_edges=1,
+                            decode_sharpening=0.25,
+                            debug=0)
 
         # Available calibration methods
         self.calibration_methods = ['TSAI', 'PARK', 'HORAUD', 'ANDREFF', 'DANIILIDIS']
@@ -313,7 +328,10 @@ class FrameViewer:
         # Compute overall reprojection error
         mean_error, max_error = compute_reprojection_error_mean_max(self.hand_camera_rot, self.hand_camera_tr, self.data_path, selected_list, self.detector, 
                                                                     self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr, self.tagsize)
-        print(f'Overall reprojection error: mean={mean_error:.2f}px, max={max_error:.2f}px')
+        if mean_error is not None and max_error is not None:
+            print(f'Overall reprojection error: mean={mean_error:.2f}px, max={max_error:.2f}px')
+        else:
+            print('Could not compute reprojection error due to lack of detections.')
 
         # Save all relevant calibration data
         with open(self.calibration_config_file, 'r') as f:
@@ -333,8 +351,8 @@ class FrameViewer:
         
         try:
             # Load and detect frame
-            frame, gray, detections = load_and_detect(self.current_frame, self.data_path, self.detector)
-            valid_frame = frame_is_valid(frame, detections)
+            frame, gray, detections = load_and_detect(self.current_frame, self.data_path, self.detector, self.tagsize)
+            valid_frame = frame_is_valid(frame, detections)            
             if not valid_frame:
                 self.select_button.active = False  # Disable select button if frame is invalid
             else:
@@ -434,7 +452,7 @@ class FrameViewer:
             if detections is not None and len(detections) > 0:
                 info_text += "\nAprilTag Detections:\n"
                 for det in detections:
-                    info_text += f"  ID: {det['id']},\n  Center: {det['center'][0]:.1f}, {det['center'][1]:.1f}\n"
+                    info_text += f"  ID: {det.tag_id},\n  Center: {det.center[0]:.1f}, {det.center[1]:.1f}\n"
             else:
                 info_text += "\nNo AprilTag detections found\n"
                 

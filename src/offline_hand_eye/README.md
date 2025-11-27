@@ -37,8 +37,8 @@ And to check the current transformations between two frames via command line, us
 
 ```bash
 #Usage: tf2_echo source_frame target_frame
-ros2 run tf2_ros tf2_echo base_link camera_color_frame
-ros2 run tf2_ros tf2_echo base_link camera_color_optical_frame
+ros2 run tf2_ros tf2_echo world camera_color_frame
+ros2 run tf2_ros tf2_echo world camera_color_optical_frame
 ```
 
 In our case, the excerpt of our camera transformations (i.e. the objectives of our calibration) are structured as follows:
@@ -58,6 +58,7 @@ The tag can be printed from this pdf: [doc/tag36h11_0_140mm.pdf](doc/tag36h11_0_
 Next, start the robot and camera
 
 ```bash
+ros2 run cobot_hardware gripper_off
 ros2 launch demo rviz_demo_launch.py controller_type:=real enable_realsense_camera:=true
 ```
 
@@ -106,7 +107,7 @@ To install a virtual environment and a jupyter kernel, use:
 conda create --name offline-hand-eye python=3.12 ipython jupyter conda-forge::matplotlib 
 conda activate offline-hand-eye
 pip3 install opencv-python
-conda install conda-forge::apriltag
+pip3 install dt-apriltags
 python -m ipykernel install --user --name=offline-hand-eye
 ```
 
@@ -141,7 +142,7 @@ ros2 run offline_hand_eye calib_publisher --ros-args -p calibration_file:=handey
 Now, run
 
 ```bash
-ros2 run tf2_ros tf2_echo base_link camera_bottom_screw_frame
+ros2 run tf2_ros tf2_echo world camera_bottom_screw_frame
 ```
 
 to print the extrinsic calibration in the console, e.g.
@@ -177,5 +178,5 @@ Or for the aruco marker:
 
 ```bash
 sudo apt install ros-jazzy-aruco-ros
-ros2 run aruco_ros single --ros-args -p image_is_rectified:=true -p marker_size:=0.1 -p marker_id:=1 -p reference_frame:=camera_link -p camera_frame:=/camera/camera/color/image_raw -p marker_frame:=camera_marker -p corner_refinement:=LINES
+ros2 run aruco_ros single --ros-args --remap /image:=/camera/camera/color/image_raw --remap /camera_info:=/camera/camera/color/camera_info -p marker_id:=1 -p marker_size:=0.14 -p reference_frame:=camera_bottom_screw_frame -p camera_frame:=camera_color_optical_frame  -p marker_frame:=camera_marker -p image_is_rectified:=true -p corner_refinement:=LINES
 ```

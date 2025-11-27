@@ -9,25 +9,19 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import os
-import sys
 
-# The apriltag package is required for AprilTag detection.
-# Install it with e.g.: conda install conda-forge::apriltag
-try:
-    from apriltag import apriltag
-except ImportError as e:
-    print("Error: The 'apriltag' package is required but not installed.")
-    print("Install it with: conda install conda-forge::apriltag")
-    sys.exit(1)
-
-def load_and_detect(frame_count, data_root, detector):
+def load_and_detect(frame_count, data_root, detector, tagsize):
     with open(os.path.join(data_root, "frame_%04d.pkl" % frame_count), "rb") as input_file:
         frame = pickle.load(input_file)
 
     im = frame['image']
     gray = cv2.cvtColor(im, cv2.COLOR_RGB2GRAY)
     detections = detector.detect(gray)
-    
+
+    cameraMatrix = np.array(frame['camera_info']['k']).reshape((3, 3))
+    camera_params = ( cameraMatrix[0,0], cameraMatrix[1,1], cameraMatrix[0,2], cameraMatrix[1,2] )
+    detections = detector.detect(gray, estimate_tag_pose=True, camera_params=camera_params, tag_size=tagsize)
+
     return frame, gray, detections
 
 def frame_is_valid(frame, detections):
@@ -39,10 +33,7 @@ def frame_is_valid(frame, detections):
         return False
     elif len(detections) > 1:
         print("Warning: Multiple detections found, using the first one.")
-    if 'center' not in detections[0] or 'id' not in detections[0]:
-        print("Invalid frame: no center or id in detection.")
-        return False
-    if detections[0]['id'] < 0:
+    if detections[0].tag_id < 0:
         print("Invalid frame: invalid detection id.")
         return False
     
@@ -78,15 +69,16 @@ def show_detections(gray, detections, apriltag_family, show_legend=True, show_fa
         plt.text(5, 24, 'family: %s' % (apriltag_family), 
                 color='red', fontsize=12, ha='left', va='bottom')
 
-    colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k']
-    for i, detection in enumerate(detections):
-        color = colors[i % len(colors)]
-        plt.plot(detection['center'][0], detection['center'][1], color+'x')
-        contour = detection['lb-rb-rt-lt']
-        contour = np.vstack((contour, contour[0]))  # Close the contour
-        plt.plot(contour[:, 0], contour[:, 1], color+'o-', label='id: %d' % detection['id'])
-        for j in range(4):
-            plt.text(contour[j, 0] - 5, contour[j, 1] - 5, '%d' % j, color=color, fontsize=12, ha='center', va='bottom')
+    if detections:
+        colors = ['r', 'g', 'b', 'c', 'm', 'y', 'k']
+        for i, detection in enumerate(detections):
+            color = colors[i % len(colors)]
+            plt.plot(detection.center[0], detection.center[1], color+'x')
+            contour = detection.corners
+            contour = np.vstack((contour, contour[0]))  # Close the contour
+            plt.plot(contour[:, 0], contour[:, 1], color+'o-', label='id: %d' % detection.tag_id)
+            for j in range(4):
+                plt.text(contour[j, 0] - 5, contour[j, 1] - 5, '%d' % j, color=color, fontsize=12, ha='center', va='bottom')
 
     plt.axis('off')
     if show_legend:
@@ -164,32 +156,15 @@ def mat2quat(M):
         q *= -1
     return q
 
-def extract_pose_from_detection(frame, detection, tagsize=0.14):
-    objectPoints = np.array([
-        [-tagsize / 2, -tagsize / 2, 0], # left bottom
-        [+tagsize / 2, -tagsize / 2, 0], # right bottom
-        [+tagsize / 2, +tagsize / 2, 0], # right top
-        [-tagsize / 2, +tagsize / 2, 0], # left top
-    ], dtype=np.float64)
-
-    imagePoints = detection['lb-rb-rt-lt']
-
-    cameraMatrix = np.array(frame['camera_info']['k']).reshape((3, 3))
-    distortion_coeffs = np.array(frame['camera_info']['d']).reshape((1, 5))
-
-    try:
-        retval, rvec, tvec = cv2.solvePnP(objectPoints, imagePoints, cameraMatrix, distortion_coeffs)
-        if not retval:
-            raise RuntimeError("Error: solvePnP failed")
-    except cv2.error as e:
-        print(f"cv2.solvePnP error: {e}")
-        raise
-    except Exception as e:
-        print(f"Unexpected error in solvePnP: {e}")
-        raise
-    rmat, _ = cv2.Rodrigues(rvec)
-
-    return rvec, tvec, rmat
+def extract_pose_from_detection(detections):
+    """
+    Extracts the pose (translation and rotation matrix) from the first detection.
+    """
+    assert len(detections) > 0, "No detections to extract pose from."
+    tvec_marker = np.array(detections[0].pose_t)
+    rmat_marker = np.array(detections[0].pose_R)
+    
+    return tvec_marker, rmat_marker
 
 def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, method_str='PARK'):
     """
@@ -199,12 +174,27 @@ def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, me
     hand_world_rot, hand_world_tr = [], []
 
     for frame_count in frame_samples:
-        frame, gray, detections = load_and_detect(frame_count, data_root, detector)
-        if not frame_is_valid(frame, detections):
-            print(f"Warning: Skipping invalid frame {frame_count}")
-            continue
-            
-        _, tvec_marker, rmat_marker = extract_pose_from_detection(frame, detections[0], tagsize)
+        frame, _, detections = load_and_detect(frame_count, data_root, detector, tagsize)
+
+        if False and 'tracking_transform' in frame:
+            print(f"Note: frame contains 'tracking_transform' use this for hand-eye calibration.")
+            print(frame['tracking_transform'])
+            tvec_marker = np.array([frame['tracking_transform']['translation']['x'], 
+                                frame['tracking_transform']['translation']['y'], 
+                                frame['tracking_transform']['translation']['z']]).reshape((3, 1))
+            quat_wxyz_marker = np.array([frame['tracking_transform']['rotation']['w'], 
+                                        frame['tracking_transform']['rotation']['x'], 
+                                        frame['tracking_transform']['rotation']['y'], 
+                                        frame['tracking_transform']['rotation']['z']])
+            rmat_marker = quat2mat(quat_wxyz_marker)
+
+        else:
+            if not frame_is_valid(frame, detections):
+                print(f"Warning: Skipping invalid frame {frame_count}")
+                continue
+                
+            tvec_marker, rmat_marker = extract_pose_from_detection(detections)
+
         marker_camera_rot.append(rmat_marker)
         marker_camera_tr.append(tvec_marker)
 
@@ -253,13 +243,13 @@ def compute_TCP_image_position(frame, hand_camera_rot, hand_camera_tr):
     base2gripper_quat_wxyz = [frame['robot_transform']['rotation']['w'], frame['robot_transform']['rotation']['x'], frame['robot_transform']['rotation']['y'], frame['robot_transform']['rotation']['z']]
     base2gripper_rot = quat2mat(base2gripper_quat_wxyz)
 
-    gripper2base_rot = np.linalg.inv(base2gripper_rot)
+    gripper2base_rot = np.transpose(base2gripper_rot)
     gripper2base_trans = -gripper2base_rot @ base2gripper_trans
 
     cam2base_rot = hand_camera_rot
     cam2base_trans = hand_camera_tr
 
-    base2cam_rot = np.linalg.inv(cam2base_rot)
+    base2cam_rot = np.transpose(cam2base_rot)
     base2cam_trans = -base2cam_rot @ cam2base_trans
 
     TCP_world = gripper2base_rot @ np.array([0,0,0]).reshape(3, 1) +  np.array(gripper2base_trans).reshape(3, 1)
@@ -288,12 +278,12 @@ def compute_target_to_gripper_transform(hand_camera_rot, hand_camera_tr, data_ro
 
     # estimate target to gripper transform in each frame
     for frame_count in frame_samples:
-        frame, _, detections = load_and_detect(frame_count, data_root, detector)
+        frame, _, detections = load_and_detect(frame_count, data_root, detector, tagsize)
         if not frame_is_valid(frame, detections):
             print(f"Warning: Skipping invalid frame {frame_count}")
             continue
             
-        _, tvec_marker, rmat_marker = extract_pose_from_detection(frame, detections[0], tagsize)        
+        tvec_marker, rmat_marker = extract_pose_from_detection(detections)        
         c_T_t = np.eye(4)
         c_T_t[:3, :3] = rmat_marker
         c_T_t[:3, 3] = tvec_marker.flatten()
@@ -380,13 +370,13 @@ def compute_reprojection_error_mean_max(hand_camera_rot, hand_camera_tr, data_ro
     """
     dist_norms = []
     for frame_count in frame_samples:
-        frame, gray, detections = load_and_detect(frame_count, data_root, detector)
+        frame, _, detections = load_and_detect(frame_count, data_root, detector, tagsize)
         if not frame_is_valid(frame, detections):
             print(f"Warning: Skipping invalid frame {frame_count}")
             continue
 
         xc_proj = compute_target_image_position(frame, hand_camera_rot, hand_camera_tr, target2gripper_rvec, target2gripper_trans, tagsize)
-        dist = xc_proj - detections[0]['lb-rb-rt-lt']
+        dist = xc_proj - detections[0].corners
         dist_norm = np.sqrt(np.sum(dist * dist, axis=1)).tolist()
         dist_norms.extend(dist_norm)
         #print(f'. difference projected to detected: {dist}')
