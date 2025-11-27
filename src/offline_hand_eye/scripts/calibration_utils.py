@@ -326,26 +326,26 @@ def compute_target_image_position(frame, hand_camera_rot, hand_camera_tr, target
     """
     Compute the image positions of the calibration target.
     Returns: 
-        Target image corners in order: left bottom, right bottom, right top, left top.
+        Target image corners in ccw order.
     """
     objectPoints = np.array([
-        [-tagsize / 2, -tagsize / 2, 0], # left bottom
-        [+tagsize / 2, -tagsize / 2, 0], # right bottom
-        [+tagsize / 2, +tagsize / 2, 0], # right top
-        [-tagsize / 2, +tagsize / 2, 0], # left top
+        [-tagsize / 2, +tagsize / 2, 0], 
+        [+tagsize / 2, +tagsize / 2, 0], 
+        [+tagsize / 2, -tagsize / 2, 0], 
+        [-tagsize / 2, -tagsize / 2, 0], 
     ], dtype=np.float64)
     
     base2gripper_trans = [frame['robot_transform']['translation']['x'], frame['robot_transform']['translation']['y'], frame['robot_transform']['translation']['z']]
     base2gripper_quat_wxyz = [frame['robot_transform']['rotation']['w'], frame['robot_transform']['rotation']['x'], frame['robot_transform']['rotation']['y'], frame['robot_transform']['rotation']['z']]
     base2gripper_rot = quat2mat(base2gripper_quat_wxyz)
 
-    gripper2base_rot = np.linalg.inv(base2gripper_rot)
+    gripper2base_rot = np.transpose(base2gripper_rot)
     gripper2base_trans = -gripper2base_rot @ base2gripper_trans
 
     cam2base_rot = hand_camera_rot
     cam2base_trans = hand_camera_tr
 
-    base2cam_rot = np.linalg.inv(cam2base_rot)
+    base2cam_rot = np.transpose(cam2base_rot)
     base2cam_trans = -base2cam_rot @ cam2base_trans
     base2cam_rvec, _ = cv2.Rodrigues(base2cam_rot)
     
@@ -377,6 +377,13 @@ def compute_reprojection_error_mean_max(hand_camera_rot, hand_camera_tr, data_ro
             continue
 
         xc_proj = compute_target_image_position(frame, hand_camera_rot, hand_camera_tr, target2gripper_rvec, target2gripper_trans, tagsize)
+        
+        # reorder to match corners - not necessary
+        #dist_1st_point = xc_proj[0,:] - detections[0].corners
+        #dist_1st_point = np.sum(dist_1st_point * dist_1st_point, axis=1).tolist()
+        #new_indices = (-np.arange(len(dist_1st_point)) + np.argmin(dist_1st_point)) % len(dist_1st_point)
+        #xc_proj = xc_proj[new_indices, :]
+
         dist = xc_proj - detections[0].corners
         dist_norm = np.sqrt(np.sum(dist * dist, axis=1)).tolist()
         dist_norms.extend(dist_norm)
