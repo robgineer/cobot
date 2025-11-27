@@ -303,15 +303,22 @@ class FrameViewer:
             print("Error: At least 2 frames are required for calibration")
             return
 
+        with open(self.calibration_config_file, 'r') as f:
+            calibration_config = json.load(f)
+        tracking_marker_frame = calibration_config.get('tracking_marker_frame', 'none - compute offline')
+        use_tracking_marker = tracking_marker_frame != 'none - compute offline'
+
         print(f"Running calibration with:")
         print(f"  - Tag size: {self.tagsize} m")
         print(f"  - AprilTag family: {self.apriltag_family}")
         print(f"  - Selected frames: {selected_list}")
         print(f"  - Method: {self.calibration_methods[self.current_method_index]}")
+        print(f"  - Tracking marker frame: {tracking_marker_frame}")
 
         self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = \
             compute_hand_eye_calibration(self.data_path, selected_list, self.detector, self.tagsize, 
-                                         method_str=self.calibration_methods[self.current_method_index])
+                                         method_str=self.calibration_methods[self.current_method_index], 
+                                         use_tracking_marker=use_tracking_marker)
 
         print("Hand-Eye Calibration Results:")
         print("Rotation Matrix:")
@@ -334,9 +341,6 @@ class FrameViewer:
             print('Could not compute reprojection error due to lack of detections.')
 
         # Save all relevant calibration data
-        with open(self.calibration_config_file, 'r') as f:
-            calibration_config = json.load(f)
-
         save_calibration(self.calibration_output_file, calibration_config, self.hand_camera_qwxyz.tolist(), self.hand_camera_tr.tolist(),
                          selected_list, self.data_path)
         print(f"Written calibration results to: {self.calibration_output_file}")

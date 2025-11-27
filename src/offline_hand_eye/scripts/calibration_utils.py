@@ -166,7 +166,8 @@ def extract_pose_from_detection(detections):
     
     return tvec_marker, rmat_marker
 
-def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, method_str='PARK'):
+def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, 
+                                 method_str='PARK', use_tracking_marker=False):
     """
     Computes the hand-eye calibration using the specified frames and detector.
     """
@@ -176,9 +177,9 @@ def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, me
     for frame_count in frame_samples:
         frame, _, detections = load_and_detect(frame_count, data_root, detector, tagsize)
 
-        if False and 'tracking_transform' in frame:
-            print(f"Note: frame contains 'tracking_transform' use this for hand-eye calibration.")
-            print(frame['tracking_transform'])
+        if use_tracking_marker:
+            assert 'tracking_transform' in frame, \
+                f"Frame {frame_count} does not contain 'tracking_transform' requested for hand-eye calibration."
             tvec_marker = np.array([frame['tracking_transform']['translation']['x'], 
                                 frame['tracking_transform']['translation']['y'], 
                                 frame['tracking_transform']['translation']['z']]).reshape((3, 1))
