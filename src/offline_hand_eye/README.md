@@ -131,7 +131,13 @@ A good starting point for understanding the calibration process is the Jupyter n
 A more comfortable version of the calibration is using a GUI where you can check, select, and exclude different frames for calibration:
 
 ```bash
+cd /workspace/src/offline_hand_eye
 conda activate offline-hand-eye
+# or if you use venv:
+#source venv_offline_hand_eye/bin/activate
+
+# if you use novnc, do not forget to set the display variable: 
+#export DISPLAY=:1  
 cd scripts
 ./offline_hand_eye_calibration_gui.py --data_path ../doc/sample_data/calibration/calibdata_2025_08_11-11_51_22 --config ../../../handeye_calibration_params.json --output ../../../handeye_calibration.json
 ```
