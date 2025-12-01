@@ -101,7 +101,7 @@ ros2 bag play <your_recording>
 
 The calibration process itself does not need ROS! So we can focus on the actual computation (almost any version of opencv and numpy) and debugging.
 
-To install a virtual environment and a jupyter kernel, use:
+To install a virtual environment and a jupyter kernel in miniconda, use:
 
 ```bash
 conda create --name offline-hand-eye python=3.12 ipython jupyter conda-forge::matplotlib 
@@ -111,9 +111,22 @@ pip3 install dt-apriltags
 python -m ipykernel install --user --name=offline-hand-eye
 ```
 
-This has been tested with miniconda, but should also work with venv.
+With venv, use:
+```bash
+# we dont want to use any ros2 python version for this
+deactivate
+unset PYTHONPATH
+# make sure that we are using Python 3.12
+python --version
 
-A good starting point for understanding the calibration process is the Jupyter notebook in <scripts/offline_hand_eye_calibration.ipynb>.
+cd /workspace/src/offline_hand_eye
+python -m venv venv_offline_hand_eye
+source venv_offline_hand_eye/bin/activate
+pip install ipython jupyter matplotlib opencv-python dt-apriltags
+python -m ipykernel install --user --name=offline-hand-eye
+```
+
+A good starting point for understanding the calibration process is the Jupyter notebook in <scripts/offline_hand_eye_calibration.ipynb> (you may need to install the [Jupyter Extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) in vscode). 
 
 A more comfortable version of the calibration is using a GUI where you can check, select, and exclude different frames for calibration:
 

@@ -131,6 +131,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+venv_offline_hand_eye/
 
 # Spyder project settings
 .spyderproject
