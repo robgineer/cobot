@@ -24,18 +24,23 @@ def load_and_detect(frame_count, data_root, detector, tagsize):
 
     return frame, gray, detections
 
-def frame_is_valid(frame, detections):
-    if detections is None:
-        print("Invalid frame: no detection.")
-        return False
-    if len(detections) == 0:
-        print("Invalid frame: no detection.")
-        return False
-    elif len(detections) > 1:
-        print("Warning: Multiple detections found, using the first one.")
-    if detections[0].tag_id < 0:
-        print("Invalid frame: invalid detection id.")
-        return False
+def frame_is_valid(frame, detections, use_tracking_marker=False):
+    if not use_tracking_marker:
+        if detections is None:
+            print("Invalid frame: no detection.")
+            return False
+        if len(detections) == 0:
+            print("Invalid frame: no detection.")
+            return False
+        elif len(detections) > 1:
+            print("Warning: Multiple detections found, using the first one.")
+        if detections[0].tag_id < 0:
+            print("Invalid frame: invalid detection id.")
+            return False
+    else:
+        if 'tracking_transform' not in frame:
+            print("Invalid frame: No tracking transform data found.")
+            return False
     
     if frame.get('robot_transform') is None:
         print("Invalid frame: No robot transform data found.")
@@ -166,6 +171,31 @@ def extract_pose_from_detection(detections):
     
     return tvec_marker, rmat_marker
 
+def get_marker_pose(frame, frame_count, detections, use_tracking_marker):
+    """
+    Get marker pose, either from tracking transform or from image detections.
+    """
+    if use_tracking_marker:
+        assert 'tracking_transform' in frame, \
+            f"Frame {frame_count} does not contain 'tracking_transform' requested for hand-eye calibration."
+        tvec_marker = np.array([frame['tracking_transform']['translation']['x'], 
+                            frame['tracking_transform']['translation']['y'], 
+                            frame['tracking_transform']['translation']['z']]).reshape((3, 1))
+        quat_wxyz_marker = np.array([frame['tracking_transform']['rotation']['w'], 
+                                    frame['tracking_transform']['rotation']['x'], 
+                                    frame['tracking_transform']['rotation']['y'], 
+                                    frame['tracking_transform']['rotation']['z']])
+        rmat_marker = quat2mat(quat_wxyz_marker)
+
+    else:
+        if not frame_is_valid(frame, detections, use_tracking_marker):
+            print(f"Warning: Skipping invalid frame {frame_count}")
+            return None, None
+            
+        tvec_marker, rmat_marker = extract_pose_from_detection(detections)
+    
+    return tvec_marker, rmat_marker
+
 def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize, 
                                  method_str='PARK', use_tracking_marker=False):
     """
@@ -177,24 +207,9 @@ def compute_hand_eye_calibration(data_root, frame_samples, detector, tagsize,
     for frame_count in frame_samples:
         frame, _, detections = load_and_detect(frame_count, data_root, detector, tagsize)
 
-        if use_tracking_marker:
-            assert 'tracking_transform' in frame, \
-                f"Frame {frame_count} does not contain 'tracking_transform' requested for hand-eye calibration."
-            tvec_marker = np.array([frame['tracking_transform']['translation']['x'], 
-                                frame['tracking_transform']['translation']['y'], 
-                                frame['tracking_transform']['translation']['z']]).reshape((3, 1))
-            quat_wxyz_marker = np.array([frame['tracking_transform']['rotation']['w'], 
-                                        frame['tracking_transform']['rotation']['x'], 
-                                        frame['tracking_transform']['rotation']['y'], 
-                                        frame['tracking_transform']['rotation']['z']])
-            rmat_marker = quat2mat(quat_wxyz_marker)
-
-        else:
-            if not frame_is_valid(frame, detections):
-                print(f"Warning: Skipping invalid frame {frame_count}")
-                continue
-                
-            tvec_marker, rmat_marker = extract_pose_from_detection(detections)
+        tvec_marker, rmat_marker = get_marker_pose(frame, frame_count, detections, use_tracking_marker)
+        if tvec_marker is None or rmat_marker is None:
+            continue
 
         marker_camera_rot.append(rmat_marker)
         marker_camera_tr.append(tvec_marker)
@@ -262,7 +277,7 @@ def compute_TCP_image_position(frame, hand_camera_rot, hand_camera_tr):
     img_points, _ = cv2.projectPoints(objectPoints=TCP_world, rvec=base2cam_rvec, tvec=base2cam_trans, cameraMatrix=K, distCoeffs=d)
     return img_points.reshape(2,), TCP_world
 
-def compute_target_to_gripper_transform(hand_camera_rot, hand_camera_tr, data_root, frame_samples, detector, tagsize):
+def compute_target_to_gripper_transform(hand_camera_rot, hand_camera_tr, data_root, frame_samples, detector, tagsize, use_tracking_marker=False):
     """
     Compute the 3D transform from the calibration target to the gripper coordinate frame.
     Estimate is obtained by computing this transform for each frame and averaging the results (in 3d translation and 3d rotation vector space).
@@ -280,11 +295,10 @@ def compute_target_to_gripper_transform(hand_camera_rot, hand_camera_tr, data_ro
     # estimate target to gripper transform in each frame
     for frame_count in frame_samples:
         frame, _, detections = load_and_detect(frame_count, data_root, detector, tagsize)
-        if not frame_is_valid(frame, detections):
-            print(f"Warning: Skipping invalid frame {frame_count}")
+        tvec_marker, rmat_marker = get_marker_pose(frame, frame_count, detections, use_tracking_marker)
+        if tvec_marker is None or rmat_marker is None:
             continue
-            
-        tvec_marker, rmat_marker = extract_pose_from_detection(detections)        
+      
         c_T_t = np.eye(4)
         c_T_t[:3, :3] = rmat_marker
         c_T_t[:3, 3] = tvec_marker.flatten()

@@ -80,6 +80,11 @@ class FrameViewer:
         self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = None, None, None
         self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr = None, None
 
+        with open(self.calibration_config_file, 'r') as f:
+            self.calibration_config = json.load(f)
+        tracking_marker_frame = self.calibration_config.get('tracking_marker_frame', 'none - compute offline')
+        self.use_tracking_marker = tracking_marker_frame != 'none - compute offline'
+
         # Available AprilTag families
         self.apriltag_families = ['tag16h5', 'tag25h9', 'tag36h11', 'tagCircle21h7', 'tagCircle49h12', 
                                   'tagCustom48h12', 'tagStandard41h12', 'tagStandard52h13']
@@ -303,22 +308,17 @@ class FrameViewer:
             print("Error: At least 2 frames are required for calibration")
             return
 
-        with open(self.calibration_config_file, 'r') as f:
-            calibration_config = json.load(f)
-        tracking_marker_frame = calibration_config.get('tracking_marker_frame', 'none - compute offline')
-        use_tracking_marker = tracking_marker_frame != 'none - compute offline'
-
         print(f"Running calibration with:")
         print(f"  - Tag size: {self.tagsize} m")
         print(f"  - AprilTag family: {self.apriltag_family}")
         print(f"  - Selected frames: {selected_list}")
         print(f"  - Method: {self.calibration_methods[self.current_method_index]}")
-        print(f"  - Tracking marker frame: {tracking_marker_frame}")
+        print(f"  - Tracking marker frame: {self.calibration_config.get('tracking_marker_frame', 'none - compute offline')}")
 
         self.hand_camera_rot, self.hand_camera_tr, self.hand_camera_qwxyz = \
             compute_hand_eye_calibration(self.data_path, selected_list, self.detector, self.tagsize, 
                                          method_str=self.calibration_methods[self.current_method_index], 
-                                         use_tracking_marker=use_tracking_marker)
+                                         use_tracking_marker=self.use_tracking_marker)
 
         print("Hand-Eye Calibration Results:")
         print("Rotation Matrix:")
@@ -330,18 +330,20 @@ class FrameViewer:
         
         # Compute target to gripper transformation (needed for reprojection error analysis)
         self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr = \
-            compute_target_to_gripper_transform(self.hand_camera_rot, self.hand_camera_tr, self.data_path, selected_list, self.detector, self.tagsize)
+            compute_target_to_gripper_transform(self.hand_camera_rot, self.hand_camera_tr, self.data_path, selected_list, self.detector, self.tagsize, 
+                                                use_tracking_marker=self.use_tracking_marker)
 
         # Compute overall reprojection error
-        mean_error, max_error = compute_reprojection_error_mean_max(self.hand_camera_rot, self.hand_camera_tr, self.data_path, selected_list, self.detector, 
-                                                                    self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr, self.tagsize)
-        if mean_error is not None and max_error is not None:
-            print(f'Overall reprojection error: mean={mean_error:.2f}px, max={max_error:.2f}px')
-        else:
-            print('Could not compute reprojection error due to lack of detections.')
+        if not self.use_tracking_marker:
+            mean_error, max_error = compute_reprojection_error_mean_max(self.hand_camera_rot, self.hand_camera_tr, self.data_path, selected_list, self.detector, 
+                                                                        self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr, self.tagsize)
+            if mean_error is not None and max_error is not None:
+                print(f'Overall reprojection error: mean={mean_error:.2f}px, max={max_error:.2f}px')
+            else:
+                print('Could not compute reprojection error due to lack of detections.')
 
         # Save all relevant calibration data
-        save_calibration(self.calibration_output_file, calibration_config, self.hand_camera_qwxyz.tolist(), self.hand_camera_tr.tolist(),
+        save_calibration(self.calibration_output_file, self.calibration_config, self.hand_camera_qwxyz.tolist(), self.hand_camera_tr.tolist(),
                          selected_list, self.data_path)
         print(f"Written calibration results to: {self.calibration_output_file}")
         self.is_calibrated = True
@@ -356,7 +358,7 @@ class FrameViewer:
         try:
             # Load and detect frame
             frame, gray, detections = load_and_detect(self.current_frame, self.data_path, self.detector, self.tagsize)
-            valid_frame = frame_is_valid(frame, detections)            
+            valid_frame = frame_is_valid(frame, detections, self.use_tracking_marker)            
             if not valid_frame:
                 self.select_button.active = False  # Disable select button if frame is invalid
             else:
@@ -371,7 +373,9 @@ class FrameViewer:
                 img_points, _ = compute_TCP_image_position(frame, self.hand_camera_rot, self.hand_camera_tr)
                 plt.plot(img_points[0], img_points[1], 'g*', ms=12, label='TCP Projection')
                 
-                xc_proj = compute_target_image_position(frame, self.hand_camera_rot, self.hand_camera_tr, self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr, self.tagsize)
+                xc_proj = compute_target_image_position(frame, self.hand_camera_rot, self.hand_camera_tr, 
+                                                        self.rvec_target_to_gripper_rot, self.tvec_target_to_gripper_tr, 
+                                                        self.tagsize)
                 plt.plot(xc_proj[:,0], xc_proj[:,1], 'c.', ms=12, label='Target Projection')
                 plt.legend()                
 
@@ -435,23 +439,23 @@ class FrameViewer:
             info_text += "=" * 35 + "\n\n"
             
             if rotation is not None:
-                info_text += "Rotation wxyz:\n"
+                info_text += "Robot transform rotation wxyz:\n"
                 info_text += f"  {rotation.get('w', None):.6f}\n"
                 info_text += f"  {rotation.get('x', None):.6f}\n"
                 info_text += f"  {rotation.get('y', None):.6f}\n"
                 info_text += f"  {rotation.get('z', None):.6f}\n"
             else:
-                info_text += "Rotation wxyz: None\n"
+                info_text += "Robot transform rotation wxyz: None\n"
             
             info_text += "\n"
             
             if translation is not None:
-                info_text += "Translation xyz:\n"
+                info_text += "Robot transform translation xyz:\n"
                 info_text += f"  {translation.get('x', None):.6f}\n"
                 info_text += f"  {translation.get('y', None):.6f}\n"
                 info_text += f"  {translation.get('z', None):.6f}\n"
             else:
-                info_text += "Translation xyz: None\n"
+                info_text += "Robot transform translation xyz: None\n"
                 
             if detections is not None and len(detections) > 0:
                 info_text += "\nAprilTag Detections:\n"
