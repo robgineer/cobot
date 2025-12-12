@@ -1,49 +1,21 @@
 {
   "calibration_type": "eye_on_base",
-  "robot_base_frame": "base_link",
+  "robot_base_frame": "world",
   "robot_effector_frame": "gripper_tcp",
   "tracking_base_frame": "camera_color_optical_frame",
   "translation": [
-    [
-      -0.6247956830719734
-    ],
-    [
-      -0.46656601880547655
-    ],
-    [
-      1.5221769602864779
-    ]
+    0.4724919510311453,
+    0.3013812643239153,
+    1.3750675439177062
   ],
   "rotation_q_wxyz": [
-    0.05777964191835835,
-    0.03115751658196054,
-    0.9171838677924368,
-    0.39301968754953875
+    0.054543014451712966,
+    -0.0017136536566919585,
+    -0.9349419388517722,
+    0.3505790837197138
   ],
   "selected_samples": [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22
+    0
   ],
-  "data_file_path": "../doc/sample_data/calibration/calibdata_2025_08_11-11_51_22"
+  "data_file_path": "../../../data/realsense/calibration/calibdata_2025_12_11-13_19_46"
 }

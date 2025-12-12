@@ -7,14 +7,14 @@
   <xacro:arg name="enable_realsense_camera" default="false" />
 
   <xacro:if value="${'$(arg enable_realsense_camera)' == 'true'}">
-    <xacro:arg name="use_nominal_extrinsics" default="true"/>
+    <xacro:arg name="use_nominal_extrinsics" default="false"/>
     <xacro:arg name="add_plug" default="true" />
     <xacro:arg name="use_mesh" default="true" />
 
     <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
 
-    <xacro:sensor_d435 parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
-      <origin xyz="0.659 0.459 1.550" rpy="2.999 0.787 -1.771"/>
+    <xacro:sensor_d435 parent="world" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)">
+      <origin xyz="0.441 0.319 1.378" rpy="-0.155 0.843 -1.727"/>
     </xacro:sensor_d435>
   </xacro:if>
 
