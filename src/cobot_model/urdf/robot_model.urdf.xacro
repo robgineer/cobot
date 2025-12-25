@@ -16,7 +16,7 @@
         <visual>
             <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
             <geometry>
-                <mesh filename="package://cobot_model/meshes/visual/axis_table_workbench_visual.dae"/>
+                <mesh filename="package://cobot_model/meshes/visual/cobot_base_frame_visual_logo.dae"/>
             </geometry>
             <material name="axis_material">
                 <color rgba="0.58 0.58 0.58 1.0"/>
@@ -26,7 +26,7 @@
             <xacro:if value="${'$(arg use_collision_meshes)' == 'true'}">
                 <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0" />
                 <geometry>
-                   <mesh filename="package://cobot_model/meshes/collision/axis_table_workbench_collision.stl"/>
+                   <mesh filename="package://cobot_model/meshes/collision/cobot_base_frame_collision.stl"/>
                 </geometry>
             </xacro:if>
             <xacro:unless value="${'$(arg use_collision_meshes)' == 'true'}">
